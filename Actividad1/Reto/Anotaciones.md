@@ -1,0 +1,1 @@
+Para poder comenzar a realizar los ejercicios tuve que devolverme a revisar el material dado en clase, ya que tuve complicaciones para entender el tema desde el principio, pero luego de retroalimentar la información y resolver algunso ejemplos logré realizar el reto.
