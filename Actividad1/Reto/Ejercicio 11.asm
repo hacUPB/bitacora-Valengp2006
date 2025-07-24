@@ -40,6 +40,6 @@
     //a) Este programa inicializa la variable `i` en 1000, luego entra en un bucle que decrementa `i` hasta que llega a 0, momento en el cual salta a la etiqueta `CONT`.
     //b) La variable `i` está almacenada en la RAM, específicamente en la dirección 16,
     //c) El comentario `// i = 1000` no se almacena en la memoria, ya que es un comentario y no una instrucción ejecutable. 
-    //d) La primera instrucción del programa es `@1000`, que está almacenada en la RAM en la dirección 0.
+    //d) La primera instrucción del programa es `@1000`, que está almacenada en la ROM en la dirección 0.
     //e) `CONT` y `LOOP` son etiquetas que se utilizan para marcar posiciones en el código. `CONT` es el punto al que se salta cuando `i` llega a 0, y `LOOP` es el inicio del bucle.
     //f) `i` es una variable que almacena un valor, mientras que `CONT` es una etiqueta que indica un punto en el código al que se puede saltar. Las etiquetas no almacenan valores, sino que sirven como referencias para el flujo del programa.

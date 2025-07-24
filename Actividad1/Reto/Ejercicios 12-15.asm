@@ -20,19 +20,26 @@
     //goto LOOP
 
     @R0
-    D=M
-    @0
-    D=D-A
-    @R1
-    D;JGE
-    @-1
-    D=A
-    @R1
-    M=D
+    D=M        
+    @ELSE
+    D;JLT     // Si D < 0, ir a ELSE
+
+    // THEN: R0 >= 0
     @1
     D=A
     @R1
     M=D
+    @END
+    0;JMP
+
+    (ELSE)
+    @-1
+    D=A
+    @R1
+    M=D
+
+    (END)
+    (LOOP)
     @LOOP
     0;JMP
     
@@ -41,33 +48,35 @@
     //R4 = RAM[R1]
 
     @R1
-    D=M
+    A=M   
+    D=M   
     @R4
     M=D
     
 //15. Implementa en ensamblador el siguiente problema. 
 //En la posición R0 está almacenada la dirección inicial de una región de memoria. En la posición R1 está almacenado el tamaño de la región de memoria. Almacena un -1 en esa región de memoria.
 
-    @R0
-    D=M
-    @R1
-    D=D+A
-    @R2
-    M=D
     (LOOP)
+    @R1
+    D=M
+    @END
+    D;JEQ      
+
+    @R0
+    A=M
+    M=-1      
+
     @R0
     D=M
-    @-1
-    D=A
-    @R2
-    M=D
+    @1
+    D=D+A
     @R0
-    D=M+1
-    @R0
-    M=D
+    M=D     
+
     @R1
-    D=M-1
-    @R1
-    M=D
+    M=M-1        
+
     @LOOP
     0;JMP
+
+    (END)
