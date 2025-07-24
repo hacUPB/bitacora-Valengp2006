@@ -35,10 +35,5 @@
     
     //- ¿Qué hace este programa?
 
-    //•	Usa RAM[16] como índice para pantalla (i).
-	//•	Revisa constantemente si hay una tecla presionada.
-	//•	Si no hay tecla presionada, continúa escribiendo en la pantalla secuencialmente.
-	//•	Si hay tecla presionada, realiza una acción diferente.
-	//•	Después de esa acción, regresa al bucle.
 
 //20. Implementa un programa en lenguaje ensamblador que dibuje el bitmap que diseñaste en la pantalla solo si se presiona la tecla “d”.
