@@ -1,11 +1,11 @@
 //8. Considera el siguiente programa:
 
-    @var1
-    D=M
-    @var2
-    D=D+M
-    @var3
-    M=D
+    //@var1
+    //D=M
+    //@var2
+    //D=D+M
+    //@var3
+    //M=D
 
     //a) ¿Qué hace este programa?
     //b) ¿En que posición de la memoria está var1, var2 y var3?
@@ -18,38 +18,38 @@
 
 //9. Considera el siguiente programa:
     
-   i=1
-   sum=0
-   sum=sum+i
-   i=i+1
+   //i=1
+   //sum=0
+   //sum=sum+i
+   //i=i+1
 
    //La traducción al lenguaje ensamblador del programa anterior es:
 
    // i = 1
-    @i
-    M=1
+    //@i
+    //M=1
     // sum = 0
-    @sum
-    M=0
+    //@sum
+    //M=0
     // sum = sum + i
-    @i
-    D=M
-    @sum
-    M=D+M
+    //@i
+    //D=M
+    //@sum
+    //M=D+M
     // i = i + 1
-    @i
-    D=M+1
-    @i
-    M=D
+    //@i
+    //D=M+1
+    //@i
+    //M=D
 
     //a) ¿Qué hace este programa?
     //b) ¿En qué parte de la memoria RAM está la variable i y sum? ¿Por qué en esas posiciones?
     //c) Optimiza esta parte del código para que use solo dos instrucciones:
         // i = i + 1
-        @i
-        D=M+1
-        @i
-        M=D
+        //@i
+        //D=M+1
+        //@i
+        //M=D
 
     // Respuestas:
 
