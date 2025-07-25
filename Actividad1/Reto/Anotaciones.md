@@ -23,3 +23,9 @@
 - Entre la información que encontré para la solución del reto encontré que en el simulador de nand2tetris la memoria RAM va desde RAM[0] hasta RAM[24575] y que la pantalla (pantalla física) está mapeada a una parte de esa memoria desde RAM[16384] hasta RAM[24575] (son 8192 direcciones en donde cada una controla 16 píxeles)
 
 - [Enlace al bitmap de la pregunta 18](https://nand2tetris.github.io/web-ide/bitmap)
+
+### Conclusión general
+
+Durante el desarrollo de los 20 retos de lenguaje ensamblador Hack, comprendí cómo se comunican el software y el hardware a través de instrucciones de bajo nivel. También, aprendí a trabajar con variables, saltos condicionales, ciclos, manipulación de memoria RAM, y cómo interactuar directamente con los dispositivos del sistema como el teclado (KBD) y la pantalla (SCREEN). Traducir estructuras de alto nivel como if, for y operaciones aritméticas en instrucciones simples.
+
+Además, este proceso no solo me permitió entender cómo funciona internamente un computador, sino que también me dio herramientas clave para implementar tareas visuales como el dibujo de un gato en pantalla al presionar una tecla, lo que me mostró el potencial de la programación de bajo nivel para controlar directamente la experiencia del usuario.
