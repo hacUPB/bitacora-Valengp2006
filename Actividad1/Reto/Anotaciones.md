@@ -18,4 +18,6 @@
 
 - Para la solución de los ejercicios relacionados con **variables** fue necesaria también la revisión de la presentación de PowerPoint en donde esta la información del curso, además de algunos tutoriales de YouTube pertenecientes al curso de Nand2Tetris.
 
-- En cuento a los ejercicios con labels, fueron los que mas se me dificultaron, por lo que tuve que recurrir a ayuda externa para poder comprender como funcionan y como usarlos correctamente, lo cual fue mas fácil luego de pasar los ejercicios por el simulador de **Nand2Tetris** 
+- En cuento a los ejercicios con labels, fueron los que mas se me dificultaron, por lo que tuve que recurrir a ayuda externa para poder comprender como funcionan y como usarlos correctamente, lo cual fue mas fácil luego de pasar los ejercicios por el simulador de **Nand2Tetris**.
+
+- Entre la información que encontré para la solución del reto encontré que en el simulador de nand2tetris la memoria RAM va desde RAM[0] hasta RAM[24575] y que la pantalla (pantalla física) está mapeada a una parte de esa memoria desde RAM[16384] hasta RAM[24575] (son 8192 direcciones en donde cada una controla 16 píxeles)
