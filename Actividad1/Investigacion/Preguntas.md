@@ -1,5 +1,3 @@
-# Bitácora
-## Preguntas
 ### Actividad 1:
 
 **¿Qué es un computador digital moderno? ¿Cuáles son sus partes?**
