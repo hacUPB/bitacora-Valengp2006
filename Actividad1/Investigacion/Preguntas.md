@@ -9,9 +9,9 @@ Su diseño se basa en el modelo de Von Neumann, que permite que tanto los datos 
 
 Las partes fundamentales de un computador son:
 
-- CPU (Unidad Central de Procesamiento):* Procesa datos e instrucciones. Contiene registros y la ALU.
-- ALU (Unidad Aritmético-Lógica):* Ejecuta operaciones matemáticas y lógicas.
-- Registros (como A y D):* Almacenan temporalmente datos y direcciones.
+- CPU (Unidad Central de Procesamiento): Procesa datos e instrucciones. Contiene registros y la ALU.
+- ALU (Unidad Aritmético-Lógica): Ejecuta operaciones matemáticas y lógicas.
+- Registros (como A y D): Almacenan temporalmente datos y direcciones.
 - Memoria RAM: Guarda información y variables durante la ejecución del programa.
 - Memoria ROM: Contiene el programa que va a ser ejecutado.
 - Bus de datos y control: Permiten la comunicación entre componentes.
