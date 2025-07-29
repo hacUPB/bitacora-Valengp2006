@@ -18,27 +18,27 @@ Gracias a esta implementación, un programa puede dibujar en pantalla o responde
 #### Programa que usa entrada-salida mapeada a memoria
 
 ```asm
-// Si se presiona la tecla 'd', encender la esquina superior izquierda de la pantalla
+// Si se presiona la tecla 'a', encender la esquina superior izquierda de la pantalla
 @KBD
 D=M
 @100
-D=D-A     // D = KBD - 100
+D=D-A     
 @DRAW
-D;JEQ     // Si es igual a 'd' (ASCII 100), salta a DRAW
+D;JEQ     
 @END
 0;JMP
 
 (DRAW)
-@16384    // Dirección base de SCREEN
-M=-1      // Enciende los primeros 16 píxeles (todos en 1)
+@16384    
+M=-1      
 (END)
 @END
-0;JMP     // Bucle infinito para terminar
+0;JMP     
 ```
 
 ### Funcionamiento del programa en el simulador
 
 	1.	El programa lee el valor del teclado (KBD).
-	2.	Si se presiona la tecla 'd', su código ASCII es 100, por lo que la condición D;JEQ se cumple.
+	2.	Si se presiona la tecla 'a', su código ASCII es 97, por lo que la condición D;JEQ se cumple.
 	3.	Se salta a la etiqueta (DRAW) donde se escribe -1 en la dirección 16384 de la RAM, lo que enciende los primeros 16 píxeles de la pantalla.
-	4.	Si no se presiona la tecla 'd', no se ejecuta el bloque de dibujo, y el programa entra directamente en el bucle (END).
+	4.	Si no se presiona la tecla 'a', no se ejecuta el bloque de dibujo, y el programa entra directamente en el bucle (END).
