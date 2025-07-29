@@ -312,6 +312,6 @@ La dirección `KBD` permite detectar la tecla presionada, y `SCREEN` permite man
 	A=M
 	D;JMP
 
-    @LOOP  //salta de vuelta al loop del inicio
+    @LOOP  //sale del loop
     0;JMP
 ```
