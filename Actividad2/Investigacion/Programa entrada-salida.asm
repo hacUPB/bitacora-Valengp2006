@@ -1,0 +1,14 @@
+@KBD
+D=M
+@100
+D=D-A     
+@DRAW
+D;JEQ     
+@END
+0;JMP
+
+(DRAW)
+@16384    
+M=-1
+@END
+0;JMP
