@@ -38,10 +38,10 @@ M=-1
 
 ### Funcionamiento del programa en el simulador
 
-	1.	El programa lee el valor del teclado (KBD).
-	2.	Si se presiona la tecla 'a', su código ASCII es 97, por lo que la condición D;JEQ se cumple.
-	3.	Se salta a la etiqueta (DRAW) donde se escribe -1 en la dirección 16384 de la RAM, lo que enciende los primeros 16 píxeles de la pantalla.
-	4.	Si no se presiona la tecla 'a', no se ejecuta el bloque de dibujo, y el programa entra directamente en el bucle (END).
+1. El programa lee el valor del teclado (KBD).
+2. Si se presiona la tecla 'a', su código ASCII es 97, por lo que la condición D;JEQ se cumple.
+3. Se salta a la etiqueta (DRAW) donde se escribe -1 en la dirección 16384 de la RAM, lo que enciende los primeros 16 píxeles de la pantalla.
+4. Si no se presiona la tecla 'a', no se ejecuta el bloque de dibujo, y el programa entra directamente en el bucle (END).
 
 ## Actividad 3:
 
@@ -77,8 +77,18 @@ La dirección `KBD` permite detectar la tecla presionada, y `SCREEN` permite man
     @DRAW
     D;JEQ      // Si es igual, ir a rutina de dibujo
 
-    @CLEAR
-    0;JMP      // Si no es 'd', ir a limpiar pantalla
+    @KBD
+    D=M        // Leer tecla presionada
+    @NO_KEY
+    D;JEQ      // Si no hay tecla presionada, ir a NO_KEY
+
+    @0
+    D=D-A      // Comparar tecla con ASCII 0
+    @CLEAR     // Si es '0', ir a limpiar pantalla
+    D;JEQ
+
+    @DRAW      //Si 
+    0;JMP      
 
 (NO_KEY)
     @LOOP
