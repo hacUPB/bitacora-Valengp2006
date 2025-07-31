@@ -40,4 +40,9 @@ La variable a se almacenó en la dirección RAM[16], y el puntero p se ubicó en
 
 **Validación:** 
 
-Se utilizó el simulador de la plataforma nand2tetris para verificar que, al finalizar la ejecución, RAM[16] (la variable a) contiene el valor 20. Esto comprueba que el puntero almacenado en RAM[17] apuntó correctamente a a y permitió modificar su contenido.
+Se ejecutó el programa en el simulador de la CPU Hack y se verificaron los siguientes resultados:
+
+- RAM[16] = 20 → el valor de la variable a fue correctamente actualizado por medio del puntero p.
+- RAM[17] = 16 → el puntero p contiene correctamente la dirección de a.
+
+Esto demuestra que el comportamiento de los punteros puede ser simulado usando direcciones explícitas de memoria, permitiendo modificar el valor de una variable desde otra variable que guarda su dirección.
