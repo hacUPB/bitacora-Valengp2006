@@ -1,39 +1,38 @@
 // Inicializar i = 1
 @1
 D=A
-@i
+@20     // i en RAM[20]
 M=D
 
 // Inicializar sum = 0
-@sum
-M=0
+@0
+D=A
+@22     // sum en RAM[22]
+M=D
 
-// Etiqueta del ciclo
 (LOOP)
-    @i
-    D=M
-    @101      // Si i > 100, salir del ciclo
-    D=D-A
-    @END
-    D;JGE
+@20     // i
+D=M
+@101
+D=D-A
+@END
+D;JGE   // Si i > 100, terminar
 
-    // sum = sum + i
-    @i
-    D=M
-    @sum
-    M=D+M     // ← Aquí estaba el error, corregido a D+M
+// sum = sum + i
+@22
+D=M     // D = sum
+@20
+D=D+M   // D = sum + i
+@22
+M=D     // guardar en sum
 
-    // i++
-    @i
-    M=M+1
+// i++
+@20
+M=M+1
 
-    @LOOP
-    0;JMP
+@LOOP
+0;JMP
 
 (END)
-    @END
-    0;JMP
-
-// Variables (puedes reservarlas en RAM manualmente si quieres)
-(i)   // Variable i
-(sum) // Variable sum
+@END
+0;JMP
