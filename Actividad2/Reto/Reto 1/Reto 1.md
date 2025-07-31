@@ -25,34 +25,44 @@ Escribe un programa en lenguaje ensamblador que sume los primeros 100 números n
 - Código en Assembly:
 
 ```asm
-    @i
-    M=1         // i = 1
+    // Inicializar i = 1
+@1
+D=A
+@20     // i en RAM[20]
+M=D
 
-    @sum
-    M=0         // sum = 0
+// Inicializar sum = 0
+@0
+D=A
+@22     // sum en RAM[22]
+M=D
 
-    (LOOP)
-    @i
-    D=M
-    @101
-    D=D-A
-    @END
-    D;JGE       // Si i >= 101, salir del ciclo
+(LOOP)
+@20     // i
+D=M
+@101
+D=D-A
+@END
+D;JGE   // Si i > 100, terminar
 
-    @i
-    D=M
-    @sum
-    M=M+D       // sum += i
+// sum = sum + i
+@22
+D=M     // D = sum
+@20
+D=D+M   // D = sum + i
+@22
+M=D     // guardar en sum
 
-    @i
-    M=M+1       // i++
+// i++
+@20
+M=M+1
 
-    @LOOP
-    0;JMP       // Repetir el ciclo
+@LOOP
+0;JMP
 
-    (END)
-    @END
-    0;JMP       // Fin del programa
+(END)
+@END
+0;JMP
 ```
 
 Se implementaron dos variables, i y sum, usando etiquetas simbólicas que el ensamblador asigna desde RAM[16] (es decir, i = RAM[16], sum = RAM[17]). El ciclo while se construyó con una etiqueta (LOOP) y una condición de parada que compara i con 101. El cuerpo del ciclo realiza la suma acumulativa y luego incrementa i.
