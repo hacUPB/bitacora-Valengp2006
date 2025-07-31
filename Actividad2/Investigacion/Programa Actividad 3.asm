@@ -1,49 +1,52 @@
 // Programa que muestra un dibujo si se presiona la tecla 'd', y lo borra si no.
 
-(LOOP)
+// BUCLE PRINCIPAL: Evaluar si hay una tecla presionada
+(MAIN_LOOP)
     @KBD
-    D=M            
-    @NO_KEY
-    D;JEQ          
+    D=M            // Leer valor de tecla
+    @CHECK_KEY
+    0;JMP          // Ir a evaluar qué tecla es
 
+// VERIFICAR TECLA
+(CHECK_KEY)
+    D=M
     @100
-    D=D-A          
+    D=D-A
     @DRAW
-    D;JEQ         
+    D;JEQ          // Si tecla == 100 ('d'), ir a dibujar
 
-    @CLEAR
-    0;JMP         
+    @KBD
+    D=M
+    @NO_KEY
+    D;JEQ          // Si tecla == 0, ir a borrar
 
+    @MAIN_LOOP
+    0;JMP          // Si es otra tecla, seguir evaluando
+
+// SUBRUTINA: BORRAR PANTALLA
 (NO_KEY)
-    @LOOP
-    0;JMP         
-
-// SUBRUTINA PARA BORRAR LA PANTALLA (LIMPIAR SCREEN)
-(CLEAR)
     @R0
-    M=0            
+    M=0            // i = 0
 (CLEAR_LOOP)
     @R0
     D=M
-    @8192          
+    @8192
     D=D-A
-    @AFTER_CLEAR
-    D;JGE
+    @END_CLEAR
+    D;JGE          // Si i >= 8192, terminar borrado
 
     @SCREEN
-    D=A
-    @R0
-    A=D+M          
-    M=0            
+    A=A+R0         // A = SCREEN + i
+    M=0            // Limpiar pixel
 
     @R0
-    M=M+1          
+    M=M+1          // i++
     @CLEAR_LOOP
     0;JMP
 
-(AFTER_CLEAR)
-    @LOOP
-    0;JMP          
+(END_CLEAR)
+    @MAIN_LOOP
+    0;JMP
 
 // SUBRUTINA PARA MOSTRAR EL DIBUJO DEL GATO
 (DRAW)
