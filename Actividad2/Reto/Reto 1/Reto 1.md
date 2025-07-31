@@ -2,14 +2,14 @@
 
 Escribe un programa en lenguaje ensamblador que sume los primeros 100 números naturales.
     
-    ```cpp
+```cpp
     int i = 1;
     int sum = 0;
     While (i <= 100){
        sum += i;
        i++;
     }
-    ```
+```
     
 - ¿Cómo están implementadas las variables `i` y `sum`?
 - ¿En qué direcciones de memoria están estas variables?
@@ -24,7 +24,7 @@ Escribe un programa en lenguaje ensamblador que sume los primeros 100 números n
 
 - Código en Assembly:
 
-    ```asm
+```asm
     @i
     M=1         // i = 1
 
@@ -53,41 +53,42 @@ Escribe un programa en lenguaje ensamblador que sume los primeros 100 números n
     (END)
     @END
     0;JMP       // Fin del programa
-    ```
+```
 
 Se implementaron dos variables, i y sum, usando etiquetas simbólicas que el ensamblador asigna desde RAM[16] (es decir, i = RAM[16], sum = RAM[17]). El ciclo while se construyó con una etiqueta (LOOP) y una condición de parada que compara i con 101. El cuerpo del ciclo realiza la suma acumulativa y luego incrementa i.
 
 Para probar el programa se usó el simulador de Hack paso a paso. Se verificó que:
-	•	i se incrementa correctamente desde 1 hasta 100.
-	•	sum acumula correctamente la suma (debe terminar en 5050).
-	•	El salto condicional funciona bien y termina el ciclo en el momento correcto.
-	•	El valor final en RAM[17] (sum) es 5050, lo que confirma que la lógica funciona.
 
-- **¿Cómo están implementadas las variables i y sum?**
++ i se incrementa correctamente desde 1 hasta 100.
++	sum acumula correctamente la suma (debe terminar en 5050).
++	El salto condicional funciona bien y termina el ciclo en el momento correcto.
++	El valor final en RAM[17] (sum) es 5050, lo que confirma que la lógica funciona.
 
-    Las variables i y sum están implementadas como etiquetas simbólicas que el ensamblador traduce en direcciones de memoria RAM. Internamente, @i y @sum hacen referencia a ubicaciones específicas en la RAM donde se almacenan sus respectivos valores.
+**¿Cómo están implementadas las variables i y sum?**
 
-- **¿En qué direcciones de memoria están estas variables?**
+Las variables i y sum están implementadas como etiquetas simbólicas que el ensamblador traduce en direcciones de memoria RAM. Internamente, @i y @sum hacen referencia a ubicaciones específicas en la RAM donde se almacenan sus respectivos valores.
 
-    Por convención en Hack, las variables simbólicas empiezan a asignarse desde la RAM[16].
-    Entonces:
-	    •	i → RAM[16]
-	    •	sum → RAM[17]
+**¿En qué direcciones de memoria están estas variables?**
 
-- **¿Cómo está implementado el ciclo while?**
+Por convención en Hack, las variables simbólicas empiezan a asignarse desde la RAM[16].
+Entonces:
+*	i → RAM[16]
+*	sum → RAM[17]
 
-    El ciclo while se implementa con una etiqueta de bucle (LOOP) y un salto condicional que compara el valor de i con 101:
+**¿Cómo está implementado el ciclo while?**
+
+El ciclo while se implementa con una etiqueta de bucle (LOOP) y un salto condicional que compara el valor de i con 101:
     
-    ```asm
-    @i
-    D=M
-    @101
-    D=D-A
-    @END
-    D;JGE      // Si i >= 101, salir del bucle
-    ```
+```asm
+@i
+D=M
+@101
+D=D-A
+@END
+D;JGE      // Si i >= 101, salir del bucle
+```
 
-    Este bloque se repite con 0;JMP al final del ciclo para regresar a (LOOP) mientras la condición sea verdadera.
+Este bloque se repite con 0;JMP al final del ciclo para regresar a (LOOP) mientras la condición sea verdadera.
 
 - **¿Cómo se implementa la variable i?**
 
