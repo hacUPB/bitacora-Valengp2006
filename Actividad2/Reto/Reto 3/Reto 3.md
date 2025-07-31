@@ -51,3 +51,5 @@ Se implementó un programa que usa un ciclo for en lenguaje ensamblador Hack par
 
 **Pruebas realizadas:**
 Se utilizó el simulador CPU Emulator para ejecutar el programa. Al finalizar la simulación, se verificó que la posición RAM[22] contiene el valor 5050, confirmando que la suma fue realizada correctamente. Además, se monitoreó el incremento de i para asegurar que el ciclo itera exactamente 100 veces.
+
+Se evidenció que el código es prácticamente igual al realizado en el reto 2, con la diferencia que, al utilizar como referencia en el lenguaje de alto nivel el ciclo for, el bucle tiene una estructura mas ordenada, como se haria en el lenguaje de alto nivel.

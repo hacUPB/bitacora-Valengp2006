@@ -65,15 +65,6 @@ M=M+1
 0;JMP
 ```
 
-Se implementaron dos variables, i y sum, usando etiquetas simbólicas que el ensamblador asigna desde RAM[16] (es decir, i = RAM[16], sum = RAM[17]). El ciclo while se construyó con una etiqueta (LOOP) y una condición de parada que compara i con 101. El cuerpo del ciclo realiza la suma acumulativa y luego incrementa i.
-
-Para probar el programa se usó el simulador de Hack paso a paso. Se verificó que:
-
-+   i se incrementa correctamente desde 1 hasta 100.
-+	sum acumula correctamente la suma (debe terminar en 5050).
-+	El salto condicional funciona bien y termina el ciclo en el momento correcto.
-+	El valor final en RAM[17] (sum) es 5050, lo que confirma que la lógica funciona.
-
 **¿Cómo están implementadas las variables i y sum?**
 
 Las variables i y sum están implementadas como etiquetas simbólicas que el ensamblador traduce en direcciones de memoria RAM. Internamente, @i y @sum hacen referencia a ubicaciones específicas en la RAM donde se almacenan sus respectivos valores.
@@ -120,7 +111,11 @@ Es el índice en la memoria RAM donde se almacena el contenido de la variable. P
 
 Es el valor almacenado en esa dirección de memoria. Si i = 5, entonces en RAM[16] hay un valor binario que representa 5.
 
-### Anotaciones:
+**Implementación:**
+
+Se implementaron dos variables, i y sum, usando etiquetas simbólicas que el ensamblador asigna desde RAM[16] (es decir, i = RAM[16], sum = RAM[17]). El ciclo while se construyó con una etiqueta (LOOP) y una condición de parada que compara i con 101. El cuerpo del ciclo realiza la suma acumulativa y luego incrementa i.
+
+**Validación:**
 
 Al probar el código por primera vez se evidenció un error en la linea 18, esto debido a que los términos estaban invertidos, por lo que el programa no los reconocía, pero se solucionó escribiendolos en el orden correcto.
 
