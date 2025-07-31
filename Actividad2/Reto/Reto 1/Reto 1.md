@@ -90,22 +90,22 @@ D;JGE      // Si i >= 101, salir del bucle
 
 Este bloque se repite con 0;JMP al final del ciclo para regresar a (LOOP) mientras la condición sea verdadera.
 
-- **¿Cómo se implementa la variable i?**
+**¿Cómo se implementa la variable i?**
 
-    Se inicializa con @1 y M=D, y se incrementa dentro del ciclo con M=M+1. Todo esto ocurre en la dirección de memoria asociada a i (RAM[16]).
+Se inicializa con @1 y M=D, y se incrementa dentro del ciclo con M=M+1. Todo esto ocurre en la dirección de memoria asociada a i (RAM[16]).
 
-- **¿En qué parte de la memoria se almacena la variable i?**
+**¿En qué parte de la memoria se almacena la variable i?**
 
-    En RAM[16] (como se explicó anteriormente, las variables empiezan desde la dirección 16 en la arquitectura Hack).
+En RAM[16] (como se explicó anteriormente, las variables empiezan desde la dirección 16 en la arquitectura Hack).
 
-- **Después de todo lo que has hecho, ¿Qué es entonces una variable?**
+**Después de todo lo que has hecho, ¿Qué es entonces una variable?**
 
-    Una variable en ensamblador Hack es una ubicación en memoria RAM donde se puede guardar y modificar un valor. Es un nombre simbólico que el ensamblador traduce a una dirección numérica.
+Una variable en ensamblador Hack es una ubicación en memoria RAM donde se puede guardar y modificar un valor. Es un nombre simbólico que el ensamblador traduce a una dirección numérica.
 
-- **¿Qué es la dirección de una variable?**
+**¿Qué es la dirección de una variable?**
 
-    Es el índice en la memoria RAM donde se almacena el contenido de la variable. Por ejemplo, si i está en RAM[16], esa es su dirección.
+Es el índice en la memoria RAM donde se almacena el contenido de la variable. Por ejemplo, si i está en RAM[16], esa es su dirección.
 
-- **¿Qué es el contenido de una variable?**
+**¿Qué es el contenido de una variable?**
 
-    Es el valor almacenado en esa dirección de memoria. Si i = 5, entonces en RAM[16] hay un valor binario que representa 5.
+Es el valor almacenado en esa dirección de memoria. Si i = 5, entonces en RAM[16] hay un valor binario que representa 5.
