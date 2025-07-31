@@ -59,7 +59,7 @@ Se implementaron dos variables, i y sum, usando etiquetas simbólicas que el ens
 
 Para probar el programa se usó el simulador de Hack paso a paso. Se verificó que:
 
-+ i se incrementa correctamente desde 1 hasta 100.
++   i se incrementa correctamente desde 1 hasta 100.
 +	sum acumula correctamente la suma (debe terminar en 5050).
 +	El salto condicional funciona bien y termina el ciclo en el momento correcto.
 +	El valor final en RAM[17] (sum) es 5050, lo que confirma que la lógica funciona.
@@ -109,3 +109,7 @@ Es el índice en la memoria RAM donde se almacena el contenido de la variable. P
 **¿Qué es el contenido de una variable?**
 
 Es el valor almacenado en esa dirección de memoria. Si i = 5, entonces en RAM[16] hay un valor binario que representa 5.
+
+### Anotaciones:
+
+Al probar el código por primera vez se evidenció un error en la linea 18, esto debido a que los términos estaban invertidos, por lo que el programa no los reconocía, pero se solucionó escribiendolos en el orden correcto.
