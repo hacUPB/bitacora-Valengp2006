@@ -65,263 +65,256 @@ La dirección `KBD` permite detectar la tecla presionada, y `SCREEN` permite man
 // Muestra el dibujo del gato si se presiona la tecla "d" (ASCII 100)
 // De lo contrario, borra la pantalla
 
-// BUCLE PRINCIPAL
+// Bucle principal que evalúa el teclado
 (LOOP)
     @KBD
-    D=M        // Leer tecla presionada
-    @NO_KEY
-    D;JEQ      // Si no hay tecla presionada, ir a NO_KEY
+    D=M            // Leer la tecla presionada
+    @CHECKD
+    D;JGT          // Si alguna tecla fue presionada, ir a verificar
 
-    @100
-    D=D-A      // Comparar tecla con ASCII 100 ('d')
-    @DRAW
-    D;JEQ      // Si es igual, ir a rutina de dibujo
+    @CLEAR
+    0;JMP          // Si no hay tecla, limpiar pantalla
 
+(CHECKD)
     @KBD
-    D=M        // Leer tecla presionada
-    @NO_KEY
-    D;JEQ      // Si no hay tecla presionada, ir a NO_KEY
+    D=M
+    @100
+    D=D-A          // Comparar con ASCII de 'd'
+    @DRAW
+    D;JEQ          // Si es igual, dibujar
+    @CLEAR
+    0;JMP          // Si no es 'd', limpiar
 
-    @0
-    D=D-A      // Comparar tecla con ASCII 0
-    @CLEAR     // Si es '0', ir a limpiar pantalla
-    D;JEQ
+//Subrutina Borrar
 
-    @DRAW      //Si 
-    0;JMP      
-
-(NO_KEY)
-    @LOOP
-    0;JMP      // Volver al inicio
-
-
-// SUBRUTINA PARA BORRAR PANTALLA (LIMPIAR SCREEN)
 (CLEAR)
     @R0
-    M=0           // Contador en R0
+    M=0
 (CLEAR_LOOP)
     @R0
     D=M
-    @8192         // SCREEN tiene 8192 palabras (32*256 bits)
+    @8192
     D=D-A
     @AFTER_CLEAR
     D;JGE
 
     @SCREEN
-    A=A+R0        // Dirección actual en SCREEN
-    M=0           // Limpiar pixel
+    D=A
+    @R0
+    A=D+M         // Dirección: SCREEN + i
+    M=0           // Borrar pixel
 
     @R0
-    M=M+1         // Incrementar contador
+    M=M+1
     @CLEAR_LOOP
     0;JMP
 
 (AFTER_CLEAR)
     @LOOP
-    0;JMP         // Volver al inicio
-
+    0;JMP
 
 // SUBRUTINA PARA MOSTRAR EL DIBUJO DEL GATO
 (DRAW)
+    @SCREEN
+    D=A
+    @R12
+    M=0
+    AD=D+M         // Dirección inicial en SCREEN
 
-   @SCREEN
-	D=A
-	@R12
-	AD=D+M
-	// row 5
-	@260 // A holds val
-	D=D+A // D = addr + val
-	A=D-A // A=addr + val - val = addr
-	M=D-A // RAM[addr] = val
-	// row 6
-	D=A // D holds previous addr
-	@32
-	AD=D+A
-	@396 // A holds val
-	D=D+A // D = addr + val
-	A=D-A // A=addr + val - val = addr
-	M=D-A // RAM[addr] = val
-	// row 7
-	D=A // D holds previous addr
-	@32
-	AD=D+A
-	@508 // A holds val
-	D=D+A // D = addr + val
-	A=D-A // A=addr + val - val = addr
-	M=D-A // RAM[addr] = val
-	// row 8
-	D=A // D holds previous addr
-	@32
-	AD=D+A
-	@1022 // A holds val
-	D=D+A // D = addr + val
-	A=D-A // A=addr + val - val = addr
-	M=D-A // RAM[addr] = val
-	// row 9
-	D=A // D holds previous addr
-	@32
-	AD=D+A
-	@1022 // A holds val
-	D=D+A // D = addr + val
-	A=D-A // A=addr + val - val = addr
-	M=D-A // RAM[addr] = val
-	// row 10
-	D=A // D holds previous addr
-	@32
-	AD=D+A
-	@508 // A holds val
-	D=D+A // D = addr + val
-	A=D-A // A=addr + val - val = addr
-	M=D-A // RAM[addr] = val
-	// row 11
-	D=A // D holds previous addr
-	@32
-	AD=D+A
-	@248 // A holds val
-	D=D+A // D = addr + val
-	A=D-A // A=addr + val - val = addr
-	M=D-A // RAM[addr] = val
-	// row 12
-	D=A // D holds previous addr
-	@32
-	AD=D+A
-	@508 // A holds val
-	D=D+A // D = addr + val
-	A=D-A // A=addr + val - val = addr
-	M=D-A // RAM[addr] = val
-	// row 13
-	D=A // D holds previous addr
-	@32
-	AD=D+A
-	@1022 // A holds val
-	D=D+A // D = addr + val
-	A=D-A // A=addr + val - val = addr
-	M=D-A // RAM[addr] = val
-	// row 14
-	D=A // D holds previous addr
-	@32
-	AD=D+A
-	@1022 // A holds val
-	D=D+A // D = addr + val
-	A=D-A // A=addr + val - val = addr
-	M=D-A // RAM[addr] = val
-	// row 15
-	D=A // D holds previous addr
-	@32
-	AD=D+A
-	@2047 // A holds val
-	D=D+A // D = addr + val
-	A=D-A // A=addr + val - val = addr
-	M=D-A // RAM[addr] = val
-	// row 16
-	D=A // D holds previous addr
-	@32
-	AD=D+A
-	@2047 // A holds val
-	D=D+A // D = addr + val
-	A=D-A // A=addr + val - val = addr
-	M=D-A // RAM[addr] = val
-	// row 17
-	D=A // D holds previous addr
-	@32
-	AD=D+A
-	@1022 // A holds val
-	D=D+A // D = addr + val
-	A=D-A // A=addr + val - val = addr
-	M=D-A // RAM[addr] = val
-	// row 18
-	D=A // D holds previous addr
-	@32
-	AD=D+A
-	@508 // A holds val
-	D=D+A // D = addr + val
-	A=D-A // A=addr + val - val = addr
-	M=D-A // RAM[addr] = val
-	// row 19
-	D=A // D holds previous addr
-	@32
-	AD=D+A
-	@248 // A holds val
-	D=D+A // D = addr + val
-	A=D-A // A=addr + val - val = addr
-	M=D-A // RAM[addr] = val
-	// row 20
-	D=A // D holds previous addr
-	@32
-	AD=D+A
-	@96 // A holds val
-	D=D+A // D = addr + val
-	A=D-A // A=addr + val - val = addr
-	M=D-A // RAM[addr] = val
-	// row 21
-	D=A // D holds previous addr
-	@32
-	AD=D+A
-	@96 // A holds val
-	D=D+A // D = addr + val
-	A=D-A // A=addr + val - val = addr
-	M=D-A // RAM[addr] = val
-	// row 22
-	D=A // D holds previous addr
-	@32
-	AD=D+A
-	@96 // A holds val
-	D=D+A // D = addr + val
-	A=D-A // A=addr + val - val = addr
-	M=D-A // RAM[addr] = val
-	// row 23
-	D=A // D holds previous addr
-	@32
-	AD=D+A
-	@32 // A holds val
-	D=D+A // D = addr + val
-	A=D-A // A=addr + val - val = addr
-	M=D-A // RAM[addr] = val
-	// row 24
-	D=A // D holds previous addr
-	@32
-	AD=D+A
-	@48 // A holds val
-	D=D+A // D = addr + val
-	A=D-A // A=addr + val - val = addr
-	M=D-A // RAM[addr] = val
-	// row 25
-	D=A // D holds previous addr
-	@32
-	AD=D+A
-	@48 // A holds val
-	D=D+A // D = addr + val
-	A=D-A // A=addr + val - val = addr
-	M=D-A // RAM[addr] = val
-	// row 26
-	D=A // D holds previous addr
-	@32
-	AD=D+A
-	@16 // A holds val
-	D=D+A // D = addr + val
-	A=D-A // A=addr + val - val = addr
-	M=D-A // RAM[addr] = val
-	// row 27
-	D=A // D holds previous addr
-	@32
-	AD=D+A
-	@48 // A holds val
-	D=D+A // D = addr + val
-	A=D-A // A=addr + val - val = addr
-	M=D-A // RAM[addr] = val
-	// row 28
-	D=A // D holds previous addr
-	@32
-	AD=D+A
-	@96 // A holds val
-	D=D+A // D = addr + val
-	A=D-A // A=addr + val - val = addr
-	M=D-A // RAM[addr] = val
-	// return
-	@R13
-	A=M
-	D;JMP
+    // Cada bloque representa una fila del dibujo (palabra de 16 bits)
+    @260
+    D=D+A
+    A=D-A
+    M=D-A
 
-    @LOOP  //sale del loop
+    D=A
+    @32
+    AD=D+A
+    @396
+    D=D+A
+    A=D-A
+    M=D-A
+
+    D=A
+    @32
+    AD=D+A
+    @508
+    D=D+A
+    A=D-A
+    M=D-A
+
+    D=A
+    @32
+    AD=D+A
+    @1022
+    D=D+A
+    A=D-A
+    M=D-A
+
+    D=A
+    @32
+    AD=D+A
+    @1022
+    D=D+A
+    A=D-A
+    M=D-A
+
+    D=A
+    @32
+    AD=D+A
+    @508
+    D=D+A
+    A=D-A
+    M=D-A
+
+    D=A
+    @32
+    AD=D+A
+    @248
+    D=D+A
+    A=D-A
+    M=D-A
+
+    D=A
+    @32
+    AD=D+A
+    @508
+    D=D+A
+    A=D-A
+    M=D-A
+
+    D=A
+    @32
+    AD=D+A
+    @1022
+    D=D+A
+    A=D-A
+    M=D-A
+
+    D=A
+    @32
+    AD=D+A
+    @1022
+    D=D+A
+    A=D-A
+    M=D-A
+
+    D=A
+    @32
+    AD=D+A
+    @2047
+    D=D+A
+    A=D-A
+    M=D-A
+
+    D=A
+    @32
+    AD=D+A
+    @2047
+    D=D+A
+    A=D-A
+    M=D-A
+
+    D=A
+    @32
+    AD=D+A
+    @1022
+    D=D+A
+    A=D-A
+    M=D-A
+
+    D=A
+    @32
+    AD=D+A
+    @508
+    D=D+A
+    A=D-A
+    M=D-A
+
+    D=A
+    @32
+    AD=D+A
+    @248
+    D=D+A
+    A=D-A
+    M=D-A
+
+    D=A
+    @32
+    AD=D+A
+    @96
+    D=D+A
+    A=D-A
+    M=D-A
+
+    D=A
+    @32
+    AD=D+A
+    @96
+    D=D+A
+    A=D-A
+    M=D-A
+
+    D=A
+    @32
+    AD=D+A
+    @96
+    D=D+A
+    A=D-A
+    M=D-A
+
+    D=A
+    @32
+    AD=D+A
+    @32
+    D=D+A
+    A=D-A
+    M=D-A
+
+    D=A
+    @32
+    AD=D+A
+    @48
+    D=D+A
+    A=D-A
+    M=D-A
+
+    D=A
+    @32
+    AD=D+A
+    @48
+    D=D+A
+    A=D-A
+    M=D-A
+
+    D=A
+    @32
+    AD=D+A
+    @16
+    D=D+A
+    A=D-A
+    M=D-A
+
+    D=A
+    @32
+    AD=D+A
+    @48
+    D=D+A
+    A=D-A
+    M=D-A
+
+    D=A
+    @32
+    AD=D+A
+    @96
+    D=D+A
+    A=D-A
+    M=D-A
+
+    @R13
+    A=M
     0;JMP
 ```
+## Actividad 4:
+
+En esta actividad se modificó el código para que ahora se ejecuten dos funciones diferentes dependiendo de la tecla presionada: si se detecta la tecla 'd', el programa llama la subrutina DRAW que pinta la imagen en pantalla. Si se detecta la tecla 'e', se llama la subrutina CLEAR que borra el contenido del SCREEN. A diferencia de la versión anterior, ya no se borra automáticamente al soltar la tecla 'd', sino que el borrado solo se ejecuta cuando el usuario presiona explícitamente la tecla 'e'.
