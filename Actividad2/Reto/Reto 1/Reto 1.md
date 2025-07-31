@@ -123,3 +123,5 @@ Es el valor almacenado en esa dirección de memoria. Si i = 5, entonces en RAM[1
 ### Anotaciones:
 
 Al probar el código por primera vez se evidenció un error en la linea 18, esto debido a que los términos estaban invertidos, por lo que el programa no los reconocía, pero se solucionó escribiendolos en el orden correcto.
+
+Luego de volver a probarlo se notó que el programa no sumaba los primeros 100 números naturales, sino que sumaba hasta llegar al 127, por lo que fue necesario realizar algunos cambios en el código, guardando en la posición 20 la cantidad de veces que se ha contado algo para verificar que fueran 100 números, y la suma en la posición 22; finalmente se obtuvo el resultado esperado en ambos casos, siendo en la suma, por ejemplo, el número 5050.
