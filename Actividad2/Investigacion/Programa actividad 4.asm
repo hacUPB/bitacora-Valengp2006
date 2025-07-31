@@ -22,6 +22,7 @@
     0;JMP
 
 // SUBRUTINA PARA LIMPIAR LA PANTALLA
+
 (CLEAR)
     @R0
     M=0
@@ -34,8 +35,9 @@
     D;JGE
 
     @SCREEN
+    D=A
+    @R0
     A=D+M
-    A=A-R0
     M=0
 
     @R0
