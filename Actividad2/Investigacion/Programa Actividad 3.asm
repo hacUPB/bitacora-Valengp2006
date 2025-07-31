@@ -1,31 +1,28 @@
-// Programa que muestra un dibujo si se presiona la tecla 'd', y lo borra si no.
-
-// Loop principal
+// Bucle principal que evalúa el teclado
 (LOOP)
     @KBD
-    D=M        // Leer teclado
+    D=M            // Leer la tecla presionada
     @CHECKD
-    D;JGT      // Si se presiona algo, ir a verificar si es 'd'
+    D;JGT          // Si alguna tecla fue presionada, ir a verificar
 
-    // Si no se presiona ninguna tecla
     @CLEAR
-    0;JMP
+    0;JMP          // Si no hay tecla, limpiar pantalla
 
 (CHECKD)
     @KBD
-    D=M        // Leer tecla otra vez
+    D=M
     @100
-    D=D-A      // Comparar con ASCII de 'd'
+    D=D-A          // Comparar con ASCII de 'd'
     @DRAW
-    D;JEQ      // Si es igual, dibujar
+    D;JEQ          // Si es igual, dibujar
+    @CLEAR
+    0;JMP          // Si no es 'd', limpiar
 
-    @CLEAR     // Si no es 'd', limpiar
-    0;JMP
+//Subrutina Borrar
 
-// ---------- LIMPIAR PANTALLA ----------
 (CLEAR)
     @R0
-    M=0          // Contador
+    M=0
 (CLEAR_LOOP)
     @R0
     D=M
@@ -35,8 +32,10 @@
     D;JGE
 
     @SCREEN
-    A=A+R0
-    M=0
+    D=A
+    @R0
+    A=D+M         // Dirección: SCREEN + i
+    M=0           // Borrar pixel
 
     @R0
     M=M+1
@@ -247,4 +246,4 @@
 
     @R13
     A=M
-    0;JMP         
+    0;JMP
