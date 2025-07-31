@@ -1,51 +1,50 @@
 // Programa que muestra un dibujo si se presiona la tecla 'd', y lo borra si no.
 
-// BUCLE PRINCIPAL: Evaluar si hay una tecla presionada
-(MAIN_LOOP)
+// Loop principal
+(LOOP)
     @KBD
-    D=M            // Leer valor de tecla
-    @CHECK_KEY
-    0;JMP          // Ir a evaluar qué tecla es
+    D=M        // Leer teclado
+    @CHECKD
+    D;JGT      // Si se presiona algo, ir a verificar si es 'd'
 
-// VERIFICAR TECLA
-(CHECK_KEY)
-    D=M
+    // Si no se presiona ninguna tecla
+    @CLEAR
+    0;JMP
+
+(CHECKD)
+    @KBD
+    D=M        // Leer tecla otra vez
     @100
-    D=D-A
+    D=D-A      // Comparar con ASCII de 'd'
     @DRAW
-    D;JEQ          // Si tecla == 100 ('d'), ir a dibujar
+    D;JEQ      // Si es igual, dibujar
 
-    @KBD
-    D=M
-    @NO_KEY
-    D;JEQ          // Si tecla == 0, ir a borrar
+    @CLEAR     // Si no es 'd', limpiar
+    0;JMP
 
-    @MAIN_LOOP
-    0;JMP          // Si es otra tecla, seguir evaluando
-
-// SUBRUTINA: BORRAR PANTALLA
-(NO_KEY)
+// ---------- LIMPIAR PANTALLA ----------
+(CLEAR)
     @R0
-    M=0            // i = 0
+    M=0          // Contador
 (CLEAR_LOOP)
     @R0
     D=M
     @8192
     D=D-A
-    @END_CLEAR
-    D;JGE          // Si i >= 8192, terminar borrado
+    @AFTER_CLEAR
+    D;JGE
 
     @SCREEN
-    A=A+R0         // A = SCREEN + i
-    M=0            // Limpiar pixel
+    A=A+R0
+    M=0
 
     @R0
-    M=M+1          // i++
+    M=M+1
     @CLEAR_LOOP
     0;JMP
 
-(END_CLEAR)
-    @MAIN_LOOP
+(AFTER_CLEAR)
+    @LOOP
     0;JMP
 
 // SUBRUTINA PARA MOSTRAR EL DIBUJO DEL GATO
