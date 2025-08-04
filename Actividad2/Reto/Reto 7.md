@@ -10,6 +10,9 @@ b = *p;
 ```
 **Código en lenguaje ensamblador:**
 
+
+
+
 **Implementación:**
 
 **Validación:**
