@@ -50,3 +50,12 @@ M=D        // guardar resultado en c
     @RET       // SALTO FIJO
     0;JMP
 ```
+
+**Implementación:**
+
+En este reto se implementó en lenguaje ensamblador una simulación del comportamiento de una función en C++ que recibe dos parámetros (a y b), realiza una operación de suma y retorna el resultado. Para ello, se reservaron posiciones consecutivas en memoria para los parámetros, el resultado y la variable que lo almacena. Además, se replicó el llamado desde una función principal (main) y se almacenó el resultado de retorno en una nueva variable (c), imitando el flujo lógico de una función. 
+
+**Validación:**
+
+Luego de probar el programa en el simulador, se verificó que la suma de los valores 6 y 9 se almacenara correctamente en memoria. El resultado 15 apareció tanto en la variable local de la función (var) como en la variable c del main, lo que confirma que el retorno y la asignación se realizaron como se esperaba.
+
