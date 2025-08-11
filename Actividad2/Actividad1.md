@@ -4,11 +4,9 @@ Esta actividad será grupal y demostrativa. Te mostraré los pasos a seguir para
 
 ## Pasos para configurar el ambiente de trabajo
 
-1. Descarga Openframeworks en su última versión de la página web [**openframeworks](https://openframeworks.cc/),** recuerda tener en cuenta las recomendaciones para tu sistema operativo.  
+1. Descarga Openframeworks en su última versión de la página web **openframeworks** recuerda tener en cuenta las recomendaciones para tu sistema operativo.  
 2. Descomprime la carpeta en el directorio raíz de tu sistema. Por ejemplo `C:\` 
 3. Ejecuta la aplicación `projectGenerator.exe`, deberías ver algo similar a la siguiente imagen:
-
-![Figura 1. projectGenerator](attachment:df9f953b-fa6c-471c-a3f9-1aff8be427e5:image.png)
 
 Figura 1. projectGenerator
 
