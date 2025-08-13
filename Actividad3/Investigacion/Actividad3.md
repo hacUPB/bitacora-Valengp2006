@@ -81,7 +81,7 @@ void ofApp::mousePressed(int x, int y, int button) {
 
 **Explicación modificación:** A modo de experimento se hicieron las siguientes modificaciones: 
 
-- En la línea 6 del código se modifico en la función `particleColor` el color inicial de la partícula de blanco a rojo.
+- En la línea 6 del código se modificó en la función `particleColor` el color inicial de la partícula de blanco a rojo.
 - En la línea 18 del código se modificó el tamaño de la partícula de 50 pixeles a 20.
 - En la línea 25 del código se modificó la cantidad de partículas que se guardan de 100 a 50.
 
