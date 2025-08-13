@@ -128,3 +128,26 @@ void ofApp::mousePressed(int x, int y, int button){
 - ¿Cómo se inicializa el puntero?
 - ¿Para qué se está usando el puntero?
 - ¿Qué es exactamente lo que está almacenado en el puntero?
+
+**Respuestas:**
+
+- **¿Cuál es la definición de un puntero?**
+
+    
+
+- **¿Dónde está el puntero?**
+
+
+  
+- **¿Cómo se inicializa el puntero?:**
+
+
+
+- **¿Para qué se está usando el puntero?:**
+
+
+
+- **¿Qué es exactamente lo que está almacenado en el puntero?:**
+
+
+
