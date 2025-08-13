@@ -139,6 +139,7 @@ Un puntero es una variable especial que no guarda directamente un valor como un 
   
 En el código hay punteros en:
 
+- `selectedSphere` se inicializa en setup() así:
 	- `vector<Sphere*> spheres;` → un vector que guarda punteros a objetos Sphere.
 	- `Sphere* selectedSphere;` → un puntero que guarda la dirección de la esfera seleccionada.
 
