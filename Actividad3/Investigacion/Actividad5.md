@@ -139,19 +139,18 @@ Un puntero es una variable especial que no guarda directamente un valor como un 
   
 En el código hay punteros en:
 
-- 	`selectedSphere` se inicializa en setup() así:
-	- `vector<Sphere*> spheres;` → un vector que guarda punteros a objetos Sphere.
-	- `Sphere* selectedSphere;` → un puntero que guarda la dirección de la esfera seleccionada.
+- `vector<Sphere*> spheres;` → un vector que guarda punteros a objetos Sphere.
+- `Sphere* selectedSphere;` → un puntero que guarda la dirección de la esfera seleccionada.
 
 - **¿Cómo se inicializa el puntero?:**
 
-    - `selectedSphere` se inicializa en setup() así:
+- `selectedSphere` se inicializa en setup() así:
 ```cpp
 selectedSphere = nullptr;
 ```
 Esto significa que al inicio no está apuntando a ningún objeto.
 
-	- Los punteros dentro del vector `spheres` se crean con new al agregar cada esfera:
+- Los punteros dentro del vector `spheres` se crean con new al agregar cada esfera:
 ```cpp
 spheres.push_back(new Sphere(x, y, radius));
 ```
