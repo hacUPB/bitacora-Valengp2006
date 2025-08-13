@@ -31,7 +31,7 @@ void ofApp::draw() {
 //--------------------------------------------------------------
 void ofApp::mouseMoved(int x, int y) {
     particles.push_back(ofVec2f(x, y));
-    if (particles.size() > 100) {
+    if (particles.size() > 50) {
         particles.erase(particles.begin());
     }
 }
@@ -83,11 +83,12 @@ void ofApp::mousePressed(int x, int y, int button) {
 
 - En la línea 6 del código se modifico en la función `particleColor` el color inicial de la partícula de blanco a rojo.
 - En la línea 18 del código se modificó el tamaño de la partícula de 50 pixeles a 20.
+- En la línea 25 del código se modificó la cantidad de partículas que se guardan de 100 a 50.
 
 **¿Qué hace cada función?:**
 
 - `setup():` Pone el fondo negro y define el color inicial de la partícula (en este caso rojo).
 - `update():` No realiza ninguna acción.
 - `draw():` Dibuja las partículas usando el color y tamaño actual.
-- `mouseMoved():` Sigue el mouse y guarda la posición hasta llegar a 100.
+- `mouseMoved():` Sigue el mouse y guarda la posición hasta llegar a 50.
 - `mousePressed():` Si el mouse es presionado cambia el color del círculo.
