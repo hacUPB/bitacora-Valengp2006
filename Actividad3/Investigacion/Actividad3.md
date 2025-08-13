@@ -4,11 +4,13 @@ Analiza la aplicación anterior. ¿Qué hace cada función? ¿Qué hace cada lí
 
 Realiza un experimento con la aplicación anterior. Modifica alguna parte de su código.
 
+**Código original:**
+
 ```cpp
-#include "ofApp.h"
+#include "ofApp.h"                                                 
 
 //--------------------------------------------------------------
-void ofApp::setup() {
+void ofApp::setup() {                                               
     ofBackground(0);
     particleColor = ofColor::white;
 }
