@@ -88,6 +88,6 @@ void ofApp::mousePressed(int x, int y, int button) {
 
 - `setup():` Pone el fondo negro y define el color inicial de la partícula (en este caso rojo).
 - `update():` No realiza ninguna acción.
-- `draw():` Dibuja las oartículas usando el color y tamaño actual.
-- `mouseMoved():` sigue el mouse y guarda la posición hasta llegar a 100.
-- `mousePressed():` si el mouse es presionado cambia el color del círculo.
+- `draw():` Dibuja las partículas usando el color y tamaño actual.
+- `mouseMoved():` Sigue el mouse y guarda la posición hasta llegar a 100.
+- `mousePressed():` Si el mouse es presionado cambia el color del círculo.
