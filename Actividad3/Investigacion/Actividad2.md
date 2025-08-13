@@ -79,30 +79,30 @@ Analicemos juntos este código:
 
 **Respuestas:**
 
-- **¿Qué fue lo que incluimos en el archivo ´.h´?**
+- **¿Qué fue lo que incluimos en el archivo `.h`?**
 
-Se crea la clase ´ofApp´, que toma como base otra clase llamada ´ofBaseApp´. Dentro de ella están las funciones que controlan lo que hace el programa (como setup, update, draw, mouseMoved y mousePressed), y también dos elementos internos para guardar información: una lista de posiciones llamada ´particles´ y un color llamado ´particleColor´.
+Se crea la clase `ofApp`, que toma como base otra clase llamada `ofBaseApp`. Dentro de ella están las funciones que controlan lo que hace el programa (como setup, update, draw, mouseMoved y mousePressed), y también dos elementos internos para guardar información: una lista de posiciones llamada `particles` y un color llamado `particleColor`.
 
 - **¿Cómo funciona la aplicación?**
 
 Al mover el mouse, se dibujan círculos en las posiciones recorridas, y al hacer clic se cambia aleatoriamente el color de todos los círculos. Solo se guardan las últimas 100 posiciones para evitar sobrecargar la memoria.
 
-- **¿Qué hace la función ´mouseMoved´?**
+- **¿Qué hace la función `mouseMoved`?**
 
 Guarda la posición actual del mouse en el vector particles y, si hay más de 100 elementos, elimina el más antiguo.
 
-- **¿Qué hace la función ´mousePressed´?**
+- **¿Qué hace la función `mousePressed`?**
 
 Cambia particleColor a un color aleatorio usando valores entre 0 y 255 para rojo, verde y azul.
 
-- **¿Qué hace la función ´setup´?**
+- **¿Qué hace la función `setup`?**
 
 Establece el fondo en negro y el color inicial de las partículas en blanco.
 
-- **¿Qué hace la función update?**
+- **¿Qué hace la función `update`?**
 
 En este caso, no realiza ninguna acción, pero se usa normalmente para actualizar variables y lógica antes de dibujar.
 
-- **¿Qué hace la función ´draw?´**
+- **¿Qué hace la función `draw`?**
 
-Recorre todas las posiciones guardadas en ´particles´ y dibuja un círculo con un radio de 50 píxeles usando el color actual.
+Recorre todas las posiciones guardadas en `particles` y dibuja un círculo con un radio de 50 píxeles usando el color actual.
