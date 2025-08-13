@@ -131,18 +131,18 @@ void ofApp::mousePressed(int x, int y, int button){
 
 **Respuestas:**
 
-- **¿Cuál es la definición de un puntero?:**
+**¿Cuál es la definición de un puntero?:**
    
 Un puntero es una variable especial que no guarda directamente un valor como un número o un texto, sino que guarda la dirección en memoria de otro dato u objeto. Es como una etiqueta que apunta a dónde está guardada la información.
 
-- **¿Dónde está el puntero?:**
+**¿Dónde está el puntero?:**
   
 En el código hay punteros en:
 
 - `vector<Sphere*> spheres;` → un vector que guarda punteros a objetos Sphere.
 - `Sphere* selectedSphere;` → un puntero que guarda la dirección de la esfera seleccionada.
 
-- **¿Cómo se inicializa el puntero?:**
+**¿Cómo se inicializa el puntero?:**
 
 - `selectedSphere` se inicializa en setup() así:
 ```cpp
@@ -156,10 +156,10 @@ spheres.push_back(new Sphere(x, y, radius));
 ```
 Aquí `new Sphere(...)` crea una esfera en memoria y devuelve un puntero a ella.
 
-- **¿Para qué se está usando el puntero?:**
+**¿Para qué se está usando el puntero?:**
   
 Se usa para identificar y manipular una esfera específica mientras el usuario la mueve con el mouse. Además, cuando haces clic sobre una esfera, `selectedSphere` apunta a ella y en `update()` se mueve su posición al seguir el cursor.
 
-- **¿Qué es exactamente lo que está almacenado en el puntero?**
+**¿Qué es exactamente lo que está almacenado en el puntero?**
   
 No guarda directamente el objeto `Sphere`, sino la dirección en memoria donde está ese objeto, lo que permite acceder y modificar esa esfera sin tener que copiarla.
