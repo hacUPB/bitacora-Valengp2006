@@ -36,4 +36,6 @@ void ofApp::draw(){
 
 - ¿Cuál es el resultado que se obtiene al ejecutar este programa?
 
+#### Respuesta:
+
 El resultado que se obtiene al ejecutar este programa es una ventana en el que se dibuja un círculo blanco de 20 píxeles de radio, el cual sigue la posición del mouse en tiempo real.

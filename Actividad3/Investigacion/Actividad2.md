@@ -77,7 +77,7 @@ Analicemos juntos este código:
 - ¿Qué hace la función update?
 - ¿Qué hace la función draw?
 
-**Respuestas:**
+#### Respuestas:
 
 - **¿Qué fue lo que incluimos en el archivo `.h`?**
 

@@ -2,7 +2,7 @@
 
 El código anterior tiene un problema. ¿Puedes identificar cuál es? ¿Cómo lo solucionarías? Recuerda que deberías poder seleccionar una esfera y moverla con el mouse.
 
-**Respuesta:**
+#### Respuesta:
 
 El problema está en que el código solo permite seleccionar la esfera, pero nunca se “libera” la selección cuando sueltas el botón del mouse, lo que provoca que, una vez que `selectedSphere` apunta a una esfera, esta seguirá moviéndose con el cursor indefinidamente, aunque ya no estés presionando el mouse.
 
