@@ -243,7 +243,6 @@ void ofApp::mousePressed(int x, int y, int button) {
     esferaSeleccionada = seleccionado;
 }
 ```
-
 #### Manejo de memoria:
 
 La aplicación genera una figura tridimensional compuesta por una cuadrícula de esferas distribuidas en un espacio 3D.
@@ -276,5 +275,8 @@ La cámara `ofEasyCam` y las funciones de dibujo (`ofDrawSphere`) utilizan inter
 La aplicación muestra cómo los datos se distribuyen entre la pila (variables temporales), el heap (estructura principal de esferas) y la GPU (visualización gráfica), logrando una gestión de memoria eficiente para la interacción en tiempo real.
 
 
-### [Enlace video funcionamiento del programa](https://youtu.be/BZBzT2QU0p8)
+#### [Enlace video funcionamiento del programa](https://youtu.be/BZBzT2QU0p8)
+#### Imagen de referencia:
+
+<img width="759" height="726" alt="Captura de pantalla 2025-08-27 165455" src="https://github.com/user-attachments/assets/c34971e6-4c10-45f9-9221-afe2d96d05d2" />
 
