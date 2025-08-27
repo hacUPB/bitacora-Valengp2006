@@ -274,3 +274,7 @@ La cámara `ofEasyCam` y las funciones de dibujo (`ofDrawSphere`) utilizan inter
 - Para la selección de una esfera, se recorren todos los elementos del vector posiciones en el heap y se calcula la distancia con el punto del ratón en el mundo 3D.
 
 La aplicación muestra cómo los datos se distribuyen entre la pila (variables temporales), el heap (estructura principal de esferas) y la GPU (visualización gráfica), logrando una gestión de memoria eficiente para la interacción en tiempo real.
+
+
+### [Enlace video funcionamiento del programa](https://youtu.be/BZBzT2QU0p8)
+
