@@ -330,34 +330,39 @@ int ofApp::nearestSphereToScreen(int x, int y){
 ```
 #### Manejo de memoria:
 
-La aplicación genera una figura tridimensional compuesta por una cuadrícula de esferas distribuidas en un espacio 3D.
+La aplicación en openFrameworks genera una figura tridimensional compuesta por una malla de esferas de colores, con la cual se puede interactuar de dos formas:
 
-- La posición de cada esfera se calcula con funciones trigonométricas (sin y cos), lo que da como resultado una superficie ondulada que varía en el eje Z.
-- Cada esfera recibe un color en función de su altura (z), lo que permite visualizar el relieve de manera llamativa.
-- Se utiliza la cámara ofEasyCam para explorar la figura desde diferentes ángulos.
-- El usuario puede interactuar seleccionando esferas con el ratón y modificando parámetros como la amplitud de la onda y la separación entre esferas mediante el teclado.
+- **Global:** modificar parámetros de toda la figura (amplitud y separación).
+- **Individual:** seleccionar una esfera con el ratón y cambiar su tamaño o color.
 
-**1. Generación y almacenamiento de datos:**
+**Uso de memoria en el programa:**
 
-- Las posiciones de las esferas se almacenan en un vector dinámico de tipo `std::vector<ofVec3f>`.
-- Cada `ofVec3f` contiene las coordenadas (x, y, z) de una esfera en la cuadrícula tridimensional.
-- Al usar `std::vector`, la memoria para estas posiciones se gestiona en el *heap*, lo que permite almacenar un número variable de elementos y redimensionar el contenedor en tiempo de ejecución.
+**- Stack (pila de ejecución):**
 
-**2. Interacción y variables temporales:**
+En esta zona se guardan las variables temporales que existen solo mientras se ejecuta una función.
+Ejemplos:
+	•	x, y, dist, minDist, indexCercano en mousePressed.
+	•	Variables de iteración i en los bucles for.
 
-- Variables como `gridSize`, `spacing`, `amplitude` y `esferaSeleccionada` son de tipo primitivo (int, float) y se almacenan en la pila (stack) de memoria.
-- Durante la ejecución de bucles (en setup o cuando se actualizan posiciones con el teclado), se crean variables locales como xpos, ypos y z, que también residen temporalmente en la pila y se liberan al finalizar cada iteración.
+**- Heap (memoria dinámica):**
 
-**3. Objetos gráficos y cámara:**
+Aquí se almacenan los vectores dinámicos, que contienen toda la información de la figura:
 
-La cámara `ofEasyCam` y las funciones de dibujo (`ofDrawSphere`) utilizan internamente objetos que manejan buffers en GPU para renderizar la escena. Estos no se almacenan en el stack ni en el heap del programa directamente, sino en la memoria de la tarjeta gráfica, pero se controlan desde objetos en memoria dinámica de la aplicación.
+	•	std::vector<ofVec3f> posiciones; → posiciones 3D de cada esfera.
+	•	std::vector<ofColor> colores; → colores de cada esfera.
+	•	std::vector<float> tamanos; → tamaños de cada esfera.
 
-**4. Visualización y selección con el ratón:**
+Cada vez que se crean esferas en setup(), estos vectores reservan más espacio en el heap.
 
-- La función `screenToWorld` transforma coordenadas de pantalla en coordenadas del mundo 3D. El resultado se almacena en un `ofVec3f` temporal, ubicado en el stack.
-- Para la selección de una esfera, se recorren todos los elementos del vector posiciones en el heap y se calcula la distancia con el punto del ratón en el mundo 3D.
+En cuanto a la selección de una sola esfera, cuando se hace clic:
 
-La aplicación muestra cómo los datos se distribuyen entre la pila (variables temporales), el heap (estructura principal de esferas) y la GPU (visualización gráfica), logrando una gestión de memoria eficiente para la interacción en tiempo real.
+1.	La cámara (ofEasyCam) convierte la posición del ratón al mundo 3D.
+2.	Se calcula la distancia de ese punto a todas las esferas guardadas en posiciones.
+3.	Se guarda el índice de la esfera más cercana en la variable int esferaSeleccionada.
+
+Al presionar teclas, se accede al índice [esferaSeleccionada] en los vectores para modificar solo esa esfera, sin afectar al resto de la malla.
+
+En resumen, la aplicación utiliza heap para almacenar la figura completa y el stack para manejar los cálculos temporales de la interacción.
 
 
 #### [Enlace video funcionamiento del programa](https://youtu.be/BZBzT2QU0p8)
