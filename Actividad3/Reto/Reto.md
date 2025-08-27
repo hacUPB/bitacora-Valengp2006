@@ -127,31 +127,26 @@ Además de implementar la aplicación, debes analizar cómo y dónde se almacena
 #pragma once
 #include "ofMain.h"
 
-class ofApp : public ofBaseApp {
+class ofApp : public ofBaseApp{
 public:
     void setup();
     void update();
     void draw();
-
+    
     void keyPressed(int key);
     void mousePressed(int x, int y, int button);
 
-    // Conversión del mouse a rayo 3D
-    void convertMouseToRay(int mouseX, int mouseY, glm::vec3& rayStart, glm::vec3& rayEnd);
-    bool rayIntersectsSphere(const glm::vec3& rayStart, const glm::vec3& rayDir, 
-                             const glm::vec3& sphereCenter, float sphereRadius, glm::vec3& intersectionPoint);
+    // Variables principales
+    vector<ofVec3f> posiciones;  // posiciones de las esferas
+    int gridSize;                // tamaño de la cuadrícula
+    float spacing;               // separación entre esferas
+    float amplitude;             // altura de la función en Z
+    float sigma;                 // control del "pico" gaussiano
 
-private:
-    ofEasyCam cam;
-    std::vector<glm::vec3> spherePositions;
+    ofEasyCam cam;               // cámara 3D
 
-    int xStep = 80;    // separación en X
-    int yStep = 80;    // separación en Y
-    float distDiv = 100.0f; // divisor de distancia
-    float amplitud = 100.0f; // amplitud en Z
-
-    bool sphereSelected = false;
-    glm::vec3 selectedSphere;
+    // Interacción
+    int esferaSeleccionada;      // índice de la esfera seleccionada
 };
 ```
 
@@ -162,107 +157,109 @@ private:
 void ofApp::setup(){
     ofBackground(0);
     ofEnableDepthTest();
+    ofSetFrameRate(60);
 
-    // Generar esferas iniciales
-    for (int x = -ofGetWidth()/2; x < ofGetWidth()/2; x += xStep) {
-        for (int y = -ofGetHeight()/2; y < ofGetHeight()/2; y += yStep) {
-            float z = cos(ofDist(x, y, 0, 0) / distDiv) * amplitud;
-            spherePositions.push_back(glm::vec3(x, y, z));
+    gridSize = 30;     // cuadrícula 30x30
+    spacing = 30;      // distancia entre esferas
+    amplitude = 200;   // altura máxima
+    sigma = 200.0;     // parámetro gaussiano
+
+    esferaSeleccionada = -1; // ninguna seleccionada
+
+    // Generar posiciones de la cuadrícula
+    for(int x = 0; x < gridSize; x++){
+        for(int y = 0; y < gridSize; y++){
+            float xpos = (x - gridSize/2) * spacing;
+            float ypos = (y - gridSize/2) * spacing;
+
+            float dist = ofDist(x, y, gridSize/2, gridSize/2);
+            float z = amplitude * exp(-(dist*dist)/(2*sigma*sigma));
+
+            posiciones.push_back(ofVec3f(xpos, ypos, z));
         }
     }
 }
 
 void ofApp::update(){
-    // Puedes actualizar dinámicamente si cambian parámetros
+    // aquí podrías actualizar posiciones si quisieras animar
 }
 
 void ofApp::draw(){
     cam.begin();
-    ofSetColor(200);
 
-    // Dibujar todas las esferas
-    for(auto& pos : spherePositions){
-        if(sphereSelected && pos == selectedSphere){
-            ofSetColor(255, 0, 0); // esfera seleccionada en rojo
+    for(int i = 0; i < posiciones.size(); i++){
+        // color según altura Z
+        float hue = ofMap(posiciones[i].z, 0, amplitude, 0, 255);
+        ofColor c = ofColor::fromHsb(hue, 255, 255);
+
+        // si está seleccionada, resaltarla en blanco
+        if(i == esferaSeleccionada){
+            ofSetColor(255);
         } else {
-            ofSetColor(0, 0, 255); // esferas normales en azul
+            ofSetColor(c);
         }
-        ofDrawSphere(pos, 10);
+
+        ofDrawSphere(posiciones[i], 8);
     }
+
     cam.end();
 
-    // Dibujar info en pantalla
-    if(sphereSelected){
+    // mostrar coordenadas de la esfera seleccionada
+    if(esferaSeleccionada != -1){
         ofSetColor(255);
-        ofDrawBitmapString("Esfera seleccionada en: " + 
-                           ofToString(selectedSphere.x) + ", " + 
-                           ofToString(selectedSphere.y) + ", " + 
-                           ofToString(selectedSphere.z), 20, 20);
+        ofDrawBitmapStringHighlight("Seleccionada: " +
+            ofToString(posiciones[esferaSeleccionada]), 20, 20);
     }
 }
 
+// --- Interacción con teclado ---
 void ofApp::keyPressed(int key){
-    if(key == '+'){
-        xStep += 10;
-        yStep += 10;
-    } else if(key == '-'){
-        xStep = max(20, xStep - 10);
-        yStep = max(20, yStep - 10);
-    } else if(key == 'a'){
-        amplitud += 10;
-    } else if(key == 'z'){
-        amplitud = max(10.0f, amplitud - 10.0f);
+    if(key == OF_KEY_UP){       // aumentar separación
+        spacing += 2;
     }
-}
+    if(key == OF_KEY_DOWN){     // reducir separación
+        spacing = max(2.0f, spacing - 2);
+    }
+    if(key == 'w'){             // aumentar amplitud Z
+        amplitude += 10;
+    }
+    if(key == 's'){             // disminuir amplitud Z
+        amplitude = max(10.0f, amplitude - 10);
+    }
 
-void ofApp::mousePressed(int x, int y, int button){
-    glm::vec3 rayStart, rayEnd;
-    convertMouseToRay(x, y, rayStart, rayEnd);
+    // regenerar posiciones con nuevos parámetros
+    posiciones.clear();
+    for(int x = 0; x < gridSize; x++){
+        for(int y = 0; y < gridSize; y++){
+            float xpos = (x - gridSize/2) * spacing;
+            float ypos = (y - gridSize/2) * spacing;
 
-    sphereSelected = false;
-    for(auto& pos : spherePositions){
-        glm::vec3 intersectionPoint;
-        if(rayIntersectsSphere(rayStart, rayEnd - rayStart, pos, 10.0f, intersectionPoint)){
-            sphereSelected = true;
-            selectedSphere = pos;
-            break;
+            float dist = ofDist(x, y, gridSize/2, gridSize/2);
+            float z = amplitude * exp(-(dist*dist)/(2*sigma*sigma));
+
+            posiciones.push_back(ofVec3f(xpos, ypos, z));
         }
     }
 }
 
-void ofApp::convertMouseToRay(int mouseX, int mouseY, glm::vec3& rayStart, glm::vec3& rayEnd){
-    glm::mat4 modelview = cam.getModelViewMatrix();
-    glm::mat4 projection = cam.getProjectionMatrix();
-    ofRectangle viewport = ofGetCurrentViewport();
+// --- Interacción con ratón ---
+void ofApp::mousePressed(int x, int y, int button){
+    // convertir coordenadas de la pantalla al mundo 3D
+    ofVec3f mouseWorld = cam.screenToWorld(ofVec3f(x,y,0));
 
-    float x = 2.0f * (mouseX - viewport.x) / viewport.width - 1.0f;
-    float y = 1.0f - 2.0f * (mouseY - viewport.y) / viewport.height;
+    float minDist = 999999;
+    int seleccionado = -1;
 
-    glm::vec4 rayStartNDC(x, y, -1.0f, 1.0f);
-    glm::vec4 rayEndNDC(x, y, 1.0f, 1.0f);
+    // buscar la esfera más cercana al clic
+    for(int i = 0; i < posiciones.size(); i++){
+        float d = posiciones[i].distance(mouseWorld);
+        if(d < minDist && d < 20){ // tolerancia de 20px
+            minDist = d;
+            seleccionado = i;
+        }
+    }
 
-    glm::vec4 rayStartWorld = glm::inverse(projection * modelview) * rayStartNDC;
-    glm::vec4 rayEndWorld = glm::inverse(projection * modelview) * rayEndNDC;
-
-    rayStartWorld /= rayStartWorld.w;
-    rayEndWorld /= rayEndWorld.w;
-
-    rayStart = glm::vec3(rayStartWorld);
-    rayEnd = glm::vec3(rayEndWorld);
-}
-
-bool ofApp::rayIntersectsSphere(const glm::vec3& rayStart, const glm::vec3& rayDir, 
-                                const glm::vec3& sphereCenter, float sphereRadius, glm::vec3& intersectionPoint){
-    glm::vec3 oc = rayStart - sphereCenter;
-    float a = glm::dot(rayDir, rayDir);
-    float b = 2.0f * glm::dot(oc, rayDir);
-    float c = glm::dot(oc, oc) - sphereRadius * sphereRadius;
-    float discriminant = b*b - 4*a*c;
-
-    if(discriminant < 0) return false;
-    float t = (-b - sqrt(discriminant)) / (2.0f * a);
-    intersectionPoint = rayStart + t * rayDir;
-    return true;
+    esferaSeleccionada = seleccionado;
 }
 ```
 
