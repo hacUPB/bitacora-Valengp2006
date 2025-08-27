@@ -341,8 +341,8 @@ La aplicación en openFrameworks genera una figura tridimensional compuesta por 
 
 En esta zona se guardan las variables temporales que existen solo mientras se ejecuta una función.
 Ejemplos:
-	•	x, y, dist, minDist, indexCercano en mousePressed.
-	•	Variables de iteración i en los bucles for.
+	- x, y, dist, minDist, indexCercano en mousePressed.
+ 	- Variables de iteración i en los bucles for.
 
 **- Heap (memoria dinámica):**
 
