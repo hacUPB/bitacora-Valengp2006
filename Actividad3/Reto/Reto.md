@@ -365,7 +365,7 @@ Al presionar teclas, se accede al índice [esferaSeleccionada] en los vectores p
 En resumen, la aplicación utiliza heap para almacenar la figura completa y el stack para manejar los cálculos temporales de la interacción.
 
 
-#### [Enlace video funcionamiento del programa](https://youtu.be/BZBzT2QU0p8)
+#### [Enlace video funcionamiento del programa](https://youtu.be/ViyJl0QOAxQ)
 #### Imagen de referencia:
 
 <img width="759" height="726" alt="Captura de pantalla 2025-08-27 165455" src="https://github.com/user-attachments/assets/c34971e6-4c10-45f9-9221-afe2d96d05d2" />
