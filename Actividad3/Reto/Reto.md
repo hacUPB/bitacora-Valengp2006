@@ -118,7 +118,7 @@ Además de implementar la aplicación, debes analizar cómo y dónde se almacena
 2. Un breve informe donde expliques el manejo de memoria en tu aplicación, identificando en qué parte de la memoria se encuentran los datos clave.
 3. Un enlace a un video corto que muestre funcionando la aplicación.
 
-#### Respuestas:
+### Respuestas:
 
 **Código fuente de la aplicación:**
 
@@ -244,22 +244,33 @@ void ofApp::mousePressed(int x, int y, int button) {
 }
 ```
 
-**Manejo de memoria:**
+#### Manejo de memoria:
 
-**- Vectores (spherePositions):**
+La aplicación genera una figura tridimensional compuesta por una cuadrícula de esferas distribuidas en un espacio 3D.
 
-std::vector<glm::vec3> se almacena en el heap.
-El vector mantiene un arreglo dinámico de objetos glm::vec3 (cada uno con sus coordenadas x, y, z).
-El puntero al bloque de memoria del vector se guarda en el stack (porque es una variable miembro de la clase ofApp, y la instancia de ofApp está en el stack del programa principal).
+- La posición de cada esfera se calcula con funciones trigonométricas (sin y cos), lo que da como resultado una superficie ondulada que varía en el eje Z.
+- Cada esfera recibe un color en función de su altura (z), lo que permite visualizar el relieve de manera llamativa.
+- Se utiliza la cámara ofEasyCam para explorar la figura desde diferentes ángulos.
+- El usuario puede interactuar seleccionando esferas con el ratón y modificando parámetros como la amplitud de la onda y la separación entre esferas mediante el teclado.
 
-**- Objetos temporales (glm::vec3 intersectionPoint):**
+**1. Generación y almacenamiento de datos:**
 
-Se crean en el stack, dentro de cada llamada de función. Al salir del scope (fin de la función), se destruyen.
+- Las posiciones de las esferas se almacenan en un vector dinámico de tipo `std::vector<ofVec3f>`.
+- Cada `ofVec3f` contiene las coordenadas (x, y, z) de una esfera en la cuadrícula tridimensional.
+- Al usar `std::vector`, la memoria para estas posiciones se gestiona en el *heap*, lo que permite almacenar un número variable de elementos y redimensionar el contenedor en tiempo de ejecución.
 
-**- Variables globales/miembros de ofApp (xStep, yStep, amplitud, distDiv):**
+**2. Interacción y variables temporales:**
 
-Se guardan dentro de la instancia de ofApp. Esa instancia se crea en el stack principal (cuando corre la aplicación).
+- Variables como `gridSize`, `spacing`, `amplitude` y `esferaSeleccionada` son de tipo primitivo (int, float) y se almacenan en la pila (stack) de memoria.
+- Durante la ejecución de bucles (en setup o cuando se actualizan posiciones con el teclado), se crean variables locales como xpos, ypos y z, que también residen temporalmente en la pila y se liberan al finalizar cada iteración.
 
-**- ofEasyCam (cam):**
+**3. Objetos gráficos y cámara:**
 
-También se almacena dentro de la instancia de ofApp, es decir, en la parte de memoria que le corresponde a la clase (en el stack). Sin embargo, internamente la cámara maneja buffers en el heap (por ejemplo, matrices dinámicas).
+La cámara `ofEasyCam` y las funciones de dibujo (`ofDrawSphere`) utilizan internamente objetos que manejan buffers en GPU para renderizar la escena. Estos no se almacenan en el stack ni en el heap del programa directamente, sino en la memoria de la tarjeta gráfica, pero se controlan desde objetos en memoria dinámica de la aplicación.
+
+**4. Visualización y selección con el ratón:**
+
+- La función `screenToWorld` transforma coordenadas de pantalla en coordenadas del mundo 3D. El resultado se almacena en un `ofVec3f` temporal, ubicado en el stack.
+- Para la selección de una esfera, se recorren todos los elementos del vector posiciones en el heap y se calcula la distancia con el punto del ratón en el mundo 3D.
+
+La aplicación muestra cómo los datos se distribuyen entre la pila (variables temporales), el heap (estructura principal de esferas) y la GPU (visualización gráfica), logrando una gestión de memoria eficiente para la interacción en tiempo real.
