@@ -127,26 +127,23 @@ Además de implementar la aplicación, debes analizar cómo y dónde se almacena
 #pragma once
 #include "ofMain.h"
 
-class ofApp : public ofBaseApp{
+class ofApp : public ofBaseApp {
 public:
     void setup();
     void update();
     void draw();
-    
+
     void keyPressed(int key);
     void mousePressed(int x, int y, int button);
 
-    // Variables principales
-    vector<ofVec3f> posiciones;  // posiciones de las esferas
+    vector<ofVec3f> posiciones;  // posiciones de esferas
     int gridSize;                // tamaño de la cuadrícula
     float spacing;               // separación entre esferas
-    float amplitude;             // altura de la función en Z
-    float sigma;                 // control del "pico" gaussiano
+    float amplitude;             // altura máxima en Z
+    float sigma;                 // control de "montaña"
 
     ofEasyCam cam;               // cámara 3D
-
-    // Interacción
-    int esferaSeleccionada;      // índice de la esfera seleccionada
+    int esferaSeleccionada;      // índice de esfera seleccionada
 };
 ```
 
@@ -154,106 +151,90 @@ public:
 ```cpp
 #include "ofApp.h"
 
-void ofApp::setup(){
+void ofApp::setup() {
     ofBackground(0);
     ofEnableDepthTest();
     ofSetFrameRate(60);
 
-    gridSize = 30;     // cuadrícula 30x30
-    spacing = 30;      // distancia entre esferas
-    amplitude = 200;   // altura máxima
-    sigma = 200.0;     // parámetro gaussiano
+    gridSize = 50;     // más denso
+    spacing = 15;      // separación pequeña
+    amplitude = 80;    // altura máxima
+    esferaSeleccionada = -1;
 
-    esferaSeleccionada = -1; // ninguna seleccionada
+    // posiciones iniciales (superficie 3D tipo onda)
+    posiciones.clear();
+    for (int x = 0; x < gridSize; x++) {
+        for (int y = 0; y < gridSize; y++) {
+            float xpos = (x - gridSize / 2) * spacing;
+            float ypos = (y - gridSize / 2) * spacing;
 
-    // Generar posiciones de la cuadrícula
-    for(int x = 0; x < gridSize; x++){
-        for(int y = 0; y < gridSize; y++){
-            float xpos = (x - gridSize/2) * spacing;
-            float ypos = (y - gridSize/2) * spacing;
-
-            float dist = ofDist(x, y, gridSize/2, gridSize/2);
-            float z = amplitude * exp(-(dist*dist)/(2*sigma*sigma));
+            // Fórmula para superficie ondulada en Z
+            float z = amplitude * sin(x * 0.3) * cos(y * 0.3);
 
             posiciones.push_back(ofVec3f(xpos, ypos, z));
         }
     }
 }
 
-void ofApp::update(){
-    // aquí podrías actualizar posiciones si quisieras animar
-}
+void ofApp::update() {}
 
-void ofApp::draw(){
+void ofApp::draw() {
     cam.begin();
 
-    for(int i = 0; i < posiciones.size(); i++){
-        // color según altura Z
-        float hue = ofMap(posiciones[i].z, 0, amplitude, 0, 255);
+    for (int i = 0; i < posiciones.size(); i++) {
+        float hue = ofMap(posiciones[i].z, -amplitude, amplitude, 0, 255);
         ofColor c = ofColor::fromHsb(hue, 255, 255);
 
-        // si está seleccionada, resaltarla en blanco
-        if(i == esferaSeleccionada){
-            ofSetColor(255);
-        } else {
+        if (i == esferaSeleccionada) {
+            ofSetColor(255); // resaltada en blanco
+        }
+        else {
             ofSetColor(c);
         }
 
-        ofDrawSphere(posiciones[i], 8);
+        ofDrawSphere(posiciones[i], 5);
     }
 
     cam.end();
 
-    // mostrar coordenadas de la esfera seleccionada
-    if(esferaSeleccionada != -1){
+    if (esferaSeleccionada != -1) {
         ofSetColor(255);
         ofDrawBitmapStringHighlight("Seleccionada: " +
             ofToString(posiciones[esferaSeleccionada]), 20, 20);
     }
 }
 
-// --- Interacción con teclado ---
-void ofApp::keyPressed(int key){
-    if(key == OF_KEY_UP){       // aumentar separación
-        spacing += 2;
-    }
-    if(key == OF_KEY_DOWN){     // reducir separación
-        spacing = max(2.0f, spacing - 2);
-    }
-    if(key == 'w'){             // aumentar amplitud Z
-        amplitude += 10;
-    }
-    if(key == 's'){             // disminuir amplitud Z
-        amplitude = max(10.0f, amplitude - 10);
-    }
+// --- Teclado ---
+void ofApp::keyPressed(int key) {
+    if (key == OF_KEY_UP) spacing += 2;
+    if (key == OF_KEY_DOWN) spacing = max(2.0f, spacing - 2);
+    if (key == 'w') amplitude += 5;
+    if (key == 's') amplitude = max(5.0f, amplitude - 5);
 
-    // regenerar posiciones con nuevos parámetros
+    // regenerar posiciones con nueva superficie
     posiciones.clear();
-    for(int x = 0; x < gridSize; x++){
-        for(int y = 0; y < gridSize; y++){
-            float xpos = (x - gridSize/2) * spacing;
-            float ypos = (y - gridSize/2) * spacing;
+    for (int x = 0; x < gridSize; x++) {
+        for (int y = 0; y < gridSize; y++) {
+            float xpos = (x - gridSize / 2) * spacing;
+            float ypos = (y - gridSize / 2) * spacing;
 
-            float dist = ofDist(x, y, gridSize/2, gridSize/2);
-            float z = amplitude * exp(-(dist*dist)/(2*sigma*sigma));
+            float z = amplitude * sin(x * 0.3) * cos(y * 0.3);
 
             posiciones.push_back(ofVec3f(xpos, ypos, z));
         }
     }
 }
 
-// --- Interacción con ratón ---
-void ofApp::mousePressed(int x, int y, int button){
-    // convertir coordenadas de la pantalla al mundo 3D
-    ofVec3f mouseWorld = cam.screenToWorld(ofVec3f(x,y,0));
+// --- Ratón ---
+void ofApp::mousePressed(int x, int y, int button) {
+    ofVec3f mouseWorld = cam.screenToWorld(ofVec3f(x, y, 0));
 
-    float minDist = 999999;
+    float minDist = 99999;
     int seleccionado = -1;
 
-    // buscar la esfera más cercana al clic
-    for(int i = 0; i < posiciones.size(); i++){
+    for (int i = 0; i < posiciones.size(); i++) {
         float d = posiciones[i].distance(mouseWorld);
-        if(d < minDist && d < 20){ // tolerancia de 20px
+        if (d < minDist && d < 15) { // tolerancia
             minDist = d;
             seleccionado = i;
         }
