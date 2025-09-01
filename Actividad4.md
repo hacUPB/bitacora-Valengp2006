@@ -17,4 +17,69 @@
 
 ### Respuestas:
 
-1. 
+**3. ¿Qué es una lista enlazada y en qué se diferencia de un arreglo en cuanto a la forma en que los elementos están almacenados en la memoria?**
+
+- **Lista enlazada:** es una colección de **nodos dinámicos**, donde cada nodo contiene datos y un puntero al siguiente nodo.
+- **Arreglo:** los elementos están almacenados de forma **contigua** en memoria.
+- **Diferencias clave:**
+  - **Listas enlazadas:** memoria distribuida, no contigua; flexible para agregar o eliminar elementos.
+  - **Arreglos:** memoria contigua; acceso rápido por índice, pero insertar o eliminar elementos intermedios es costoso porque se deben mover otros elementos.
+
+**4. Al observar el código de una lista enlazada en C++, ¿cómo se vinculan los nodos entre sí? ¿Qué estructura se utiliza para lograr esta conexión?**
+
+- Cada nodo tiene un **puntero `next`** que apunta al siguiente nodo.
+- La estructura que permite la conexión es **el puntero dentro del nodo**.
+- Así, aunque la memoria no sea contigua, los nodos pueden recorrerse secuencialmente usando `next`.
+
+**5. ¿Cómo se gestiona la memoria en una lista enlazada? Cómo se crea y destruye un nodo en memoria usando `new` y `delete`.**
+
+- **Creación de un nodo:**
+
+```cpp
+Node* newNode = new Node(x, y);
+```
+`new` reserva memoria en el **heap** y llama al constructor de `Node`.
+
+- **Destrucción de un nodo:**
+
+```cpp
+delete node;
+```
+- Libera la memoria en el heap y llama al destructor del nodo.
+- La gestión explícita de memoria en C++ requiere **liberar cada nodo** cuando ya no se necesita (por ejemplo en `clear()` o en el destructor de la lista).
+
+**6. Ventajas de la lista enlazada sobre un arreglo para insertar/eliminar elementos en posiciones intermedias**
+
+- Inserción o eliminación no requiere **mover todos los demás elementos**, solo actualizar los punteros `next`.
+- En arreglos, mover elementos para mantener la continuidad consume tiempo proporcional al tamaño del arreglo.
+
+**7. Cómo se asegura que no haya fugas de memoria en tu código y el papel del destructor en `LinkedList`**
+
+- Se usa `delete` para **liberar todos los nodos**.
+-  `clear()` recorre todos los nodos y los elimina.
+-   El **destructor `~LinkedList()`** llama a `clear()`, asegurando que la memoria se libere automáticamente cuando el objeto `LinkedList` deja de existir.
+
+**8. Qué sucede en memoria cuando se invoca `clear()`**
+
+1. Se toma el primer nodo (`head`).
+2. Se guarda temporalmente `current->next`.
+3. Se hace `delete current`, liberando la memoria del nodo.
+4. Se pasa al siguiente nodo y se repite.
+5. Al final, `head` y `tail` se ponen en `nullptr`, `size = 0`.
+
+Todos los nodos quedan liberados y no quedan referencias a memoria ocupada.
+
+**9. Cómo cambia la estructura en memoria al agregar un nuevo nodo al final**
+
+- Se crea un nuevo nodo en **memoria dinámica (heap)**.
+-  `tail->next` apunta al nuevo nodo.
+-   `tail` se actualiza para apuntar al nuevo nodo.
+-    **Rendimiento:** añadir al final es eficiente (`O(1)`) si se mantiene `tail`, porque no hay que recorrer la lista.
+
+**10. Situación donde usar una lista enlazada es más ventajoso que un arreglo**
+
+- Ejemplo: un **sistema de partículas** donde se agregan y eliminan elementos continuamente.
+- Razón: insertar/eliminar partículas no requiere mover todos los elementos como en un arreglo.
+- Memoria flexible: cada nodo se crea dinámicamente según necesidad.
+
+
