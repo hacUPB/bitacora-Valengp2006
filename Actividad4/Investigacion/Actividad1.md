@@ -82,4 +82,40 @@ Todos los nodos quedan liberados y no quedan referencias a memoria ocupada.
 - Razón: insertar/eliminar partículas no requiere mover todos los elementos como en un arreglo.
 - Memoria flexible: cada nodo se crea dinámicamente según necesidad.
 
+**11. Aplicación en una estructura de datos personalizada para una aplicación creativa**
 
+- **Cantidad de elementos:** usar lista enlazada si se agregan y eliminan muchos elementos dinámicamente
+- **Gestión de memoria:** asegurar delete y destructores adecuados.
+- **Acceso a elementos:** si necesitas acceso rápido por índice, tal vez un arreglo sea mejor.
+- **Eficiencia:** mantener punteros head y tail para operaciones rápidas al inicio/final.
+
+**12. Diferencias de gestión de memoria C++ vs lenguajes con GC (ej. C#)**
+
+- C++: gestión manual con new y delete.
+	- Ventaja: control total sobre memoria y rendimiento.
+	- Desafío: riesgo de fugas de memoria o dangling pointers.
+
+- C#: recolección automática (GC).
+	- Ventaja: no preocuparse por liberar memoria manualmente.
+	- Desafío: menos control sobre cuándo se libera la memoria y posibles pausas por GC.
+
+**13. Optimización en arte generativo con listas enlazadas**
+
+-	Liberar nodos que ya no se usan (por ejemplo partículas fuera de la pantalla).
+-	Evitar crear demasiados nodos por frame.
+-	Mantener head y tail correctamente para eficiencia.
+-	Revisar que cada delete se haga solo cuando el nodo deja de ser necesario.
+
+**14. Pruebas del programa**
+
+**Pruebas unitarias:**
+
+- Crear lista con 0, 1, 10 nodos y verificar size.
+- Llamar a addNode() y verificar que tail apunta al último nodo.
+- Llamar a clear() y verificar que head y tail sean nullptr.
+
+**Pruebas funcionales:**
+
+- Mover el mouse y observar que la serpiente sigue correctamente.
+- Presionar 'c' y verificar que desaparece y se puede reiniciar.
+- Probar límites de pantalla y crecimiento excesivo de la lista.
