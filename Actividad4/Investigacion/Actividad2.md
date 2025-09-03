@@ -107,3 +107,29 @@ En conclusión, al ampliar el stack para manejar objetos más complejos, la impl
 - Incluir destructores adecuados en las nuevas clases.
 - Usar punteros inteligentes siempre que sea posible.
 - Mantener el control del ciclo de vida de los objetos, garantizando que no queden recursos sin liberar.
+
+#### Queue
+
+**Preguntas de reflexión:**
+
+**1. ¿Cómo se maneja la memoria en una implementación manual de una queue en C++? Reflexiona sobre cómo se gestionan los nodos al encolar y desencolar elementos y las implicaciones en términos de eficiencia y seguridad.**
+
+
+
+**2. ¿Qué desafíos específicos presenta la implementación de una queue en comparación con un stack en términos de gestión de memoria? Considera las diferencias en el manejo de punteros front y rear, y cómo estos afectan el proceso de encolado y desencolado.**
+
+
+
+**3. ¿Cómo afecta la estructura FIFO (First In, First Out) de una queue a su uso en diferentes tipos de problemas? Analiza cómo la estructura FIFO influye en la resolución de problemas donde el orden de procesamiento es crucial, como en sistemas de colas de espera.**
+
+
+
+**4. ¿Cómo podrías implementar una queue circular y cuál sería su ventaja respecto a una queue lineal en términos de uso de memoria? Reflexiona sobre cómo una queue circular puede mejorar la eficiencia en ciertos contextos y qué cambios serían necesarios en la implementación.**
+
+
+
+**5. ¿Qué problemas podrían surgir si no se gestionan correctamente los punteros front y rear en una queue, y cómo podrías evitarlos? Considera posibles errores como la pérdida de referencias a nodos y cómo una gestión cuidadosa de los punteros puede prevenir estos problemas.**
+
+
+
+
