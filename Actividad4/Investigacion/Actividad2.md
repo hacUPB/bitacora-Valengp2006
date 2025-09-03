@@ -44,7 +44,7 @@ Vas a reportar en tu bitácora de aprendizaje:
 
 ### Respuestas:
 
-**Stack:**
+#### Stack:
 
 **Preguntas de reflexión**
 
