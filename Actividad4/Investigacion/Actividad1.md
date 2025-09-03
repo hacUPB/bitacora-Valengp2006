@@ -91,13 +91,13 @@ Todos los nodos quedan liberados y no quedan referencias a memoria ocupada.
 
 **12. Diferencias de gestión de memoria C++ vs lenguajes con GC (ej. C#)**
 
-- C++: gestión manual con new y delete.
-	- Ventaja: control total sobre memoria y rendimiento.
-	- Desafío: riesgo de fugas de memoria o dangling pointers.
+- **C++:** gestión manual con new y delete.
+	- **Ventaja:** control total sobre memoria y rendimiento.
+	- **Desafío:** riesgo de fugas de memoria o dangling pointers.
 
-- C#: recolección automática (GC).
-	- Ventaja: no preocuparse por liberar memoria manualmente.
-	- Desafío: menos control sobre cuándo se libera la memoria y posibles pausas por GC.
+- **C#:** recolección automática (GC).
+	- **Ventaja:** no preocuparse por liberar memoria manualmente.
+	- **Desafío:** menos control sobre cuándo se libera la memoria y posibles pausas por GC.
 
 **13. Optimización en arte generativo con listas enlazadas**
 
