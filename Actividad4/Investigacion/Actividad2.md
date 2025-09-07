@@ -130,7 +130,7 @@ Sí. El stack sigue la regla LIFO (Last In, First Out), lo que significa que el 
 
 Sí. Para objetos más complejos (por ejemplo, círculos con color, tamaño y velocidad), lo más seguro es utilizar punteros inteligentes como std::unique_ptr o std::shared_ptr, ya que estos liberan automáticamente la memoria cuando los objetos dejan de usarse. Esto evita fugas de memoria y errores de puntero comunes en la gestión manual. De esta manera, puedo extender la implementación del stack manteniendo seguridad y eficiencia en la gestión de recursos.
 
-#### Queue
+#### Queue:
 
 **Preguntas de reflexión:**
 
