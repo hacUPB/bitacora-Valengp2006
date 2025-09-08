@@ -16,11 +16,11 @@ Al trabajar con objetos creados dinámicamente, como las partículas de la nebul
 
 En esta obra, las consideraciones principales son:
 
-- Definir claramente el ciclo de vida de los objetos: cada partícula nace al interactuar con el mouse, se expande y desvanece, y debe eliminarse cuando su opacidad llega a cero.
-- Liberar la memoria oportunamente: en el update() se recorre la lista enlazada de partículas, y aquellas que ya no tienen visibilidad se eliminan. Esto asegura que no permanezcan ocupando memoria innecesariamente.
-- Usar estructuras adecuadas: la lista enlazada facilita el borrado dinámico de elementos sin generar inconsistencias en índices o referencias.
-- Evitar acumulación de recursos estáticos: la cola de colores se mantiene con un número fijo de elementos, evitando que crezca indefinidamente.
-- Mantener simples los objetos persistentes: las estrellas de fondo se generan una vez y permanecen constantes, sin necesidad de liberación repetida.
+- **Definir claramente el ciclo de vida de los objetos**: cada partícula nace al interactuar con el mouse, se expande y desvanece, y debe eliminarse cuando su opacidad llega a cero.
+- **Liberar la memoria oportunamente:** en el `update()` se recorre la lista enlazada de partículas, y aquellas que ya no tienen visibilidad se eliminan. Esto asegura que no permanezcan ocupando memoria innecesariamente.
+- **Usar estructuras adecuadas:** la lista enlazada facilita el borrado dinámico de elementos sin generar inconsistencias en índices o referencias.
+- **Evitar acumulación de recursos estáticos:** la cola de colores se mantiene con un número fijo de elementos, evitando que crezca indefinidamente.
+- **Mantener simples los objetos persistentes:** las estrellas de fondo se generan una vez y permanecen constantes, sin necesidad de liberación repetida.
 
 Así, se asegura que la obra funcione de manera sostenible y eficiente, evitando saturar la memoria aunque el usuario interactúe durante largos periodos.
 
