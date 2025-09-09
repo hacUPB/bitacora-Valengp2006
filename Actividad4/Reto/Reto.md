@@ -85,19 +85,7 @@ Realicé pruebas tanto de las partes como del programa completo para garantizar 
 
 - Captura 5: Prueba de partículas desapareciendo tras cierto tiempo.
   <img width="2272" height="1804" alt="Captura de pantalla 2025-09-09 a la(s) 4 30 34 p m" src="https://github.com/user-attachments/assets/89c53bb9-bc89-4e7e-9d28-91e605f6ca97" />
-  
+
 ### Vídeo de evidencia
 
 [Enlace al video de evidencia](https://youtu.be/vxvf1Pi-2pY?si=nv3TlxdSPbTIpFNN)
-
-
-
-
-
-
-
-
-
-
-
-
