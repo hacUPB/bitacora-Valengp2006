@@ -45,3 +45,45 @@ Para mantener una experiencia visual rica y fluida, es necesario implementar té
 - **Reutilización de objetos:** como alternativa a borrar y crear constantemente, podrían reciclarse partículas reasignándoles nuevas posiciones y propiedades, minimizando operaciones de memoria.
 
 Estas técnicas garantizan que el sistema pueda sostener miles de partículas en movimiento sin comprometer la experiencia interactiva, manteniendo la ilusión de una nebulosa viva que respira en el espacio profundo.
+
+### Evidencia de los resultados de aprendizaje:
+
+**RAE1: Construcción de aplicaciones interactivas**
+
+Construí la aplicación Nebulosas Vivas, aplicando estructuras de datos y estrategias de programación para cumplir con los requisitos funcionales y no funcionales:
+
+- **Lista enlazada (list):** gestión de partículas de nebulosa que nacen, crecen, se expanden y se eliminan automáticamente cuando mueren.
+- **Cola (queue):** rotación de colores que define la energía cromática de las nebulosas al hacer clic derecho.
+- **Vector:** conjunto de estrellas de fondo con parpadeo dinámico que aportan al realismo visual.
+- **Interactividad:**
+    - Clic izquierdo → genera partículas o filamentos gaseosos.
+	- Arrastre de mouse → dibuja nebulosas continuas.
+	- Clic derecho → rota los colores activos.
+
+**Evidencia:**
+
+- Captura 1: Nebulosa formada con partículas en expansión.
+- Captura 2: Filamentos gaseosos al arrastrar el mouse.
+- Captura 3: Rotación de colores tras clic derecho.
+- Captura 4: Fondo estelar con parpadeo activo.
+
+### RAE2: Pruebas de software
+
+Realicé pruebas tanto de las partes como del programa completo para garantizar el correcto funcionamiento:
+
+- **Prueba de partículas (unidad):** verifiqué que cada partícula se expanda, se desplace con ruido y desaparezca al llegar a opacidad cero.
+- **Prueba de la cola de colores:** confirmé que al presionar clic derecho los colores se roten correctamente y el nuevo color se aplique a las partículas siguientes.
+- **Prueba de estrellas:** comprobé que todas aparecen con posiciones aleatorias y que su parpadeo se mantenga activo durante la ejecución.
+- **Prueba de interacción con mouse:** validé que cada evento (mousePressed, mouseDragged, mouseReleased) afecte a las estructuras de datos correctas.
+- **Prueba de integración:** ejecuté el programa completo, interactuando con todos los elementos simultáneamente (dibujar nebulosas mientras cambian los colores y el fondo parpadea).
+
+**Evidencia:**
+
+- Captura 5: Prueba de partículas desapareciendo tras cierto tiempo.
+- Captura 6: Prueba de cambio de color activo después de clic derecho.
+- Captura 7: Prueba de estrellas parpadeando en distintos niveles de brillo.
+- Captura 8: Escena final con todas las funciones en ejecución.
+
+### Vídeo de evidencia
+
+[Enlace al video de evidencia]()
