@@ -63,9 +63,13 @@ Construí la aplicación Nebulosas Vivas, aplicando estructuras de datos y estra
 **Evidencia:**
 
 - Captura 1: Nebulosa formada con partículas en expansión.
+	<img width="2272" height="1804" alt="Captura de pantalla 2025-09-09 a la(s) 4 30 01 p m" src="https://github.com/user-attachments/assets/56735393-0118-4345-8356-806bf0301c80" />
 - Captura 2: Filamentos gaseosos al arrastrar el mouse.
+  <img width="2272" height="1804" alt="Captura de pantalla 2025-09-09 a la(s) 4 30 10 p m" src="https://github.com/user-attachments/assets/d38c7fd8-5ca8-4324-af7c-2307db30b487" />
 - Captura 3: Rotación de colores tras clic derecho.
+  <img width="2272" height="1804" alt="Captura de pantalla 2025-09-09 a la(s) 4 30 18 p m" src="https://github.com/user-attachments/assets/c1d097c8-0b39-4197-a393-df130e0fb59b" />
 - Captura 4: Fondo estelar con parpadeo activo.
+	<img width="2272" height="1804" alt="Captura de pantalla 2025-09-09 a la(s) 4 29 42 p m" src="https://github.com/user-attachments/assets/d0d54cf5-5ab0-41f6-8bc3-8101ee8a6e87" />
 
 ### RAE2: Pruebas de software
 
@@ -80,10 +84,20 @@ Realicé pruebas tanto de las partes como del programa completo para garantizar 
 **Evidencia:**
 
 - Captura 5: Prueba de partículas desapareciendo tras cierto tiempo.
-- Captura 6: Prueba de cambio de color activo después de clic derecho.
-- Captura 7: Prueba de estrellas parpadeando en distintos niveles de brillo.
-- Captura 8: Escena final con todas las funciones en ejecución.
-
+  <img width="2272" height="1804" alt="Captura de pantalla 2025-09-09 a la(s) 4 30 34 p m" src="https://github.com/user-attachments/assets/89c53bb9-bc89-4e7e-9d28-91e605f6ca97" />
+  
 ### Vídeo de evidencia
 
-[Enlace al video de evidencia]()
+[Enlace al video de evidencia](https://youtu.be/vxvf1Pi-2pY?si=nv3TlxdSPbTIpFNN)
+
+
+
+
+
+
+
+
+
+
+
+
