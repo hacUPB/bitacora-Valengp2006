@@ -39,3 +39,48 @@ p.move(3, -1);    // ahora p.x == 4 y p.y == 1
 ```
 
 Aquí `Particle` es la **clase** y `p` es un **objeto** que existe en memoria y puede usar los atributos y métodos de su clase.
+
+### Explorando la memoria
+
+- **¿Los atributos están almacenados de forma contigua?**
+
+Sí, normalmente los atributos de un objeto se almacenan de manera contigua en memoria, uno tras otro, para facilitar el acceso rápido y eficiente. Esto se llama layout en memoria del objeto.
+
+- **¿Qué indica el tamaño del objeto sobre su estructura interna?**
+  
+  - El tamaño (sizeof(Particle)) indica cuánto espacio ocupa en memoria una instancia de esa clase.
+  - Si solo tiene dos float, deberías esperar unos 8 bytes (2 × 4), pero si ves un tamaño mayor, puede deberse a padding de alineación que el compilador agrega para que los datos estén alineados en direcciones de memoria específicas, mejorando el rendimiento del procesador.
+
+- **¿Cómo se almacenan los objetos en memoria en C++? Si tengo dos instancias de Particle, ¿Cómo se relacionan sus direcciones de memoria? ¿Los atributos están contiguos?**
+
+    - En C++, cuando creas objetos de una clase, el compilador **reserva un bloque de memoria para cada instancia**. Cada bloque contiene el espacio necesario para **todos los atributos no estáticos** de esa clase.
+    - Cada **objeto ocupa un bloque contiguo de memoria**.
+    - Dentro de ese bloque, sus **atributos (variables miembro) también se almacenan de forma contigua**, en el mismo orden en que fueron declarados en la clase.
+    - Puede haber pequeños **espacios vacíos (padding)** entre atributos para que estén alineados en direcciones de memoria que el procesador maneje más eficientemente.
+    - **Ejemplo:**
+
+```cpp
+class Particle {
+public:
+    float x, y;
+};
+
+Particle p1;
+Particle p2;
+```
+
+  - **Relación entre las direcciones de `p1` y `p2`:**
+      - `&p1` y `&p2` devolverán las **direcciones base** de cada objeto.
+      - Son **direcciones completamente independientes**, porque el compilador reserva espacio separado para cada uno.
+      - No están necesariamente una al lado de la otra: su posición depende de cómo el compilador organice la memoria en ese momento.
+
+  - **Direcciones internas (atributos):**
+      - `&(p1.x)` y `&(p1.y)` normalmente estarán **una inmediatamente después de la otra** (por ejemplo: `0x1000` y `0x1004` si cada `float` ocupa 4 bytes).
+      - Esto muestra que los **atributos dentro de un objeto están almacenados de forma contigua**.
+
+- **Resumen corto**
+
+  - Cada objeto ocupa un bloque de memoria propio.
+  - Los atributos dentro de ese bloque están contiguos.
+  - Dos objetos distintos (`p1` y `p2`) están en direcciones distintas e independientes entre sí.
+
