@@ -79,3 +79,13 @@ Sí, normalmente los atributos de un objeto se almacenan de manera contigua en m
   - Los atributos dentro de ese bloque están contiguos.
   - Dos objetos distintos (`p1` y `p2`) están en direcciones distintas e independientes entre sí.
 
+## Análisis de diferencias
+
+- **¿Cómo afectan los datos estáticos al tamaño de la instancia?**
+
+No lo afectan. Los datos estáticos se almacenan una sola vez en memoria global, no dentro de cada objeto, por lo que `sizeof` no los incluye.
+
+- **¿Qué diferencias hay entre datos estáticos y dinámicos en términos de memoria?**
+
+  - Los **estáticos** existen solo una vez para toda la clase y no aumentan el tamaño de cada objeto.
+  - Los **dinámicos** se reservan en tiempo de ejecución en el heap, y el objeto solo guarda un puntero a ellos. Esto significa que el tamaño del objeto es pequeño, pero su uso de memoria real puede ser mucho mayor.
