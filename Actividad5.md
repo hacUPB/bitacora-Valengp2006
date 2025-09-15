@@ -17,11 +17,9 @@ La clase `Particle` representa un objeto, en el cual cada instancia de esta clas
 
   - Una **clase** en C++ es un **plano o plantilla** que define qué **atributos (datos)** y **métodos (comportamientos)** tendrán sus instancias.
   - Un **objeto** es una **instancia concreta creada a partir de una clase**: ocupa memoria, tiene valores propios en sus atributos y puede ejecutar los métodos definidos en su clase.
-  
-**Relación:**
-
-- La clase es el **molde** y el objeto es el **producto construido con ese molde**.
-- Puedes crear muchos objetos a partir de una sola clase, y cada uno mantiene su propio estado independiente.
+  - **Relación:**
+      - La clase es el **molde** y el objeto es el **producto construido con ese molde**.
+      - Puedes crear muchos objetos a partir de una sola clase, y cada uno mantiene su propio estado independiente.
 
 **Ejemplo:**
 
