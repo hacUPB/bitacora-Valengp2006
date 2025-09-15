@@ -46,10 +46,14 @@ Aquí `Particle` es la **clase** y `p` es un **objeto** que existe en memoria y 
 
 Sí, normalmente los atributos de un objeto se almacenan de manera contigua en memoria, uno tras otro, para facilitar el acceso rápido y eficiente. Esto se llama layout en memoria del objeto.
 
+<img width="308" height="45" alt="Captura de pantalla 2025-09-15 171902" src="https://github.com/user-attachments/assets/48202087-1e12-4db2-877e-1e57a94b9869" />
+
 - **¿Qué indica el tamaño del objeto sobre su estructura interna?**
   
   - El tamaño (sizeof(Particle)) indica cuánto espacio ocupa en memoria una instancia de esa clase.
   - Si solo tiene dos float, deberías esperar unos 8 bytes (2 × 4), pero si ves un tamaño mayor, puede deberse a padding de alineación que el compilador agrega para que los datos estén alineados en direcciones de memoria específicas, mejorando el rendimiento del procesador.
+
+ <img width="373" height="66" alt="Captura de pantalla 2025-09-15 171647" src="https://github.com/user-attachments/assets/79513aad-1a4c-4e1c-a56e-c711bab44dc3" />
 
 - **¿Cómo se almacenan los objetos en memoria en C++? Si tengo dos instancias de Particle, ¿Cómo se relacionan sus direcciones de memoria? ¿Los atributos están contiguos?**
 
@@ -57,17 +61,8 @@ Sí, normalmente los atributos de un objeto se almacenan de manera contigua en m
     - Cada **objeto ocupa un bloque contiguo de memoria**.
     - Dentro de ese bloque, sus **atributos (variables miembro) también se almacenan de forma contigua**, en el mismo orden en que fueron declarados en la clase.
     - Puede haber pequeños **espacios vacíos (padding)** entre atributos para que estén alineados en direcciones de memoria que el procesador maneje más eficientemente.
-    - **Ejemplo:**
 
-```cpp
-class Particle {
-public:
-    float x, y;
-};
-
-Particle p1;
-Particle p2;
-```
+<img width="328" height="102" alt="Captura de pantalla 2025-09-15 172012" src="https://github.com/user-attachments/assets/d735de79-7f90-405c-a916-3729d47e88f6" />
 
   - **Relación entre las direcciones de `p1` y `p2`:**
       - `&p1` y `&p2` devolverán las **direcciones base** de cada objeto.
