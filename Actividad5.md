@@ -1,5 +1,5 @@
 # Sesión 1: la naturaleza de los objetos en C++
-### Introducción a los objetos - 16/09/2025
+## Introducción a los objetos - 16/09/2025
 
 - **¿Qué representa la clase Particle?**
 
@@ -40,7 +40,7 @@ p.move(3, -1);    // ahora p.x == 4 y p.y == 1
 
 Aquí `Particle` es la **clase** y `p` es un **objeto** que existe en memoria y puede usar los atributos y métodos de su clase.
 
-### Explorando la memoria
+## Explorando la memoria
 
 - **¿Los atributos están almacenados de forma contigua?**
 
