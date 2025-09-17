@@ -8,8 +8,8 @@ En C++, una clase está compuesta por atributos (datos) y métodos (funciones mi
 - **Atributos no estáticos:**
   - **Forman parte de cada instancia de la clase. Cuando creas un objeto:**
     - Si lo creas como variable local → su memoria se reserva en el stack.
-      - Si lo creas con new o make_unique → su memoria se reserva en el heap.
-      - Estos atributos quedan dentro del bloque de memoria del objeto, y su tamaño define el tamaño total de la instancia.
+    - Si lo creas con new o make_unique → su memoria se reserva en el heap.
+    - Estos atributos quedan dentro del bloque de memoria del objeto, y su tamaño define el tamaño total de la instancia.
 
 - **Atributos estáticos:**
   - No pertenecen a ninguna instancia concreta.
@@ -75,3 +75,105 @@ El tamaño no cambió, a pesar de que `ParticleWithMethod` tiene un método adic
 
 <img width="449" height="194" alt="Captura de pantalla 2025-09-17 165017" src="https://github.com/user-attachments/assets/4f7842ed-2510-4784-8b1e-3c4c48a898d0" />
 
+Este resultado completa el experimento y confirma la teoría sobre la vtable:
+
+- sizeof(Particle) → 8 bytes
+- sizeof(ParticleWithMethod) → 8 bytes
+- sizeof(ParticleVirtual) → 16 bytes
+
+La única diferencia es que `ParticleVirtual` tiene al menos un método virtual, lo que hace que:
+
+- Se añada un puntero oculto llamado vptr (virtual table pointer) dentro de cada instancia.
+- Este puntero apunta a una vtable (tabla de funciones virtuales) que está en la sección de código y es compartida por todas las instancias de esa clase.
+
+**Conclusión:**
+
+- Los atributos viven en cada instancia.
+- Los métodos no virtuales viven en la sección de código y no ocupan espacio en el objeto.
+- Los métodos virtuales agregan un puntero vptr por instancia, lo que aumenta el tamaño de cada objeto.
+
+### Código usado para las pruebas:
+
+`ofApp.h`:
+
+```cpp
+#pragma once
+
+#include "ofMain.h"
+
+class Particle {
+public:
+	int x;
+	int y;
+};
+
+Particle p1;
+Particle p2;
+
+
+class ParticleWithMethod {
+public:
+	int x;
+	int y;
+	void move(int dx, int dy) {
+		x += dx;
+		y += dy;
+	}
+};
+
+class ParticleVirtual {
+public:
+	int x;
+	int y;
+	virtual void move(int dx, int dy) {
+		x += dx;
+		y += dy;
+	}
+};
+
+class ofApp : public ofBaseApp{
+
+	public:
+		void setup();
+		void update();
+		void draw();
+
+		void keyPressed(int key);
+		void keyReleased(int key);
+		void mouseMoved(int x, int y );
+		void mouseDragged(int x, int y, int button);
+		void mousePressed(int x, int y, int button);
+		void mouseReleased(int x, int y, int button);
+		void mouseEntered(int x, int y);
+		void mouseExited(int x, int y);
+		void windowResized(int w, int h);
+		void dragEvent(ofDragInfo dragInfo);
+		void gotMessage(ofMessage msg);
+		
+};
+```
+
+`ofApp.cpp`
+```cpp
+#include "ofApp.h"
+
+void ofApp::setup(){
+
+    ParticleVirtual p;
+
+    ofLog() << "--- Direcciones de objetos ---";
+    ofLog() << "p1: " << &p1 << "   p2: " << &p2;
+
+    ofLog() << "--- Direcciones de atributos ---";
+    ofLog() << "&p1.x: " << &p1.x << "   &p1.y: " << &p1.y;
+
+    ofLog() << "--- Tamaño de la clase ---";
+    ofLog() << "sizeof(Particle): " << sizeof(Particle);
+
+    ofLog() << "--- Tamaño de la clase ---";
+    ofLog() << "sizeof(ParticleWithMethod): " << sizeof(ParticleWithMethod);
+
+    ofLog() << "--- Tamaño de la clase ---";
+    ofLog() << "sizeof(ParticleVirtual): " << sizeof(ParticleVirtual);
+}
+```
