@@ -89,3 +89,19 @@ No lo afectan. Los datos estáticos se almacenan una sola vez en memoria global,
 
   - Los **estáticos** existen solo una vez para toda la clase y no aumentan el tamaño de cada objeto.
   - Los **dinámicos** se reservan en tiempo de ejecución en el heap, y el objeto solo guarda un puntero a ellos. Esto significa que el tamaño del objeto es pequeño, pero su uso de memoria real puede ser mucho mayor.
+
+<img width="258" height="49" alt="Captura de pantalla 2025-09-17 161643" src="https://github.com/user-attachments/assets/44d33b21-857c-4e20-a9aa-a5b2eaebe08a" />
+
+La salida que muestra la terminal es:
+
+`Tamaño de Simple: 4 bytes`
+`Tamaño de Complex: 12 bytes`
+
+Lo que significa lo siguiente:
+
+- `Simple` tiene solo un int a, y en tu sistema un int ocupa 4 bytes → por eso sizeof(Simple) = 4.
+- `Complex` tiene tres int (a, b, c), cada uno de 4 bytes → 3 × 4 = 12 bytes → por eso sizeof(Complex) = 12.
+- Los métodos no ocupan espacio dentro del objeto. Aunque Complex tenga method1() y method2(), estos están guardados como código aparte en memoria, y no se suman al tamaño del objeto.
+- Solo los atributos no estáticos cuentan para `sizeof`.
+
+Así que esta diferencia de tamaños se debe exclusivamente a la cantidad de atributos (datos) que tiene cada clase.
