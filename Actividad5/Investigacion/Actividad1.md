@@ -105,3 +105,19 @@ Lo que significa lo siguiente:
 - Solo los atributos no estáticos cuentan para `sizeof`.
 
 Así que esta diferencia de tamaños se debe exclusivamente a la cantidad de atributos (datos) que tiene cada clase.
+
+## Reflexión
+
+**¿Qué es un objeto desde la perspectiva de la memoria?**
+
+Un objeto es una estructura de datos en memoria que representa una instancia concreta de una clase. Al instanciar una clase, el sistema reserva un bloque de memoria que contiene todos los **atributos no estáticos** definidos en ella. Este bloque actúa como un contenedor que almacena el estado del objeto, permitiendo que cada instancia tenga su propio conjunto independiente de datos.
+
+**¿Cómo influyen los atributos y métodos en el tamaño y estructura del objeto?**
+
+- **Atributos (no estáticos):** Cada atributo no estático ocupa un espacio en memoria dentro del objeto. La suma de estos campos (considerando sus tipos y alineación) determina el **tamaño total de la instancia**.
+- **Atributos estáticos:** No forman parte del objeto. Solo existe una copia por clase, compartida entre todas las instancias, por lo que **no afectan el tamaño de cada instancia individual**.
+- **Métodos:** No se copian en cada objeto. El código de los métodos se almacena en una región de memoria común y todas las instancias acceden a él mediante referencias. Por tanto, **no incrementan el tamaño del objeto**.
+
+**Conclusión**
+
+Comprender qué elementos ocupan espacio en memoria dentro de un objeto permite diseñar clases más eficientes. Dado que solo los atributos no estáticos afectan el tamaño de las instancias, es posible optimizar el uso de memoria minimizando la cantidad y el tamaño de estos campos. Los atributos estáticos, en cambio, resultan útiles cuando se necesita información compartida sin duplicarla en cada objeto. Esta distinción es clave para crear clases bien estructuradas, escalables y con un consumo de recursos controlado.
