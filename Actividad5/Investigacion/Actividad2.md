@@ -275,3 +275,69 @@ La vtable contiene las direcciones de memoria de las funciones virtuales de la c
 Este mecanismo permite el despacho dinámico, es decir, que se llame a la versión correcta del método incluso si se accede al objeto a través de un puntero o referencia de la clase base.
 
 En el _Disassembly_ se pudo observar este proceso: primero se carga la dirección del objeto, luego la dirección de su vtable, y finalmente se llama a la función ubicada en esa tabla, confirmando cómo el compilador implementa el polimorfismo.
+
+#### Código usado para las pruebas:
+
+`ofApp.h`
+```cpp
+#pragma once
+
+#include "ofMain.h"
+
+class Base {
+public:
+	virtual void display() {
+		std::cout << "Base display\n";
+	}
+};
+
+class Derived : public Base {
+public:
+	void display() override {
+		std::cout << "Derived display\n";
+	}
+};
+
+class Plain {
+	int x, y;
+};
+
+class ofApp : public ofBaseApp{
+
+	public:
+		void setup();
+		void update();
+		void draw();
+
+		void keyPressed(int key);
+		void keyReleased(int key);
+		void mouseMoved(int x, int y );
+		void mouseDragged(int x, int y, int button);
+		void mousePressed(int x, int y, int button);
+		void mouseReleased(int x, int y, int button);
+		void mouseEntered(int x, int y);
+		void mouseExited(int x, int y);
+		void windowResized(int w, int h);
+		void dragEvent(ofDragInfo dragInfo);
+		void gotMessage(ofMessage msg);
+		
+};
+```
+`ofApp.cpp`
+```cpp
+#include "ofApp.h"
+
+void ofApp::setup() {
+	Plain p;
+	Base b;
+	Derived d;
+
+	std::cout << "sizeof(Plain):   " << sizeof(Plain) << std::endl;
+	std::cout << "sizeof(Base):    " << sizeof(Base) << std::endl;
+	std::cout << "sizeof(Derived): " << sizeof(Derived) << std::endl;
+
+	Base* ptr = new Derived();
+	ptr->display();  // Llama Derived::display, no Base::display
+	delete ptr;
+}
+```
