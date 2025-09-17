@@ -16,7 +16,7 @@ En C++, una clase está compuesta por atributos (datos) y métodos (funciones mi
   - Se almacenan en una sola copia común para toda la clase, ubicada en la sección de datos estáticos del programa.
   - No incrementan el tamaño de los objetos.
 
-### Evidencia 1:
+#### Evidencia 1:
 
 <img width="457" height="116" alt="Captura de pantalla 2025-09-17 164126" src="https://github.com/user-attachments/assets/5b426478-55f7-4190-a4dc-9daade192086" />
 
@@ -45,7 +45,7 @@ Están justo uno después del otro (contiguos), separados por 4 bytes cada uno.
 - No se copian dentro de cada objeto.
 - Todas las instancias llaman al mismo bloque de código de un método, pasando un puntero oculto (this) para acceder a sus propios datos.
 
-### Evidencia 2:
+#### Evidencia 2:
 
 <img width="459" height="154" alt="Captura de pantalla 2025-09-17 164512" src="https://github.com/user-attachments/assets/754cb567-0337-4dd2-8b6c-b646e32fc315" />
 
@@ -71,7 +71,7 @@ El tamaño no cambió, a pesar de que `ParticleWithMethod` tiene un método adic
 - La vtable está en la sección de datos estáticos (una por clase con métodos virtuales).
 - El vptr sí ocupa espacio dentro de cada objeto (generalmente del tamaño de un puntero).
 
-### Evidencia 3: 
+#### Evidencia 3: 
 
 <img width="449" height="194" alt="Captura de pantalla 2025-09-17 165017" src="https://github.com/user-attachments/assets/4f7842ed-2510-4784-8b1e-3c4c48a898d0" />
 
@@ -92,7 +92,7 @@ La única diferencia es que `ParticleVirtual` tiene al menos un método virtual,
 - Los métodos no virtuales viven en la sección de código y no ocupan espacio en el objeto.
 - Los métodos virtuales agregan un puntero vptr por instancia, lo que aumenta el tamaño de cada objeto.
 
-### Código usado para las pruebas:
+#### Código usado para las pruebas:
 
 `ofApp.h`:
 
@@ -190,7 +190,7 @@ void ofApp::setup(){
   	- `b` tiene un `vptr` que apunta a `vtable_Base`.
   	- `d` tiene un `vptr` que apunta a `vtable_Derived`.
   	  
-### Evidencia 1:
+#### Evidencia 1:
 
 <img width="324" height="50" alt="Captura de pantalla 2025-09-17 171356" src="https://github.com/user-attachments/assets/f859036a-e1dc-4297-b887-07d3b1845a2d" />
 
@@ -212,7 +212,7 @@ Esto demuestra que:
 - `sizeof(Base)` y `sizeof(Derived)` serán al menos 8 bytes más que una clase sin métodos virtuales (el tamaño de un puntero, el `vptr`).
 - El `cout` de `*(void**)&obj` imprime la dirección de la vtable a la que apunta el `vptr`.
 
-### Evidencia 2:
+#### Evidencia 2:
 
 <img width="174" height="63" alt="Captura de pantalla 2025-09-17 172223" src="https://github.com/user-attachments/assets/4c6c6513-e54c-42bf-861e-f68166ba4c5a" />
 
@@ -238,7 +238,7 @@ Esto permite que el método llamado dependa del tipo real del objeto en tiempo d
 
 Sin virtuales, las llamadas se resuelven en tiempo de compilación.
 
-### Evidencia 3:
+#### Evidencia 3:
 
 <img width="186" height="85" alt="Captura de pantalla 2025-09-17 172516" src="https://github.com/user-attachments/assets/15d82116-e7ac-446f-aedd-7d43940001c9" />
 
