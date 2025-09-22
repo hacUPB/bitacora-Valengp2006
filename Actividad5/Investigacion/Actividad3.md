@@ -15,7 +15,7 @@
 
 #### Evidencia 1:
 
-
+<img width="347" height="73" alt="Captura de pantalla 2025-09-22 a la(s) 5 36 24 p m" src="https://github.com/user-attachments/assets/d08ff285-b463-4eb5-acad-23f4b85b4018" />
 
 - `publicVar` se puede modificar directamente desde `main()` o `setup()` → acceso permitido.  
 - `privateVar` y `protectedVar` no se pueden modificar desde fuera de la clase; el compilador bloquea el acceso.  
