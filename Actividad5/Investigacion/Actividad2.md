@@ -654,7 +654,7 @@ En C++, la ubicación de los datos y métodos de una clase en memoria depende de
 
 #### Evidencia 4:
 
-
+<img width="356" height="400" alt="Captura de pantalla 2025-09-22 a la(s) 4 56 18 p m" src="https://github.com/user-attachments/assets/ed0271d8-a30e-45e1-836d-6418dc032bbd" />
 
 - **Tamaños de objetos**
 	- `FunctionPointerExample` ocupa 8 bytes (por el puntero a función).  
