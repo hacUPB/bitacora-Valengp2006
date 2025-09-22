@@ -360,3 +360,261 @@ void ofApp::setup() {
 - La ejecución de `funcPtr` imprime “Static function called” → prueba que el puntero a función fue asignado y llamado exitosamente.
 
 Esto demuestra que el tamaño del objeto aumenta por el puntero, y que la invocación funciona sin necesidad de instanciar un objeto para la función estática.
+
+**¿Cómo afectan estos mecanismos al rendimiento del programa?**
+
+- **Punteros a funciones**
+
+	- La llamada es indirecta: en lugar de saltar directo a la dirección de la función (como en una llamada normal), el programa primero debe leer la dirección almacenada en el puntero y luego saltar allí.
+	- Esta indirection agrega un pequeño costo extra en comparación con una llamada directa.
+	- Sin embargo, es más ligero que usar métodos virtuales, porque no requiere buscar en la vtable, solo seguir un puntero.
+
+- **Métodos virtuales (con vtable)**
+
+	- Cada llamada requiere:
+		- Leer el vptr almacenado en el objeto.
+		- Buscar en la vtable la función correspondiente.
+		- Saltar a esa dirección.
+	- Este proceso implica dos accesos a memoria antes de ejecutar la función, lo que es un poco más costoso que un puntero a función normal.
+	- En la práctica, la diferencia es mínima, pero en contextos de millones de llamadas en bucles críticos puede impactar el rendimiento.
+
+- **Impacto general**
+
+	- Llamadas directas (funciones normales) → más rápidas.
+	- Punteros a funciones → un poco más lentas (una indirección extra).
+	- Métodos virtuales → las más lentas de las tres (porque dependen de la vtable).
+
+**Conclusión:**
+
+El impacto en rendimiento existe, pero suele ser despreciable en la mayoría de aplicaciones. El costo extra vale la pena porque los punteros y las vtables permiten flexibilidad, polimorfismo y diseño modular.
+
+#### Evidencia 2:
+
+
+
+**Llamada directa a función estática**
+
+- La dirección de la función se conoce en tiempo de compilación, por lo que no requiere punteros ni búsquedas adicionales.
+- Este mecanismo resulta rápido y eficiente, siendo adecuado cuando no se necesita flexibilidad ni polimorfismo.
+
+**Llamada por puntero a función**
+
+- La llamada a través de un puntero introduce una ligera indirección.
+- En la prueba realizada, resultó incluso más rápida que la llamada directa, lo cual puede explicarse por optimizaciones aplicadas por el compilador o por el procesador.
+- Este enfoque permite seleccionar la función a ejecutar de manera dinámica, sin modificar la clase que contiene el puntero.
+
+**Método virtual**
+
+- Cada llamada a un método virtual requiere acceder al puntero oculto vptr del objeto y consultar la vtable para determinar la dirección de la función correcta.
+- Esta operación añade un pequeño overhead, convirtiendo al método virtual en la opción más lenta de las tres, aunque la diferencia es mínima.
+- Este mecanismo permite implementar polimorfismo dinámico, es decir, que la función que se ejecute dependa del tipo real del objeto en tiempo de ejecución.
+
+**Conclusión**
+
+- La diferencia de rendimiento entre llamadas directas, punteros a función y métodos virtuales existe, pero resulta despreciable en la mayoría de aplicaciones prácticas.
+- Los punteros a funciones y las vtables aportan flexibilidad y polimorfismo, justificando el pequeño costo adicional en tiempo de ejecución.
+- La prueba evidencia cómo C++ implementa cada mecanismo de llamada y cómo cada uno impacta el rendimiento cuando se ejecutan bucles de alta intensidad.
+
+**¿Qué diferencia hay entre punteros a funciones y punteros a métodos miembro en C++? ¿Cómo afectan al tamaño de los objetos y al rendimiento?**
+
+- **Diferencias conceptuales:**
+
+| Concepto                     | Puntero a función                            | Puntero a método miembro                             |
+|-------------------------------|---------------------------------------------|-----------------------------------------------------|
+| Qué apunta                   | Función **libre** o estática               | Método de una clase (no estático o virtual)       |
+| Necesita objeto para llamar  | No                                           | Sí, necesita un objeto o puntero a objeto         |
+| Sintaxis de llamada          | `funcPtr()`                                 | `(obj->*methodPtr)()` o `(obj.*methodPtr)()`      |
+| Contexto `this`              | No disponible                                | El puntero implica el objeto (`this`) al llamar   |
+| Resolución de dirección      | Directa (tiempo de compilación)             | Puede implicar vtable si el método es virtual     |
+
+- Los **punteros a funciones** se usan para funciones globales o estáticas, no necesitan un objeto.  
+- Los **punteros a métodos miembro** se usan para llamar métodos de objetos, y si el método es virtual, el puntero usa la **vtable** para resolver la llamada en tiempo de ejecución.
+
+- **Impacto en el tamaño de los objetos**
+
+- Un **puntero a función** dentro de un objeto ocupa **el tamaño de un puntero** (normalmente 8 bytes en sistemas de 64 bits).  
+- Un **puntero a método miembro** **no se almacena automáticamente** en cada objeto; normalmente se declara como variable separada.  
+	- Si el método es virtual, cada objeto ya tiene un **vptr**, que apunta a la vtable, lo que añade 8 bytes al objeto.  
+	- Si solo se usa un puntero a método miembro para llamar una función, no necesariamente aumenta el tamaño del objeto, porque el puntero puede existir como variable independiente fuera del objeto.
+
+**Impacto en el rendimiento:**
+
+| Tipo de puntero                  | Coste de llamada                                   |
+|---------------------------------|--------------------------------------------------|
+| Puntero a función                | Una indirección extra: leer la dirección y saltar |
+| Puntero a método miembro no virtual | Una indirección y paso implícito del `this`      |
+| Puntero a método miembro virtual | Acceso al `vptr` + consulta en la vtable + salto  |
+
+- Las llamadas **directas** siguen siendo las más rápidas.  
+- Las llamadas a **punteros a métodos miembro** pueden ser más lentas si son virtuales, porque involucran consulta en la vtable.  
+- En bucles muy grandes, esto puede notarse; en aplicaciones normales, el coste es despreciable.
+
+**Resumen general:**
+
+- **Punteros a funciones** → simples, ligeros, ocupan espacio y añaden mínima sobrecarga.  
+- **Punteros a métodos miembro** → necesitan objeto (`this`) y pueden involucrar vtable si son virtuales.  
+- **Tamaño del objeto** → solo aumenta si el objeto contiene un vptr o un puntero a función como miembro.  
+- **Rendimiento** → llamada directa > puntero a función > método virtual (generalmente).
+
+#### Evidencia 3:
+
+
+
+**Tamaños de objetos**
+
+- El puntero a función ocupa 8 bytes, como se esperaba en un sistema de 64 bits.  
+- El objeto `MyClass` ocupa 8 bytes, que corresponden al puntero oculto `vptr` que el compilador agrega debido al método virtual.
+
+**Llamada directa a función estática**
+
+- Es la más rápida, ya que el compilador conoce la dirección de la función en tiempo de compilación y no requiere ninguna indirección.
+
+**Llamada por puntero a función**
+
+- Requiere un paso adicional para leer la dirección almacenada en el puntero.  
+- En esta prueba, la llamada fue incluso ligeramente más rápida que la directa, lo que puede explicarse por optimizaciones del compilador o del procesador.
+
+**Llamada a método virtual**
+
+- Implica leer el `vptr` del objeto, acceder a la vtable y luego saltar a la función correspondiente.  
+- Esto genera un overhead adicional, lo que la convierte en la llamada más lenta de las tres.
+
+**Conclusión:**
+
+- **Llamada directa:** más rápida y eficiente.  
+- **Puntero a función:** ligera sobrecarga por indirección, pero útil para flexibilidad.  
+- **Método virtual:** mayor sobrecarga debido a la vtable, permite polimorfismo dinámico.  
+- En aplicaciones normales, el impacto en rendimiento es despreciable, pero en bucles muy grandes puede notarse.  
+- La prueba evidencia cómo C++ implementa cada mecanismo y cómo afectan al tamaño del objeto y al rendimiento.
+
+#### Código usado:
+
+`ofApp.cpp:`
+```javascript
+#include "ofApp.h"
+
+void ofApp::setup() {
+    std::cout << "----- Tamaños de objetos -----\n";
+
+    // Tamaño de puntero a función
+    std::cout << "sizeof(void(*)()): " << sizeof(&FunctionPointerExample::staticFunction) << " bytes\n";
+
+    // Tamaño del objeto MyClass
+    MyClass obj;
+    std::cout << "sizeof(MyClass): " << sizeof(obj) << " bytes\n";
+
+    std::cout << "\n----- Llamada directa a función estática -----\n";
+    FunctionPointerExample::staticFunction();
+
+    std::cout << "\n----- Llamada por puntero a función -----\n";
+    FunctionPointerExample ex;
+    ex.assignFunction();
+    ex.funcPtr();  // llamada a través del puntero
+
+    std::cout << "\n----- Llamada a puntero a método miembro no virtual -----\n";
+    void (MyClass::*memPtr)() = &MyClass::memberFunction;
+    (obj.*memPtr)();  // llamada usando el objeto
+
+    std::cout << "\n----- Llamada a puntero a método miembro virtual -----\n";
+    void (MyClass::*virtPtr)() = &MyClass::virtualFunction;
+    (obj.*virtPtr)(); // llamada usando el objeto
+
+    // ----------------------------
+    // Prueba de tiempo simple
+    // ----------------------------
+    constexpr int iterations = 100000000; // 100 millones
+    std::clock_t start, end;
+
+    // Llamada directa
+    start = std::clock();
+    for(int i = 0; i < iterations; i++) {
+        FunctionPointerExample::staticFunction();
+    }
+    end = std::clock();
+    std::cout << "\nTiempo llamada directa: " << double(end - start)/CLOCKS_PER_SEC << " s\n";
+
+    // Llamada por puntero a función
+    start = std::clock();
+    for(int i = 0; i < iterations; i++) {
+        ex.funcPtr();
+    }
+    end = std::clock();
+    std::cout << "Tiempo puntero a función: " << double(end - start)/CLOCKS_PER_SEC << " s\n";
+
+    // Llamada a método virtual
+    start = std::clock();
+    for(int i = 0; i < iterations; i++) {
+        (obj.*virtPtr)();
+    }
+    end = std::clock();
+    std::cout << "Tiempo puntero a método virtual: " << double(end - start)/CLOCKS_PER_SEC << " s\n";
+}
+
+void ofApp::update() {}
+void ofApp::draw() {}
+void ofApp::keyPressed(int key) {}
+void ofApp::keyReleased(int key) {}
+void ofApp::mouseMoved(int x, int y) {}
+void ofApp::mouseDragged(int x, int y, int button) {}
+void ofApp::mousePressed(int x, int y, int button) {}
+void ofApp::mouseReleased(int x, int y, int button) {}
+void ofApp::mouseEntered(int x, int y) {}
+void ofApp::mouseExited(int x, int y) {}
+void ofApp::windowResized(int w, int h) {}
+void ofApp::dragEvent(ofDragInfo dragInfo) {}
+void ofApp::gotMessage(ofMessage msg) {}
+```
+
+`ofApp.h:`
+```javascript
+#pragma once
+
+#include "ofMain.h"
+#include <ctime>
+#include <iostream>
+
+// Clase para puntero a función
+class FunctionPointerExample {
+public:
+    void (*funcPtr)();  // puntero a función
+
+    static void staticFunction() {
+        // Función estática para pruebas
+    }
+
+    void assignFunction() {
+        funcPtr = staticFunction;
+    }
+};
+
+// Clase con métodos para puntero a método miembro
+class MyClass {
+public:
+    void memberFunction() {
+        // Método no virtual
+    }
+
+    virtual void virtualFunction() {
+        // Método virtual
+    }
+};
+
+class ofApp : public ofBaseApp {
+public:
+    void setup();
+    void update();
+    void draw();
+
+    void keyPressed(int key);
+    void keyReleased(int key);
+    void mouseMoved(int x, int y);
+    void mouseDragged(int x, int y, int button);
+    void mousePressed(int x, int y, int button);
+    void mouseReleased(int x, int y, int button);
+    void mouseEntered(int x, int y);
+    void mouseExited(int x, int y);
+    void windowResized(int w, int h);
+    void dragEvent(ofDragInfo dragInfo);
+    void gotMessage(ofMessage msg);
+};
+````
