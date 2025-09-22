@@ -390,7 +390,7 @@ El impacto en rendimiento existe, pero suele ser despreciable en la mayoría de 
 
 #### Evidencia 2:
 
-
+<img width="251" height="59" alt="Captura de pantalla 2025-09-22 a la(s) 4 29 37 p m" src="https://github.com/user-attachments/assets/0ac17919-a74a-49f2-85d3-3295dc464feb" />
 
 **Llamada directa a función estática**
 
@@ -458,7 +458,7 @@ El impacto en rendimiento existe, pero suele ser despreciable en la mayoría de 
 
 #### Evidencia 3:
 
-
+<img width="451" height="257" alt="Captura de pantalla 2025-09-22 a la(s) 4 41 31 p m" src="https://github.com/user-attachments/assets/dfa6125f-8de1-429b-994f-6a4f92471c90" />
 
 **Tamaños de objetos**
 
