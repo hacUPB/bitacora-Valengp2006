@@ -837,3 +837,83 @@ public:
     void gotMessage(ofMessage msg);
 };
 ```
+**¿Cómo interactúan las diferentes partes en tiempo de ejecución?**
+
+En C++, las diferentes partes de una clase (atributos, métodos, vtable, punteros a funciones) interactúan en tiempo de ejecución de forma coordinada para permitir que el programa funcione correctamente, especialmente cuando hay polimorfismo.
+
+- **Objetos y atributos:**
+
+	- Cada objeto tiene su bloque de memoria propio donde se almacenan sus atributos no estáticos.
+	- Cuando se accede a un atributo (obj.x), el programa calcula la dirección sumando el offset del atributo dentro del objeto al puntero del objeto (this).
+	- Esto garantiza que cada instancia tenga sus propios valores, incluso si varias instancias existen simultáneamente.
+
+- **Métodos no estáticos:**
+
+	- Los métodos normales no forman parte del objeto en memoria; residen en la sección de código (text segment) del ejecutable.
+	- Una llamada a método no virtual se traduce en un salto directo a la dirección de la función en tiempo de ejecución.
+	- Como todas las instancias usan la misma dirección de función, no se duplica código en memoria.
+
+- **Métodos estáticos:**
+
+	- Se comportan como funciones normales del programa: no dependen del objeto.
+	- Se llaman con Clase::metodo().
+	- Se puede acceder a ellos en tiempo de ejecución directamente mediante su dirección en memoria.
+
+- **Métodos virtuales y vtable:**
+
+	- Cada objeto de una clase con métodos virtuales contiene un puntero oculto (vptr).
+	- El vptr apunta a la vtable de su clase, que contiene las direcciones de todas las funciones virtuales.
+	- **Flujo en tiempo de ejecución:**
+
+		1.	Se llama a un método virtual a través de un puntero o referencia de la clase base (Base* ptr).
+		2.	El programa lee el vptr almacenado en el objeto real.
+		3.	Accede a la vtable de la clase concreta del objeto (Derived).
+		4.	Obtiene la dirección de la función que debe ejecutarse.
+		5.	Salta a esa dirección y ejecuta la función correcta según el tipo real del objeto.
+
+Este mecanismo permite el polimorfismo dinámico, donde el tipo real del objeto decide qué función se ejecuta, aunque el compilador conozca solo el tipo de puntero en tiempo de compilación.
+
+- **Punteros a funciones y métodos miembro**
+
+	- **Punteros a funciones libres o estáticas:**
+		- Contienen la dirección directa de la función en memoria.
+		- Se llaman siguiendo esa dirección.
+	- **Punteros a métodos miembro no virtuales:**
+		- Contienen información del offset dentro del objeto para invocar el método sobre una instancia concreta.
+	- **Punteros a métodos virtuales:**
+		- Internamente usan el vptr del objeto para obtener la dirección de la función en la vtable en tiempo de ejecución.
+
+#### Evidencia 5:
+
+
+
+- **Objetos y atributos**
+	- Cada objeto tiene su propio bloque de memoria para atributos (`x`, `y`).  
+	- Las direcciones muestran que cada instancia es independiente.  
+
+- **Funciones estáticas**
+	- Residen en la sección de código y se comparten entre instancias.  
+	- Las llamadas no dependen de un objeto ni de `vptr`.  
+
+- **Métodos virtuales y vptr/vtable**
+	- Los objetos `Base` y `Derived` tienen un puntero oculto `vptr` que apunta a su vtable.  
+	- La vtable contiene las direcciones de las funciones virtuales de la clase.  
+	- Llamar a un método virtual sigue el flujo: `obj -> vptr -> vtable -> función correspondiente`
+	- Esto permite polimorfismo dinámico: la función ejecutada depende del tipo real del objeto en tiempo de ejecución.
+
+- **Punteros a funciones y métodos**
+	- **Puntero a función estática:** salto directo a la dirección de la función.  
+	- **Puntero a método no virtual:** salto directo sobre objeto específico.  
+	- **Puntero a método virtual:** salto mediante `vptr` y vtable, resolviendo la función en tiempo de ejecución.  
+
+- **Rendimiento**
+	- Llamada directa → más rápida (0.093 s).  
+	- Puntero a función → ligera sobrecarga (0.076 s).  
+	- Método virtual → más lenta (0.105 s) por la consulta a vtable.  
+
+### Conclusión
+
+- Los atributos residen en el objeto y son independientes.  
+- Los métodos estáticos y punteros a función residen en la sección de código y se comparten.  
+- Los métodos virtuales utilizan `vptr` y `vtable` para permitir polimorfismo dinámico, introduciendo un pequeño costo en tiempo de ejecución.  
+- Esta evidencia confirma cómo los distintos elementos de una clase interactúan en tiempo de ejecución y cómo se implementa el despacho dinámico en C++.
