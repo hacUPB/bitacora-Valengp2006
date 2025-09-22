@@ -617,4 +617,223 @@ public:
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
 };
-````
+```
+
+**¿Dónde residen los datos y métodos de una clase en la memoria?**
+
+En C++, la ubicación de los datos y métodos de una clase en memoria depende de si son atributos, métodos estáticos o métodos virtuales.
+
+- **Atributos**
+
+	- Cada objeto (instancia) de la clase tiene su propio bloque de memoria para almacenar los atributos no estáticos.
+	- Este bloque se asigna en:
+		- `Stack`: si la instancia se crea como variable local.
+		- `Heap:` si se crea dinámicamente con new.
+	- Los atributos se organizan según el orden de declaración, pero el compilador puede añadir padding para alineación.
+
+- **Métodos no estáticos:**
+
+	- Los métodos normales (no estáticos) no se almacenan dentro del objeto (es decir que no ocupan espacio).
+	- Están en la sección de código (`text segment`) del ejecutable, compartidos por todas las instancias.
+	- Cada objeto llama a la misma dirección de función en memoria.
+
+- **Métodos estáticos**
+
+	- Los métodos estáticos tampoco forman parte de los objetos.
+	- Están en la sección de código, igual que las funciones globales.
+	- Se llaman usando `Clase::metodo()`, no requieren objeto.
+
+- **Métodos virtuales y vtable**
+
+	- Cada clase con métodos virtuales tiene una tabla de punteros a funciones, llamada `vtable`, ubicada generalmente en la sección de datos de solo lectura (rodata) o en la sección de código.
+	- Cada objeto de la clase incluye un puntero oculto (`vptr`), que apunta a su vtable correspondiente.
+	- La llamada a un método virtual sigue este flujo:
+		- Se lee el `vptr` del objeto.
+		- Se accede a la vtable de la clase real del objeto.
+		- Se obtiene la dirección del método y se ejecuta.
+
+#### Evidencia 4:
+
+
+
+- **Tamaños de objetos**
+	- `FunctionPointerExample` ocupa 8 bytes (por el puntero a función).  
+	- `MyClass` ocupa 16 bytes debido a los atributos y alineación.  
+	- `Base` y `Derived` ocupan 8 bytes cada uno, que corresponde al puntero oculto `vptr`.
+
+- **Direcciones de atributos**
+	- Los atributos `x` y `y` de `MyClass` residen dentro del bloque de memoria del objeto, confirmando que los datos no estáticos se almacenan en la instancia.
+
+- **Funciones estáticas**
+	- La dirección de `staticFunction` confirma que las funciones estáticas residen en la sección de código y son compartidas entre instancias.
+
+- **vptr y vtable**
+	- Los objetos `Base` y `Derived` tienen punteros `vptr` apuntando a direcciones distintas de vtable, lo que permite polimorfismo dinámico.
+
+- **Prueba de ejecución**
+	- La llamada directa a función estática fue rápida (0.095 s).  
+	- La llamada a través de puntero a función fue un poco más rápida (0.073 s), debido a optimizaciones del compilador.  
+	- La llamada a método virtual fue la más lenta (0.103 s), debido a la indirección mediante vtable.
+
+**Conclusión:**
+
+- Las llamadas directas son las más eficientes.  
+- Los punteros a función agregan mínima sobrecarga y permiten flexibilidad.  
+- Los métodos virtuales permiten polimorfismo dinámico pero introducen un pequeño costo adicional en tiempo de ejecución.  
+- El tamaño del objeto aumenta por el puntero oculto `vptr` en clases con métodos virtuales, mientras que los atributos se almacenan directamente en el bloque de memoria del objeto.
+
+#### Código usado:
+
+`ofApp.cpp`
+```javascript
+#include "ofApp.h"
+#include <ctime>
+
+void ofApp::setup() {
+    std::cout << "===== Tamaños de objetos =====\n";
+    MyClass obj;
+    Base b;
+    Derived d;
+    FunctionPointerExample ex;
+
+    std::cout << "sizeof(FunctionPointerExample): " << sizeof(ex) << " bytes\n";
+    std::cout << "sizeof(MyClass): " << sizeof(obj) << " bytes\n";
+    std::cout << "sizeof(Base): " << sizeof(b) << " bytes\n";
+    std::cout << "sizeof(Derived): " << sizeof(d) << " bytes\n";
+
+    std::cout << "\n===== Direcciones de atributos =====\n";
+    std::cout << "&obj: " << &obj << "\n";
+    std::cout << "&obj.x: " << &obj.x << "\n";
+    std::cout << "&obj.y: " << &obj.y << "\n";
+
+    std::cout << "\n===== Funciones estáticas =====\n";
+    std::cout << "Función estática: " << (void*)&FunctionPointerExample::staticFunction << "\n";
+
+    std::cout << "\n===== Direcciones de vptr (vtable) =====\n";
+    std::cout << "vptr Base: " << *(void**)&b << "\n";
+    std::cout << "vptr Derived: " << *(void**)&d << "\n";
+
+    std::cout << "\n===== Prueba de punteros y ejecución =====\n";
+    ex.assignFunction();
+    ex.funcPtr(); // llamada a función estática
+
+    // puntero a método miembro no virtual
+    void (MyClass::*memPtr)() = &MyClass::memberFunction;
+    (obj.*memPtr)();
+
+    // puntero a método miembro virtual
+    void (MyClass::*virtPtr)() = &MyClass::virtualFunction;
+    (obj.*virtPtr)();
+
+    // ----------------------------
+    // Prueba de rendimiento simple
+    // ----------------------------
+    constexpr int iterations = 50000000; // 50 millones
+    std::clock_t start, end;
+
+    start = std::clock();
+    for(int i = 0; i < iterations; i++) {
+        FunctionPointerExample::staticFunction();
+    }
+    end = std::clock();
+    std::cout << "\nTiempo llamada directa: " << double(end - start)/CLOCKS_PER_SEC << " s\n";
+
+    start = std::clock();
+    for(int i = 0; i < iterations; i++) {
+        ex.funcPtr();
+    }
+    end = std::clock();
+    std::cout << "Tiempo puntero a función: " << double(end - start)/CLOCKS_PER_SEC << " s\n";
+
+    start = std::clock();
+    for(int i = 0; i < iterations; i++) {
+        (obj.*virtPtr)();
+    }
+    end = std::clock();
+    std::cout << "Tiempo puntero a método virtual: " << double(end - start)/CLOCKS_PER_SEC << " s\n";
+}
+
+void ofApp::update() {}
+void ofApp::draw() {}
+void ofApp::keyPressed(int key) {}
+void ofApp::keyReleased(int key) {}
+void ofApp::mouseMoved(int x, int y) {}
+void ofApp::mouseDragged(int x, int y, int button) {}
+void ofApp::mousePressed(int x, int y, int button) {}
+void ofApp::mouseReleased(int x, int y, int button) {}
+void ofApp::mouseEntered(int x, int y) {}
+void ofApp::mouseExited(int x, int y) {}
+void ofApp::windowResized(int w, int h) {}
+void ofApp::dragEvent(ofDragInfo dragInfo) {}
+void ofApp::gotMessage(ofMessage msg) {}
+```
+
+`ofApp.h:`
+```javascript
+#pragma once
+
+#include "ofMain.h"
+#include <iostream>
+
+// ----------------------------
+// Clases para pruebas
+// ----------------------------
+class FunctionPointerExample {
+public:
+    void (*funcPtr)();  // puntero a función
+
+    static void staticFunction() {
+        // función estática
+    }
+
+    void assignFunction() {
+        funcPtr = staticFunction;
+    }
+};
+
+class MyClass {
+public:
+    int x;
+    int y;
+
+    void memberFunction() {
+        // método no virtual
+    }
+
+    virtual void virtualFunction() {
+        // método virtual
+    }
+};
+
+class Base {
+public:
+    virtual void foo() {}
+};
+
+class Derived : public Base {
+public:
+    void foo() override {}
+};
+
+// ----------------------------
+// Clase principal OF
+// ----------------------------
+class ofApp : public ofBaseApp{
+public:
+    void setup();
+    void update();
+    void draw();
+
+    void keyPressed(int key);
+    void keyReleased(int key);
+    void mouseMoved(int x, int y );
+    void mouseDragged(int x, int y, int button);
+    void mousePressed(int x, int y, int button);
+    void mouseReleased(int x, int y, int button);
+    void mouseEntered(int x, int y);
+    void mouseExited(int x, int y);
+    void windowResized(int w, int h);
+    void dragEvent(ofDragInfo dragInfo);
+    void gotMessage(ofMessage msg);
+};
+```
