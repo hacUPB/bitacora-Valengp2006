@@ -341,3 +341,15 @@ void ofApp::setup() {
 	delete ptr;
 }
 ```
+## Uso de punteros y referencias
+
+**¿Cuál es la relación entre los punteros a métodos y la vtable?**
+
+- Un puntero a método miembro en C++ puede apuntar a una función no virtual o a una virtual.
+- Cuando el método no es virtual, el puntero guarda directamente la dirección de la función en la sección de código del programa.
+- Cuando el método es virtual, el puntero no se resuelve directamente:
+	- El compilador usa el vptr del objeto para consultar la vtable.
+	- Desde la vtable obtiene la dirección real de la función en tiempo de ejecución.
+- Esto significa que los punteros a métodos están estrechamente ligados al mecanismo de la vtable, ya que permiten que la llamada a la función se decida dinámicamente según el tipo real del objeto.
+
+#### Evidencia 1:
