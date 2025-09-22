@@ -353,3 +353,5 @@ void ofApp::setup() {
 - Esto significa que los punteros a métodos están estrechamente ligados al mecanismo de la vtable, ya que permiten que la llamada a la función se decida dinámicamente según el tipo real del objeto.
 
 #### Evidencia 1:
+
+<img width="284" height="43" alt="Captura de pantalla 2025-09-22 a la(s) 3 40 25 p m" src="https://github.com/user-attachments/assets/d36fd4bb-8329-4d85-b5ea-523629eeebae" />
