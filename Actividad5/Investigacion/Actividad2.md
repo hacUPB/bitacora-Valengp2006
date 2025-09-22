@@ -355,3 +355,8 @@ void ofApp::setup() {
 #### Evidencia 1:
 
 <img width="284" height="43" alt="Captura de pantalla 2025-09-22 a la(s) 3 40 25 p m" src="https://github.com/user-attachments/assets/d36fd4bb-8329-4d85-b5ea-523629eeebae" />
+
+- `sizeof(FunctionPointerExample)`: 8 bytes → el objeto ocupa 8 bytes, correspondientes al puntero a función.
+- La ejecución de `funcPtr` imprime “Static function called” → prueba que el puntero a función fue asignado y llamado exitosamente.
+
+Esto demuestra que el tamaño del objeto aumenta por el puntero, y que la invocación funciona sin necesidad de instanciar un objeto para la función estática.
