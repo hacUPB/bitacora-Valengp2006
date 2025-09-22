@@ -885,7 +885,7 @@ Este mecanismo permite el polimorfismo dinámico, donde el tipo real del objeto 
 
 #### Evidencia 5:
 
-
+<img width="353" height="399" alt="Captura de pantalla 2025-09-22 a la(s) 5 08 56 p m" src="https://github.com/user-attachments/assets/1daedf50-b44c-45de-90bb-440065a31dac" />
 
 - **Objetos y atributos**
 	- Cada objeto tiene su propio bloque de memoria para atributos (`x`, `y`).  
@@ -917,3 +917,150 @@ Este mecanismo permite el polimorfismo dinámico, donde el tipo real del objeto 
 - Los métodos estáticos y punteros a función residen en la sección de código y se comparten.  
 - Los métodos virtuales utilizan `vptr` y `vtable` para permitir polimorfismo dinámico, introduciendo un pequeño costo en tiempo de ejecución.  
 - Esta evidencia confirma cómo los distintos elementos de una clase interactúan en tiempo de ejecución y cómo se implementa el despacho dinámico en C++.
+
+#### Códgigo usado:
+
+`ofApp.cpp:`
+```javascript
+#include "ofApp.h"
+#include <ctime>
+
+void ofApp::setup() {
+    std::cout << "===== Tamaños de objetos =====\n";
+    MyClass obj;
+    Base b;
+    Derived d;
+    FunctionPointerExample ex;
+
+    std::cout << "sizeof(FunctionPointerExample): " << sizeof(ex) << " bytes\n";
+    std::cout << "sizeof(MyClass): " << sizeof(obj) << " bytes\n";
+    std::cout << "sizeof(Base): " << sizeof(b) << " bytes\n";
+    std::cout << "sizeof(Derived): " << sizeof(d) << " bytes\n";
+
+    std::cout << "\n===== Direcciones de atributos =====\n";
+    std::cout << "&obj: " << &obj << "\n";
+    std::cout << "&obj.x: " << &obj.x << "\n";
+    std::cout << "&obj.y: " << &obj.y << "\n";
+
+    std::cout << "\n===== Funciones estáticas =====\n";
+    std::cout << "Función estática: " << (void*)&FunctionPointerExample::staticFunction << "\n";
+
+    std::cout << "\n===== Direcciones de vptr (vtable) =====\n";
+    std::cout << "vptr Base: " << *(void**)&b << "\n";
+    std::cout << "vptr Derived: " << *(void**)&d << "\n";
+
+    std::cout << "\n===== Prueba de punteros y ejecución =====\n";
+    ex.assignFunction();
+    ex.funcPtr(); // llamada a función estática
+
+    void (MyClass::*memPtr)() = &MyClass::memberFunction;
+    (obj.*memPtr)();
+
+    void (MyClass::*virtPtr)() = &MyClass::virtualFunction;
+    (obj.*virtPtr)();
+
+    // ----------------------------
+    // Prueba de rendimiento simple
+    // ----------------------------
+    constexpr int iterations = 50000000; // 50 millones
+    std::clock_t start, end;
+
+    start = std::clock();
+    for(int i = 0; i < iterations; i++) FunctionPointerExample::staticFunction();
+    end = std::clock();
+    std::cout << "\nTiempo llamada directa: " << double(end - start)/CLOCKS_PER_SEC << " s\n";
+
+    start = std::clock();
+    for(int i = 0; i < iterations; i++) ex.funcPtr();
+    end = std::clock();
+    std::cout << "Tiempo puntero a función: " << double(end - start)/CLOCKS_PER_SEC << " s\n";
+
+    start = std::clock();
+    for(int i = 0; i < iterations; i++) (obj.*virtPtr)();
+    end = std::clock();
+    std::cout << "Tiempo puntero a método virtual: " << double(end - start)/CLOCKS_PER_SEC << " s\n";
+}
+
+void ofApp::update() {}
+void ofApp::draw() {}
+void ofApp::keyPressed(int key) {}
+void ofApp::keyReleased(int key) {}
+void ofApp::mouseMoved(int x, int y) {}
+void ofApp::mouseDragged(int x, int y, int button) {}
+void ofApp::mousePressed(int x, int y, int button) {}
+void ofApp::mouseReleased(int x, int y, int button) {}
+void ofApp::mouseEntered(int x, int y) {}
+void ofApp::mouseExited(int x, int y) {}
+void ofApp::windowResized(int w, int h) {}
+void ofApp::dragEvent(ofDragInfo dragInfo) {}
+void ofApp::gotMessage(ofMessage msg) {}
+```
+`ofApp.h:`
+```javascript
+#pragma once
+
+#include "ofMain.h"
+#include <iostream>
+
+// ----------------------------
+// Clases para pruebas
+// ----------------------------
+class FunctionPointerExample {
+public:
+    void (*funcPtr)();  // puntero a función
+
+    static void staticFunction() {
+        // función estática
+    }
+
+    void assignFunction() {
+        funcPtr = staticFunction;
+    }
+};
+
+class MyClass {
+public:
+    int x;
+    int y;
+
+    void memberFunction() {
+        // método no virtual
+    }
+
+    virtual void virtualFunction() {
+        // método virtual
+    }
+};
+
+class Base {
+public:
+    virtual void foo() {}
+};
+
+class Derived : public Base {
+public:
+    void foo() override {}
+};
+
+// ----------------------------
+// Clase principal OF
+// ----------------------------
+class ofApp : public ofBaseApp{
+public:
+    void setup();
+    void update();
+    void draw();
+
+    void keyPressed(int key);
+    void keyReleased(int key);
+    void mouseMoved(int x, int y );
+    void mouseDragged(int x, int y, int button);
+    void mousePressed(int x, int y, int button);
+    void mouseReleased(int x, int y, int button);
+    void mouseEntered(int x, int y);
+    void mouseExited(int x, int y);
+    void windowResized(int w, int h);
+    void dragEvent(ofDragInfo dragInfo);
+    void gotMessage(ofMessage msg);
+};
+```
