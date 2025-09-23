@@ -29,7 +29,7 @@ El compilador implementa el encapsulamiento controlando el acceso a los miembros
 
 #### Evidencia 2:
 
-
+<img width="285" height="73" alt="Captura de pantalla 2025-09-23 a la(s) 3 24 15 p m" src="https://github.com/user-attachments/assets/ad5af89c-ad39-436b-b669-171a87d160a1" />
 
 - La clase derivada puede acceder al miembro **`protected`** de la clase base (`baseVar`), confirmando que la protección se extiende a las clases hijas.  
 - Se ejecutó el método de la clase base (`Base method`) y el método redefinido en la clase derivada (`Derived method`).  
@@ -44,7 +44,7 @@ La herencia en C++ se implementa copiando la estructura de la clase base dentro 
 
 #### Evidencia 3:
 
-
+<img width="302" height="53" alt="Captura de pantalla 2025-09-23 a la(s) 3 28 54 p m" src="https://github.com/user-attachments/assets/73ba6ef5-dde3-449b-9d2b-a9ce401343d6" />
 
 - Se definió una clase base `Animal` con un método **virtual** `makeSound()`.  
 - Al crear punteros de tipo `Animal*` que apuntan a instancias de `Dog` y `Cat`, las llamadas se resolvieron en **tiempo de ejecución** gracias a la **vtable**.  
