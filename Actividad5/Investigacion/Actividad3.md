@@ -179,3 +179,7 @@ public:
     void gotMessage(ofMessage msg);
 };
 ```
+
+## Hagamos un poco de hackers y rompamos el encapsulamiento
+
+
