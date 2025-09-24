@@ -182,4 +182,101 @@ public:
 
 ## Hagamos un poco de hackers y rompamos el encapsulamiento
 
+**Etapa 1: Acceso legal con printMembers()**
 
+
+
+**¿Cómo se accede a los miembros privados respetando el encapsulamiento?**
+
+- Los miembros privados (`secret1`, `secret2`, `secret3`) no pueden ser accedidos directamente.
+- Para exponer su valor se define un método público (`printMembers`) que imprime su contenido.
+- Esto respeta el principio de **encapsulamiento**, ya que los datos siguen protegidos de accesos externos no autorizados.
+
+**Etapa 2: Intento de acceso directo**
+
+
+
+**¿Qué ocurre si intento acceder directamente a los miembros privados de la clase?**
+
+- El compilador impide el acceso a los miembros privados (`secret1`, `secret2`, `secret3`).
+- Al intentar compilar con `std::cout << obj.secret1;` aparece un **error de compilación** porque `secret1` es inaccesible fuera de la clase.
+
+
+**Etapa 3: Acceso ilegal con reinterpret_cast**
+
+
+
+**¿Qué pasa si leo los miembros privados directamente desde la memoria del objeto usando `reinterpret_cast` y aritmética de punteros?**
+
+- Se pueden leer los valores privados siempre que conozcas (o asumas) el layout en memoria del objeto. 
+- Al reinterpretar &obj como un bloque de bytes y convertir offsets a punteros del tipo adecuado, el programa puede acceder y mostrar los valores privados.
+
+#### Código usado:
+
+`ofApp.cpp`
+```javascript
+#include "ofApp.h"
+
+//--------------------------------------------------------------
+void ofApp::setup() {
+    // ===== Etapa 1 =====
+    std::cout << "Etapa 1: Acceso legal a miembros privados usando printMembers()" << std::endl;
+    obj.printMembers();
+
+    // ===== Etapa 2 =====
+    std::cout << "\nEtapa 2: Intento de acceso directo (fallará si lo descomentas)" << std::endl;
+    std::cout << "// std::cout << obj.secret1 << std::endl;  <-- No compila porque es privado" << std::endl;
+
+    // ===== Etapa 3 =====
+    std::cout << "\nEtapa 3: Acceso ilegal a miembros privados con reinterpret_cast" << std::endl;
+    int* ptrInt = reinterpret_cast<int*>(&obj);
+    float* ptrFloat = reinterpret_cast<float*>(ptrInt + 1);
+    char* ptrChar = reinterpret_cast<char*>(ptrFloat + 1);
+
+    std::cout << "secret1 (hackeado): " << *ptrInt << std::endl;
+    std::cout << "secret2 (hackeado): " << *ptrFloat << std::endl;
+    std::cout << "secret3 (hackeado): " << *ptrChar << std::endl;
+}
+
+//--------------------------------------------------------------
+void ofApp::update() {}
+
+//--------------------------------------------------------------
+void ofApp::draw() {
+    ofBackground(0);
+    ofSetColor(255);
+    ofDrawBitmapString("Revisa la consola para ver las 3 etapas", 20, 20);
+}
+```
+
+`ofApp.h`
+```javascript
+#pragma once
+#include "ofMain.h"
+#include <iostream>
+
+class MyClass {
+private:
+    int secret1;
+    float secret2;
+    char secret3;
+
+public:
+    MyClass(int s1, float s2, char s3) : secret1(s1), secret2(s2), secret3(s3) {}
+
+    void printMembers() const {
+        std::cout << "secret1: " << secret1 << std::endl;
+        std::cout << "secret2: " << secret2 << std::endl;
+        std::cout << "secret3: " << secret3 << std::endl;
+    }
+};
+
+class ofApp : public ofBaseApp {
+public:
+    void setup();
+    void update();
+    void draw();
+
+    MyClass obj {42, 3.14f, 'A'};
+};
+```
