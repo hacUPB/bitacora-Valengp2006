@@ -8,10 +8,10 @@
 - Algunas estrellas pueden “morir” y reaparecer en otra parte del cielo (simulando que titilan o se ocultan).
 - Con el tiempo, el fondo cambia de densidad y color (simulando movimiento galáctico).
 - Supernova: cuando se activa, ciertas estrellas pasan por un ciclo:
-    1. Incremento progresivo de tamaño y brillo.
-    2. Explosión → flash que llena la pantalla.
-    3. Remanente → halo expansivo que se desvanece.
-    4. Regeneración → la estrella “renace” en otra posición como una normal.
+    - Incremento progresivo de tamaño y brillo.
+    - Explosión → flash que llena la pantalla.
+    - Remanente → halo expansivo que se desvanece.
+    - Regeneración → la estrella “renace” en otra posición como una normal.
 
 **Controles**
 
@@ -62,6 +62,7 @@
         - Si s es una ShootingStar, su update() hará que se mueva con cola.
         - Si s es una SupernovaStar, su update() manejará la explosión.
     - Gracias al polimorfismo, no importa qué tipo real de estrella haya dentro del vector: el bucle las trata a todas como Star, pero en tiempo de ejecución se ejecuta el comportamiento correcto.
+
 
 
 
