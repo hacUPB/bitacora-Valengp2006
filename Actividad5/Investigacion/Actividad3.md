@@ -184,7 +184,7 @@ public:
 
 **Etapa 1: Acceso legal con printMembers()**
 
-
+<img width="328" height="75" alt="Captura de pantalla 2025-09-23 a la(s) 7 23 36 p m" src="https://github.com/user-attachments/assets/3f78351a-2fcb-4feb-92b1-242a2707c5fc" />
 
 **¿Cómo se accede a los miembros privados respetando el encapsulamiento?**
 
@@ -194,7 +194,7 @@ public:
 
 **Etapa 2: Intento de acceso directo**
 
-
+<img width="400" height="39" alt="Captura de pantalla 2025-09-23 a la(s) 7 24 41 p m" src="https://github.com/user-attachments/assets/f5304f86-3da0-4844-acd9-7db2cc4b4f03" />
 
 **¿Qué ocurre si intento acceder directamente a los miembros privados de la clase?**
 
@@ -204,7 +204,7 @@ public:
 
 **Etapa 3: Acceso ilegal con reinterpret_cast**
 
-
+<img width="337" height="70" alt="Captura de pantalla 2025-09-23 a la(s) 7 25 26 p m" src="https://github.com/user-attachments/assets/9a288b9a-55de-4eea-856b-95325282c20b" />
 
 **¿Qué pasa si leo los miembros privados directamente desde la memoria del objeto usando `reinterpret_cast` y aritmética de punteros?**
 
