@@ -290,7 +290,7 @@ El encapsulamiento protege los datos internos de una clase, limitando su acceso 
 
 Para prevenir corrupción de estado, mantener invariantes y asegurar que las clases se utilicen de forma consistente.
 
-- **¿Qué significa reinterpret_cast y cómo afecta la seguridad?**
+- **¿Qué significa `reinterpret_cast` y cómo afecta la seguridad?**
 
 `reinterpret_cast` permite tratar un bloque de memoria como si fuera de otro tipo. Esto ignora las restricciones del compilador, comprometiendo la seguridad y pudiendo causar errores en tiempo de ejecución.
 
