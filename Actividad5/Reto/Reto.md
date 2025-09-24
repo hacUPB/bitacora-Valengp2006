@@ -1,4 +1,5 @@
-**Idea base: Cielo estrellado dinámico**
+# Reto
+### Idea base: Cielo estrellado dinámico
 
 **¿Qué hace el programa?**
 
@@ -44,3 +45,4 @@
         - Si s es una ShootingStar, su update() hará que se mueva con cola.
         - Si s es una SupernovaStar, su update() manejará la explosión.
     - Gracias al polimorfismo, no importa qué tipo real de estrella haya dentro del vector: el bucle las trata a todas como Star, pero en tiempo de ejecución se ejecuta el comportamiento correcto.
+
