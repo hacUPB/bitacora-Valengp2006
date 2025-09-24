@@ -309,3 +309,17 @@ Porque los modificadores de acceso (`private`/`protected`/`public`) son una barr
 
     - El encapsulamiento en C++ depende de la disciplina del programador. 
     - Este experimento muestra que, aunque el compilador impide accesos indebidos, la memoria sigue siendo accesible con técnicas de bajo nivel.
+ 
+  ## Herencia y la Relación en Memoria
+
+ **¿Cómo los objetos derivados contienen los datos de las clases base?**
+
+
+
+**¿Qué sucede si agregamos más niveles de herencia?**
+
+
+
+**¿Cómo se organiza en memoria un objeto de una clase derivada en C++? ¿Cómo se almacenan los atributos de la clase base y de la derivada?**
+
+
