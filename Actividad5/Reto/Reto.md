@@ -7,6 +7,11 @@
 - Cada estrella tiene posición, tamaño, brillo e intensidad de parpadeo.
 - Algunas estrellas pueden “morir” y reaparecer en otra parte del cielo (simulando que titilan o se ocultan).
 - Con el tiempo, el fondo cambia de densidad y color (simulando movimiento galáctico).
+- Supernova: cuando se activa, ciertas estrellas pasan por un ciclo:
+    1. Incremento progresivo de tamaño y brillo.
+    2. Explosión → flash que llena la pantalla.
+    3. Remanente → halo expansivo que se desvanece.
+    4. Regeneración → la estrella “renace” en otra posición como una normal.
 
 **Controles**
 
@@ -18,14 +23,26 @@
 
 **POO aplicada**
 
-- `class Star`: atributos pos, size, brightness, twinkleSpeed. Métodos update(), draw().
+- `class Star`:
+  - **Atributos:** pos, size, brightness, twinkleSpeed.
+  - **Métodos** update(), draw().
 - `class StarSystem`: gestiona todas las estrellas (vector).
 
 **Herencia:**
 
 - `class TwinklingStar : public Star`: titila de forma sinusoidal (su brillo o intensidad no es constante, sino que sube y baja suavemente siguiendo una onda seno)
 - `class ShootingStar : public Star`: se mueve rápido con cola.
-- `class SupernovaStar : public Star`: al morir genera chispas.
+- `class SupernovaStar : public Star`:
+  - Estados: NORMAL, EXPANDING, EXPLODED, REMNANT, DEAD.
+  - Atributos extra:
+    - explosionProgress (0 → 1, controla el crecimiento del brillo/tamaño).
+    - haloRadius (expansión del remanente).
+    - remnantAlpha (transparencia del remanente que se desvanece).
+  - Comportamiento:
+    - En EXPANDING: aumenta tamaño y brillo.
+    - En EXPLODED: genera un flash que ocupa toda la pantalla.
+    - En REMNANT: dibuja un halo de colores (azules, violetas, rojos) que se expande y desaparece.
+    - En DEAD: la estrella se considera “muerta” y puede regenerarse en otra parte del cielo como una nueva estrella.
 
 **Polimorfismo:**
 
@@ -45,6 +62,7 @@
         - Si s es una ShootingStar, su update() hará que se mueva con cola.
         - Si s es una SupernovaStar, su update() manejará la explosión.
     - Gracias al polimorfismo, no importa qué tipo real de estrella haya dentro del vector: el bucle las trata a todas como Star, pero en tiempo de ejecución se ejecuta el comportamiento correcto.
+
 
 
 
