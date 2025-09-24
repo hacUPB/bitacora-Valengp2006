@@ -23,9 +23,9 @@
 
 **Herencia:**
 
-- `class TwinklingStar : public Star` (titila de forma sinusoidal).
-- `class ShootingStar : public Star` (se mueve rápido con cola).
-- `class SupernovaStar : public Star` (al morir genera chispas).
+- `class TwinklingStar : public Star`: titila de forma sinusoidal (su brillo o intensidad no es constante, sino que sube y baja suavemente siguiendo una onda seno)
+- `class ShootingStar : public Star`: se mueve rápido con cola.
+- `class SupernovaStar : public Star`: al morir genera chispas.
 
 **Polimorfismo:**
 
@@ -45,5 +45,6 @@
         - Si s es una ShootingStar, su update() hará que se mueva con cola.
         - Si s es una SupernovaStar, su update() manejará la explosión.
     - Gracias al polimorfismo, no importa qué tipo real de estrella haya dentro del vector: el bucle las trata a todas como Star, pero en tiempo de ejecución se ejecuta el comportamiento correcto.
+
 
 
