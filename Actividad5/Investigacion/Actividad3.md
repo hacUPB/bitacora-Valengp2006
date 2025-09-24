@@ -280,3 +280,32 @@ public:
     MyClass obj {42, 3.14f, 'A'};
 };
 ```
+**Reflexión Guiada**
+
+- **¿Qué es el encapsulamiento y cuál es su propósito?**
+
+El encapsulamiento protege los datos internos de una clase, limitando su acceso y evitando modificaciones indebidas. Garantiza modularidad, seguridad y control sobre cómo se usan los atributos.
+
+- **¿Por qué es importante proteger los datos?**
+
+Para prevenir corrupción de estado, mantener invariantes y asegurar que las clases se utilicen de forma consistente.
+
+- **¿Qué significa reinterpret_cast y cómo afecta la seguridad?**
+
+`reinterpret_cast` permite tratar un bloque de memoria como si fuera de otro tipo. Esto ignora las restricciones del compilador, comprometiendo la seguridad y pudiendo causar errores en tiempo de ejecución.
+
+- **¿Por qué se pudo acceder a los miembros privados?**
+
+Porque los modificadores de acceso (`private`/`protected`/`public`) son una barrera lógica en el compilador, no física en memoria. En tiempo de ejecución, los datos están linealmente dispuestos en memoria y se pueden manipular con punteros.
+
+- **Consecuencias en un programa real:**
+
+    - Corrupción de memoria
+    - Fallos de seguridad
+    - Datos inconsistentes
+    - Vulnerabilidades explotables.
+
+- **Implicaciones sobre C++ y encapsulamiento:**
+
+    - El encapsulamiento en C++ depende de la disciplina del programador. 
+    - Este experimento muestra que, aunque el compilador impide accesos indebidos, la memoria sigue siendo accesible con técnicas de bajo nivel.
