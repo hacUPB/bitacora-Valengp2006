@@ -314,12 +314,77 @@ Porque los modificadores de acceso (`private`/`protected`/`public`) son una barr
 
  **¿Cómo los objetos derivados contienen los datos de las clases base?**
 
+Cuando creamos un objeto de una clase derivada, primero se reservan los atributos de la clase base, y luego se colocan los atributos de la derivada en orden.
 
+- `obj` y `obj.baseVar` comparten la misma dirección → significa que el objeto comienza con el bloque de memoria de Base.
+- `obj.derivedVar` se almacena inmediatamente después de baseVar.
+- `obj.moreDerivedVar` se coloca después de derivedVar.
+
+Esto demuestra que la herencia en C++ se refleja linealmente en memoria: primero la base, luego la derivada, y así sucesivamente.
+
+#### Evidencia 1:
+
+
+
+- `&d` y `&d.baseVar` son iguales → el objeto comienza con los atributos de la clase base.
+- `&d.derivedVar` aparece desplazado +4 bytes → porque baseVar ocupa 4 bytes (int).
 
 **¿Qué sucede si agregamos más niveles de herencia?**
 
+Cada nuevo nivel de herencia simplemente añade sus atributos después de los anteriores en memoria. Así, la memoria de `MoreDerived` comienza con `baseVar`, sigue con `derivedVar`, y finaliza con `moreDerivedVar`. Si añadiéramos otra clase derivada, sus atributos también se sumarían al final.
+
+#### Evidencia 2:
 
 
-**¿Cómo se organiza en memoria un objeto de una clase derivada en C++? ¿Cómo se almacenan los atributos de la clase base y de la derivada?**
+
+#### Código usados:
+
+`ofApp.cpp:`
+```javascript
+#include "ofApp.h"
+
+void ofApp::setup(){
+    MoreDerived obj;
+    obj.baseVar = 1;
+    obj.derivedVar = 2;
+    obj.moreDerivedVar = 3;
+    
+    std::cout << "Dirección de obj:                  " << &obj << std::endl;
+    std::cout << "Dirección de obj.baseVar:          " << &(obj.baseVar) << std::endl;
+    std::cout << "Dirección de obj.derivedVar:       " << &(obj.derivedVar) << std::endl;
+    std::cout << "Dirección de obj.moreDerivedVar:   " << &(obj.moreDerivedVar) << std::endl;
+}
+void ofApp::draw(){
+}
+
+```
+
+`ofApp.h:`
+```javascript
+#pragma once
+#include "ofMain.h"
+
+class Base {
+public:
+    int baseVar;
+};
+
+class Derived : public Base {
+public:
+    int derivedVar;
+};
+
+class MoreDerived : public Derived {
+public:
+    int moreDerivedVar;
+};
+
+class ofApp : public ofBaseApp{
+public:
+    void setup();
+    void draw();
+};
+
+```
 
 
