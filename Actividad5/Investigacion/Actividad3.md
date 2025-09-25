@@ -384,7 +384,15 @@ public:
     void setup();
     void draw();
 };
-
 ```
 
+## Polimorfismo y Vtables en detalle
+
+**¿Cómo funciona el polimorfismo en C++ a nivel interno?**
+
+El polimorfismo en C++ permite que un puntero o referencia de la clase base invoque métodos definidos en clases derivadas. Esto se logra gracias a un mecanismo interno llamado vtable (virtual table)
+
+- Cada clase con métodos virtuales tiene asociada una tabla de punteros a funciones virtuales.
+- Cada objeto de esa clase contiene un puntero oculto llamado vptr que apunta a la vtable correspondiente.
+- Cuando llamas a un método virtual (ej. animal->makeSound()), el compilador genera código que consulta el vptr, busca la función en la vtable, y ejecuta la versión correcta según el tipo real del objeto.
 
