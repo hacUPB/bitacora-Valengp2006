@@ -324,7 +324,7 @@ Esto demuestra que la herencia en C++ se refleja linealmente en memoria: primero
 
 #### Evidencia 1:
 
-
+<img width="294" height="56" alt="Captura de pantalla 2025-09-25 a la(s) 5 00 53 p m" src="https://github.com/user-attachments/assets/0ef16698-b4c7-477f-9171-700119ea4f00" />
 
 - `&d` y `&d.baseVar` son iguales → el objeto comienza con los atributos de la clase base.
 - `&d.derivedVar` aparece desplazado +4 bytes → porque baseVar ocupa 4 bytes (int).
@@ -335,7 +335,7 @@ Cada nuevo nivel de herencia simplemente añade sus atributos después de los an
 
 #### Evidencia 2:
 
-
+<img width="358" height="69" alt="Captura de pantalla 2025-09-25 a la(s) 5 06 43 p m" src="https://github.com/user-attachments/assets/a136566e-40ff-4d8a-af59-4f0d26c53049" />
 
 #### Código usados:
 
