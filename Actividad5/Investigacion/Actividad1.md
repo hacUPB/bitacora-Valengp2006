@@ -1,0 +1,123 @@
+# Sesión 1: la naturaleza de los objetos en C++
+## Introducción a los objetos - 16/09/2025
+
+- **¿Qué representa la clase Particle?**
+
+La clase `Particle` representa un objeto, en el cual cada instancia de esta clase tiene dos atributos (`x` y `y`) que indican su posición en dicho plano. Estos valores son de tipo `float`, lo que permite representar posiciones con decimales y mayor precisión.
+
+- **¿Cómo interactúan sus atributos y métodos?**
+
+  - Los atributos `x` y `y` almacenan la posición actual de la partícula.
+  - El método `move(float dx, float dy)` permite modificar esa posición sumando un desplazamiento en el eje `x` (`dx`) y en el eje `y` (`dy`).
+  - Cada vez que se llama al método `move`, la partícula “se mueve” a una nueva posición en el plano.
+  - **Ejemplo conceptual:**
+      - Si la partícula está en `(2, 3)` y llamamos a `move(1, -2)`, su nueva posición será `(3, 1)`.
+
+- **¿Qué es un objeto en C++? ¿cómo se relaciona con una clase?**
+
+  - Una **clase** en C++ es un **plano o plantilla** que define qué **atributos (datos)** y **métodos (comportamientos)** tendrán sus instancias.
+  - Un **objeto** es una **instancia concreta creada a partir de una clase**: ocupa memoria, tiene valores propios en sus atributos y puede ejecutar los métodos definidos en su clase.
+  - **Relación:**
+      - La clase es el **molde** y el objeto es el **producto construido con ese molde**.
+      - Puedes crear muchos objetos a partir de una sola clase, y cada uno mantiene su propio estado independiente.
+
+**Ejemplo:**
+
+```cpp
+class Particle {
+public:
+    float x, y;
+    void move(float dx, float dy) {
+        x += dx;
+        y += dy;
+    }
+};
+
+Particle p;      // ← p es un objeto (instancia de Particle)
+p.x = 1; p.y = 2;
+p.move(3, -1);    // ahora p.x == 4 y p.y == 1
+```
+
+Aquí `Particle` es la **clase** y `p` es un **objeto** que existe en memoria y puede usar los atributos y métodos de su clase.
+
+## Explorando la memoria
+
+- **¿Los atributos están almacenados de forma contigua?**
+
+Sí, normalmente los atributos de un objeto se almacenan de manera contigua en memoria, uno tras otro, para facilitar el acceso rápido y eficiente. Esto se llama layout en memoria del objeto.
+
+<img width="308" height="45" alt="Captura de pantalla 2025-09-15 171902" src="https://github.com/user-attachments/assets/48202087-1e12-4db2-877e-1e57a94b9869" />
+
+- **¿Qué indica el tamaño del objeto sobre su estructura interna?**
+  
+  - El tamaño (sizeof(Particle)) indica cuánto espacio ocupa en memoria una instancia de esa clase.
+  - Si solo tiene dos float, deberías esperar unos 8 bytes (2 × 4), pero si ves un tamaño mayor, puede deberse a padding de alineación que el compilador agrega para que los datos estén alineados en direcciones de memoria específicas, mejorando el rendimiento del procesador.
+
+ <img width="373" height="66" alt="Captura de pantalla 2025-09-15 171647" src="https://github.com/user-attachments/assets/79513aad-1a4c-4e1c-a56e-c711bab44dc3" />
+
+- **¿Cómo se almacenan los objetos en memoria en C++? Si tengo dos instancias de Particle, ¿Cómo se relacionan sus direcciones de memoria? ¿Los atributos están contiguos?**
+
+    - En C++, cuando creas objetos de una clase, el compilador **reserva un bloque de memoria para cada instancia**. Cada bloque contiene el espacio necesario para **todos los atributos no estáticos** de esa clase.
+    - Cada **objeto ocupa un bloque contiguo de memoria**.
+    - Dentro de ese bloque, sus **atributos (variables miembro) también se almacenan de forma contigua**, en el mismo orden en que fueron declarados en la clase.
+    - Puede haber pequeños **espacios vacíos (padding)** entre atributos para que estén alineados en direcciones de memoria que el procesador maneje más eficientemente.
+
+<img width="328" height="102" alt="Captura de pantalla 2025-09-15 172012" src="https://github.com/user-attachments/assets/d735de79-7f90-405c-a916-3729d47e88f6" />
+
+  - **Relación entre las direcciones de `p1` y `p2`:**
+      - `&p1` y `&p2` devolverán las **direcciones base** de cada objeto.
+      - Son **direcciones completamente independientes**, porque el compilador reserva espacio separado para cada uno.
+      - No están necesariamente una al lado de la otra: su posición depende de cómo el compilador organice la memoria en ese momento.
+
+  - **Direcciones internas (atributos):**
+      - `&(p1.x)` y `&(p1.y)` normalmente estarán **una inmediatamente después de la otra** (por ejemplo: `0x1000` y `0x1004` si cada `float` ocupa 4 bytes).
+      - Esto muestra que los **atributos dentro de un objeto están almacenados de forma contigua**.
+
+- **Resumen corto**
+
+  - Cada objeto ocupa un bloque de memoria propio.
+  - Los atributos dentro de ese bloque están contiguos.
+  - Dos objetos distintos (`p1` y `p2`) están en direcciones distintas e independientes entre sí.
+
+## Análisis de diferencias
+
+- **¿Cómo afectan los datos estáticos al tamaño de la instancia?**
+
+No lo afectan. Los datos estáticos se almacenan una sola vez en memoria global, no dentro de cada objeto, por lo que `sizeof` no los incluye.
+
+- **¿Qué diferencias hay entre datos estáticos y dinámicos en términos de memoria?**
+
+  - Los **estáticos** existen solo una vez para toda la clase y no aumentan el tamaño de cada objeto.
+  - Los **dinámicos** se reservan en tiempo de ejecución en el heap, y el objeto solo guarda un puntero a ellos. Esto significa que el tamaño del objeto es pequeño, pero su uso de memoria real puede ser mucho mayor.
+
+<img width="258" height="49" alt="Captura de pantalla 2025-09-17 161643" src="https://github.com/user-attachments/assets/44d33b21-857c-4e20-a9aa-a5b2eaebe08a" />
+
+La salida que muestra la terminal es:
+
+`Tamaño de Simple: 4 bytes`
+`Tamaño de Complex: 12 bytes`
+
+Lo que significa lo siguiente:
+
+- `Simple` tiene solo un int a, y en tu sistema un int ocupa 4 bytes → por eso sizeof(Simple) = 4.
+- `Complex` tiene tres int (a, b, c), cada uno de 4 bytes → 3 × 4 = 12 bytes → por eso sizeof(Complex) = 12.
+- Los métodos no ocupan espacio dentro del objeto. Aunque Complex tenga method1() y method2(), estos están guardados como código aparte en memoria, y no se suman al tamaño del objeto.
+- Solo los atributos no estáticos cuentan para `sizeof`.
+
+Así que esta diferencia de tamaños se debe exclusivamente a la cantidad de atributos (datos) que tiene cada clase.
+
+## Reflexión
+
+**¿Qué es un objeto desde la perspectiva de la memoria?**
+
+Un objeto es una estructura de datos en memoria que representa una instancia concreta de una clase. Al instanciar una clase, el sistema reserva un bloque de memoria que contiene todos los **atributos no estáticos** definidos en ella. Este bloque actúa como un contenedor que almacena el estado del objeto, permitiendo que cada instancia tenga su propio conjunto independiente de datos.
+
+**¿Cómo influyen los atributos y métodos en el tamaño y estructura del objeto?**
+
+- **Atributos (no estáticos):** Cada atributo no estático ocupa un espacio en memoria dentro del objeto. La suma de estos campos (considerando sus tipos y alineación) determina el **tamaño total de la instancia**.
+- **Atributos estáticos:** No forman parte del objeto. Solo existe una copia por clase, compartida entre todas las instancias, por lo que **no afectan el tamaño de cada instancia individual**.
+- **Métodos:** No se copian en cada objeto. El código de los métodos se almacena en una región de memoria común y todas las instancias acceden a él mediante referencias. Por tanto, **no incrementan el tamaño del objeto**.
+
+**Conclusión**
+
+Comprender qué elementos ocupan espacio en memoria dentro de un objeto permite diseñar clases más eficientes. Dado que solo los atributos no estáticos afectan el tamaño de las instancias, es posible optimizar el uso de memoria minimizando la cantidad y el tamaño de estos campos. Los atributos estáticos, en cambio, resultan útiles cuando se necesita información compartida sin duplicarla en cada objeto. Esta distinción es clave para crear clases bien estructuradas, escalables y con un consumo de recursos controlado.
