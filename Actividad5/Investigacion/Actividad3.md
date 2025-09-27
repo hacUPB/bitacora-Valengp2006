@@ -561,7 +561,7 @@ int main() {
 
 #### Evidencia:
 
-
+<img width="234" height="71" alt="Captura de pantalla 2025-09-27 a la(s) 4 53 06 p m" src="https://github.com/user-attachments/assets/a5352c72-0541-4a6e-8c2a-3d7504446185" />
 
 - La salida demuestra que el programa efectivamente llamó a las versiones correctas (`Dog::makeSound` y `Cat::makeSound`) a pesar de usar punteros `Animal*`. Eso confirma que la `vtable` se usó para resolver las llamadas dinámicamente → es la evidencia directa de polimorfismo en acción. 
 
