@@ -396,3 +396,174 @@ El polimorfismo en C++ permite que un puntero o referencia de la clase base invo
 - Cada objeto de esa clase contiene un puntero oculto llamado vptr que apunta a la vtable correspondiente.
 - Cuando llamas a un método virtual (ej. animal->makeSound()), el compilador genera código que consulta el vptr, busca la función en la vtable, y ejecuta la versión correcta según el tipo real del objeto.
 
+**¿Cómo utiliza el programa las vtables para el polimorfismo?**
+
+El programa usa tablas virtuales (`vtables`) para despachar dinámicamente los métodos virtuales.
+
+- Cada objeto polimórfico (como `Dog` o `Cat`) tiene internamente un puntero oculto llamado `vptr` que apunta a la `vtable` de su clase.
+- La vtable es una tabla en memoria que guarda direcciones de funciones virtuales (por ejemplo, la dirección de `Dog::makeSound` o `Cat::makeSound`).
+- Cuando escribimos `animal->makeSound()`, el compilador genera código que:
+	1.	Lee el vptr desde el objeto.
+	2.	Busca en la vtable la dirección del método en la posición correspondiente.
+	3.	Llama a la función obtenida.
+De esta manera, aunque la variable sea de tipo `Animal*`, la llamada termina ejecutando la versión correcta (`Dog::makeSound` o `Cat::makeSound`) según el tipo dinámico del objeto.
+
+**¿Cuál es el impacto en el rendimiento?**
+
+El polimorfismo dinámico introduce una sobrecarga ligera porque cada llamada virtual requiere:
+
+1.	Acceder al `vptr` del objeto.
+2.	Acceder a la `vtable` para obtener la dirección del método.
+3.	Hacer una llamada indirecta a esa función.
+
+Esto añade unas pocas instrucciones adicionales frente a una llamada normal, y además impide que el compilador haga optimizaciones como *inlining*.
+
+En la práctica:
+
+- El costo por llamada es muy bajo (nanosegundos), casi irrelevante en la mayoría de programas.
+- Puede ser significativo si la llamada virtual se ejecuta en un hot-path crítico (por ejemplo, millones de veces en un bucle de renderizado o física).
+
+**Reflexión individual**
+
+- **Encapsulamiento:**
+
+    - Implementación interna:
+	    - Los modificadores de acceso (private, protected, public) no cambian la representación del objeto en memoria.
+	    - El compilador implementa encapsulamiento solo a nivel de compilación, verificando si un miembro puede ser accedido desde cierto punto del código.
+	    - En memoria, todos los atributos están ahí, uno tras otro, sin distinción de acceso.
+    - Ejemplo conceptual en memoria:
+
+```cpp
+class A {
+private:
+    int x;   // accesible solo dentro de A
+public:
+    int y;   // accesible desde fuera
+};
+```
+
+    En memoria: [ x ][ y ] → no hay “barrera física” que impida leer x. El control es solo semántico y de compilador.
+
+
+- **Herencia**:
+
+    - Implementación interna:
+	    - La clase hija incluye los miembros de la clase base como si fueran los primeros campos de su propio objeto.
+	    - **Si hay herencia simple:** la disposición en memoria es lineal.
+	    - **En herencia múltiple:** el compilador guarda varias subestructuras (una por cada base) y gestiona punteros internos para resolver ambigüedades.
+    - Ejemplo simplificado:
+```cpp
+class A { int x; };
+class B : public A { int y; };
+```
+
+- En memoria, un objeto de B: [ x ][ y ].
+
+    - Con herencia múltiple:
+```cpp
+class C { int z; };
+class D : public A, public C { int w; };
+```
+
+- En memoria, un D: [ x ][ z ][ w ].
+
+Si alguna base tiene funciones virtuales, se añade su propio puntero a `vtable` (`vptr`).
+
+- **Polimorfismo**
+
+    - **Implementación interna:**
+	    - Cuando una clase declara métodos virtuales, el compilador genera una `vtable` (tabla de punteros a funciones).
+	    - Cada objeto que pertenezca a esa clase contiene un `vptr`, un puntero oculto que apunta a la `vtable` correspondiente.
+	    - En tiempo de ejecución, cuando invocas un método virtual, se hace:
+	        - Cargar el `vptr` del objeto.
+	        - Buscar la dirección de la función en la `vtable`.
+	        - Saltar a esa función.
+
+Esto permite que la llamada dependa del tipo real del objeto (ligadura dinámica).
+
+**Eficiencia vs Complejidad**
+
+- **Ventajas:**
+	- **Encapsulamiento:**
+	    - Facilita modularidad y mantenimiento.
+	    - El costo en tiempo de ejecución es nulo (solo revisiones en compilación).
+	- **Herencia:**
+	    - Permite reutilización de código sin duplicación.
+	    - Herencia simple es muy eficiente (básicamente copiar la disposición de memoria).
+	- **Polimorfismo:**
+	    - Gran flexibilidad: permite diseñar sistemas extensibles sin cambiar código existente.
+	    - Coste de memoria moderado (un puntero `vptr` por objeto).
+
+- **Desventajas:**
+	- **Encapsulamiento:**
+	    - Puede dar falsa sensación de seguridad: internamente todo está accesible si se usa aritmética de punteros.
+	    - No protege contra accesos indebidos en binarios o depuración.
+	- **Herencia:**
+	    - En herencia múltiple, la disposición en memoria y las conversiones de punteros son más costosas y complejas.
+	    - Puede introducir problemas de ambigüedad y aumentar la fragilidad del diseño.
+	- **Polimorfismo:**
+	    - Llamar a un método virtual es más lento que una llamada normal (1–2 accesos indirectos extras).
+	    - Las `vtables` aumentan el tamaño del binario.
+	    - Dificultan ciertas optimizaciones (ej: *inlining*).
+
+**Conclusiones:**
+
+- El **encapsulamiento** se implementa solo con reglas de compilador → sin costo en ejecución.
+- La **herencia** es básicamente composición en memoria, con punteros extras en herencia múltiple.
+- El **polimorfismo** usa `vtables` y `vptrs`, lo que introduce una leve penalización en velocidad y memoria pero da gran flexibilidad.
+
+**¿Qué es inlining?**
+
+El inlining (o “expansión en línea”) es una optimización que hace el compilador en C++ para evitar la sobrecarga de las llamadas a funciones.
+
+- **¿Qué pasa normalmente al llamar una función?**
+
+	1.	Se hace un salto a la dirección de esa función.
+	2.	Se guarda la dirección de retorno en la pila.
+	3.	Se pasan los argumentos y se reserva espacio para variables locales.
+	4.	Al terminar, se regresa al punto de la llamada.
+    - Todo eso tiene un costo en tiempo.
+
+
+- **¿Qué hace el inlining?**
+
+Cuando una función es marcada como inline (o el compilador decide optimizarla), el compilador reemplaza la llamada a la función por el propio cuerpo de la función.
+
+Ejemplo:
+```cpp
+inline int cuadrado(int x) {
+    return x * x;
+}
+
+int main() {
+    int a = cuadrado(5);
+}
+```
+Después de inlining, el compilador genera algo parecido a:
+```cpp
+int main() {
+    int a = 5 * 5;  // sin llamada a función
+}
+```
+
+- **Ventajas:**
+	- Más rápido: elimina el overhead de la llamada a función.
+	- Permite más optimizaciones (ej: propagación de constantes).
+
+- **Desventajas:**
+	- El binario crece: si la función es usada muchas veces, el código se copia en cada llamada → code bloat.
+	- Puede afectar la caché de instrucciones y, en algunos casos, empeorar el rendimiento.
+
+- **¿Cómo se relaciona con el polimorfismo?**
+
+    - Las funciones virtuales en C++ no pueden ser *inlined* de forma normal, porque su dirección real se resuelve en tiempo de ejecución usando la `vtable`.
+	- Una función virtual puede ser *inlined* solo si el compilador sabe exactamente qué tipo es el objeto en tiempo de compilación (ej: si no hay polimorfismo real en ese punto).
+
+#### Evidencia:
+
+
+
+- La salida demuestra que el programa efectivamente llamó a las versiones correctas (`Dog::makeSound` y `Cat::makeSound`) a pesar de usar punteros `Animal*`. Eso confirma que la `vtable` se usó para resolver las llamadas dinámicamente → es la evidencia directa de polimorfismo en acción. 
+
+- Las direcciones de memoria (`Dirección de d:`, `Dirección de c:`) no muestran la `vtable `directamente, pero sirven para documentar que cada objeto existe en memoria y tiene su propio `vptr` oculto que apunta a la `vtable` de su clase. Esto lo puedes mencionar como soporte adicional de la explicación teórica.
+
