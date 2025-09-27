@@ -442,7 +442,7 @@ public:
 };
 ```
 
-    En memoria: [ x ][ y ] → no hay “barrera física” que impida leer x. El control es solo semántico y de compilador.
+- En memoria: [ x ][ y ] → no hay “barrera física” que impida leer x. El control es solo semántico y de compilador.
 
 
 - **Herencia**:
@@ -512,7 +512,7 @@ Esto permite que la llamada dependa del tipo real del objeto (ligadura dinámica
 - La **herencia** es básicamente composición en memoria, con punteros extras en herencia múltiple.
 - El **polimorfismo** usa `vtables` y `vptrs`, lo que introduce una leve penalización en velocidad y memoria pero da gran flexibilidad.
 
-**¿Qué es inlining?**
+#### ¿Qué es inlining?
 
 El inlining (o “expansión en línea”) es una optimización que hace el compilador en C++ para evitar la sobrecarga de las llamadas a funciones.
 
