@@ -90,3 +90,11 @@ Las pruebas confirman que las decisiones de diseño OOP afectan el rendimiento e
 
 #### Evidencias:
 
+
+
+- El uso de **polimorfismo** facilita la extensibilidad y el orden en el diseño OOP, pero introduce una ligera sobrecarga en el rendimiento debido a las llamadas virtuales dinámicas.  
+- En la prueba, la versión **sin polimorfismo** mostró un incremento en los FPS promedio (mayor fluidez) y una reducción en el tiempo por frame, aunque con un uso de memoria apenas superior.  
+- La diferencia de rendimiento, aunque medible, no es significativa en el contexto del proyecto de arte generativo, por lo que el **beneficio de claridad y escalabilidad del polimorfismo** puede justificar su uso.  
+- La elección final depende del objetivo:  
+  - **Optimización máxima:** reducir o eliminar el polimorfismo.  
+  - **Mantenibilidad y facilidad para expandir el sistema:** mantener polimorfismo y jerarquía de clases.  
