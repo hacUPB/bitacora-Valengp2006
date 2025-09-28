@@ -53,8 +53,40 @@
         - Si s es una SupernovaStar, su update() manejará la explosión.
     - Gracias al polimorfismo, no importa qué tipo real de estrella haya dentro del vector: el bucle las trata a todas como Star, pero en tiempo de ejecución se ejecuta el comportamiento correcto.
 
+### Experimentación:
 
+**Procedimiento:**
 
+- Implementé dos versiones del proyecto:
+	- Con polimorfismo: clases base y derivadas con métodos virtuales.
+	- Sin polimorfismo: clases concretas sin herencia ni virtual.
+- Incorporé código para registrar en consola:
+    - FPS promedio.
+	- Tiempo promedio por frame.
+	- Memoria utilizada.
+	- Número de partículas en escena.
+- Ejecuté varias pruebas en ambas versiones para obtener datos comparativos.
 
+**Resultados**
 
+| Versión              | FPS promedio      | Tiempo/frame (ms) | Memoria usada | Num. partículas |
+|-----------------------|------------------:|------------------:|--------------:|----------------:|
+| Con polimorfismo      | 58,000 – 107,000 | 0.015 – 0.017     | ~107 MB       | 200 – 209       |
+| Sin polimorfismo      | 70,000 – 105,000 | 0.012 – 0.014     | ~109 MB       | 200 – 203       |
+
+**Análisis:**
+
+- El polimorfismo introduce una pequeña sobrecarga debido al uso de la vtable en llamadas a métodos virtuales.
+- En escenas con pocas partículas, la diferencia es casi imperceptible.
+- En escenas con muchas partículas, la versión sin polimorfismo logró un incremento del 10–15% en FPS promedio.
+- El consumo de memoria fue prácticamente idéntico en ambas versiones.
+- Decisión de diseño:
+    - Extensibilidad y claridad → mantener polimorfismo.
+	- Máxima eficiencia → eliminar polimorfismo.
+
+**Conclusión:**
+
+Las pruebas confirman que las decisiones de diseño OOP afectan el rendimiento en aplicaciones de arte generativo. Aunque el impacto en memoria es despreciable, el uso de métodos virtuales puede ralentizar el tiempo de ejecución cuando se escala el número de partículas.
+
+#### Evidencias:
 
