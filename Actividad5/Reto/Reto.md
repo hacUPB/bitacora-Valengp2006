@@ -57,10 +57,10 @@
 
 **Procedimiento:**
 
-- Implementé dos versiones del proyecto:
-	- Con polimorfismo: clases base y derivadas con métodos virtuales.
-	- Sin polimorfismo: clases concretas sin herencia ni virtual.
-- Incorporé código para registrar en consola:
+-**Implementé dos versiones del proyecto:**
+	- **Con polimorfismo:** clases base y derivadas con métodos virtuales.
+	- **Sin polimorfismo:** clases concretas sin herencia ni virtual.
+- **Incorporé código para registrar en consola:**
     - FPS promedio.
 	- Tiempo promedio por frame.
 	- Memoria utilizada.
@@ -80,7 +80,7 @@
 - En escenas con pocas partículas, la diferencia es casi imperceptible.
 - En escenas con muchas partículas, la versión sin polimorfismo logró un incremento del 10–15% en FPS promedio.
 - El consumo de memoria fue prácticamente idéntico en ambas versiones.
-- Decisión de diseño:
+- **Decisión de diseño:**
     - Extensibilidad y claridad → mantener polimorfismo.
 	- Máxima eficiencia → eliminar polimorfismo.
 
@@ -90,7 +90,9 @@ Las pruebas confirman que las decisiones de diseño OOP afectan el rendimiento e
 
 #### Evidencias:
 
+<img width="217" height="408" alt="Captura de pantalla 2025-09-28 a la(s) 6 38 32 p m" src="https://github.com/user-attachments/assets/82654192-7798-432f-a646-caacde29c2fb" />
 
+<img width="303" height="413" alt="Captura de pantalla 2025-09-28 a la(s) 6 46 04 p m" src="https://github.com/user-attachments/assets/2abfa3f6-14f0-4a75-a76f-bef019a2e929" />
 
 - El uso de **polimorfismo** facilita la extensibilidad y el orden en el diseño OOP, pero introduce una ligera sobrecarga en el rendimiento debido a las llamadas virtuales dinámicas.  
 - En la prueba, la versión **sin polimorfismo** mostró un incremento en los FPS promedio (mayor fluidez) y una reducción en el tiempo por frame, aunque con un uso de memoria apenas superior.  
@@ -99,44 +101,43 @@ Las pruebas confirman que las decisiones de diseño OOP afectan el rendimiento e
   - **Optimización máxima:** reducir o eliminar el polimorfismo.  
   - **Mantenibilidad y facilidad para expandir el sistema:** mantener polimorfismo y jerarquía de clases.  
 
-
 **Ayúdame a revisar mi proyecto para asegurarme de que sigo las mejores prácticas de programación orientada a objetos en C++. ¿Qué aspectos debo considerar en términos de encapsulamiento, herencia y polimorfismo?**
 
 **Encapsulamiento:**
 
-- Visibilidad adecuada:
+- **Visibilidad adecuada:**
 	- Asegúrarse de que los atributos (pos, size, brightness, etc.) sean privados o protegidos (private/protected) y que solo se accedan mediante métodos públicos si es necesario.
 	- Ejemplo: en lugar de exponer directamente pos, puedes usar getPos() o setPos().
-- Evitar datos públicos innecesarios:
+- **Evitar datos públicos innecesarios:**
 	- En el código, varias variables están como public por simplicidad. Esto puede estar bien para un prototipo, pero para un proyecto más formal deberías restringir accesos para mantener la integridad del objeto.
-- Responsabilidad clara de cada clase:
+- **Responsabilidad clara de cada clase:**
 	- Star debería encargarse únicamente de representar una estrella base.
 	- El control del ciclo de vida y la colección de objetos (agregar, eliminar, regenerar) corresponde a StarSystem. Esto está bien en tu diseño actual.
 
 **Herencia:**
 
-- Jerarquía lógica y coherente:
+- **Jerarquía lógica y coherente:**
 	- Star como clase base y TwinklingStar, ShootingStar, SupernovaStar como derivadas es una jerarquía correcta y fácil de extender.
 	- Evita “herencia por herencia” (no tiene sentido crear subclases si no van a modificar comportamiento).
-- Uso de override:
+- **Uso de override:**
 	- Ya es aplicado correctamente (void update() override, void draw() override). Esto mejora legibilidad y evita errores si la firma cambia.
-- Destructor virtual:
+- **Destructor virtual:**
 	- Muy bien que se haga uso de `virtual ~Star() {}` en la clase base para evitar fugas de memoria.
 
 **Polimorfismo:**
 
-- Aplicación adecuada:
+- **Aplicación adecuada:**
 	- Uso de polimorfismo para que el StarSystem maneje de forma genérica objetos diferentes (TwinklingStar, ShootingStar, SupernovaStar) sin tener que distinguirlos manualmente. Esto es la esencia de OOP bien aplicada.
-- Costo de rendimiento:
+- **Costo de rendimiento:**
 	- Evaluación del impacto con la versión sin polimorfismo. El resultado mostró que la diferencia existe, pero que para tu escala de proyecto es aceptable.
 	- Esto demuestra que entendiste el equilibrio entre diseño y eficiencia, uno de los aprendizajes clave de OOP.
 
 **Aspectos a mejorar:**
 
-- Encapsular datos sensibles: convierte public → protected o private y expón solo lo necesario.
-- Separar responsabilidades: considera mover la lógica de profiling a una clase o módulo aparte (ej. Profiler), en lugar de incluirla en ofApp.
-- Documentación interna: agrega comentarios que expliquen el rol de cada clase y cada método virtual para reforzar mantenibilidad.
-- Uso de unique_ptr: lo aplicas en StarSystem, excelente. Podrías añadir std::make_unique en todo el código para mayor consistencia.
+- **Encapsular datos sensibles:** convierte public → protected o private y expón solo lo necesario.
+- **Separar responsabilidades:** considera mover la lógica de profiling a una clase o módulo aparte (ej. Profiler), en lugar de incluirla en ofApp.
+- **Documentación interna:** agrega comentarios que expliquen el rol de cada clase y cada método virtual para reforzar mantenibilidad.
+- **Uso de unique_ptr:** lo aplicas en StarSystem, excelente. Podrías añadir std::make_unique en todo el código para mayor consistencia.
 
 **En conclusión:**
 
