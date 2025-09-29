@@ -98,3 +98,85 @@ Las pruebas confirman que las decisiones de diseño OOP afectan el rendimiento e
 - La elección final depende del objetivo:  
   - **Optimización máxima:** reducir o eliminar el polimorfismo.  
   - **Mantenibilidad y facilidad para expandir el sistema:** mantener polimorfismo y jerarquía de clases.  
+
+
+**Ayúdame a revisar mi proyecto para asegurarme de que sigo las mejores prácticas de programación orientada a objetos en C++. ¿Qué aspectos debo considerar en términos de encapsulamiento, herencia y polimorfismo?**
+
+**Encapsulamiento:**
+
+- Visibilidad adecuada:
+	- Asegúrarse de que los atributos (pos, size, brightness, etc.) sean privados o protegidos (private/protected) y que solo se accedan mediante métodos públicos si es necesario.
+	- Ejemplo: en lugar de exponer directamente pos, puedes usar getPos() o setPos().
+- Evitar datos públicos innecesarios:
+	- En el código, varias variables están como public por simplicidad. Esto puede estar bien para un prototipo, pero para un proyecto más formal deberías restringir accesos para mantener la integridad del objeto.
+- Responsabilidad clara de cada clase:
+	- Star debería encargarse únicamente de representar una estrella base.
+	- El control del ciclo de vida y la colección de objetos (agregar, eliminar, regenerar) corresponde a StarSystem. Esto está bien en tu diseño actual.
+
+**Herencia:**
+
+- Jerarquía lógica y coherente:
+	- Star como clase base y TwinklingStar, ShootingStar, SupernovaStar como derivadas es una jerarquía correcta y fácil de extender.
+	- Evita “herencia por herencia” (no tiene sentido crear subclases si no van a modificar comportamiento).
+- Uso de override:
+	- Ya es aplicado correctamente (void update() override, void draw() override). Esto mejora legibilidad y evita errores si la firma cambia.
+- Destructor virtual:
+	- Muy bien que se haga uso de `virtual ~Star() {}` en la clase base para evitar fugas de memoria.
+
+**Polimorfismo:**
+
+- Aplicación adecuada:
+	- Uso de polimorfismo para que el StarSystem maneje de forma genérica objetos diferentes (TwinklingStar, ShootingStar, SupernovaStar) sin tener que distinguirlos manualmente. Esto es la esencia de OOP bien aplicada.
+- Costo de rendimiento:
+	- Evaluación del impacto con la versión sin polimorfismo. El resultado mostró que la diferencia existe, pero que para tu escala de proyecto es aceptable.
+	- Esto demuestra que entendiste el equilibrio entre diseño y eficiencia, uno de los aprendizajes clave de OOP.
+
+**Aspectos a mejorar:**
+
+- Encapsular datos sensibles: convierte public → protected o private y expón solo lo necesario.
+- Separar responsabilidades: considera mover la lógica de profiling a una clase o módulo aparte (ej. Profiler), en lugar de incluirla en ofApp.
+- Documentación interna: agrega comentarios que expliquen el rol de cada clase y cada método virtual para reforzar mantenibilidad.
+- Uso de unique_ptr: lo aplicas en StarSystem, excelente. Podrías añadir std::make_unique en todo el código para mayor consistencia.
+
+**En conclusión:**
+
+El proyecto sí sigue buenas prácticas OOP, especialmente en la separación entre Star y StarSystem, el uso de herencia lógica y el polimorfismo aplicado con unique_ptr. Lo único pendiente es reforzar encapsulamiento para que el código sea más robusto a largo plazo.
+
+### Reflexión y ajuste Final
+
+**Para las pruebas finales realicé diferentes escenarios de validación:**
+
+- **Prueba de creación y comportamiento individual de objetos:** verifiqué que cada tipo de estrella (TwinklingStar, ShootingStar, SupernovaStar) cumpliera con su comportamiento específico (parpadeo, movimiento y explosión).
+- **Prueba de interacción simultánea:** ejecuté la aplicación con múltiples instancias de cada clase para asegurar que no hubiera conflictos y que los métodos polimórficos funcionaran de manera independiente.
+- **Prueba de rendimiento:** medí los FPS en escenas con gran número de objetos para confirmar que el sistema mantenía un desempeño fluido.
+
+**En cuanto a las buenas prácticas de POO en C++, consideré los siguientes aspectos:**
+
+- **Encapsulamiento:** probé que los atributos sensibles no se modificaran de forma directa desde fuera de la clase, sino que se gestionaran mediante métodos públicos controlados. Esto evita inconsistencias en el estado de los objetos.
+- **Herencia**: confirmé que la jerarquía definida era coherente (una ShootingStar es una Star) y que cada clase derivada extendía o especializaba el comportamiento sin duplicar código innecesario.
+- **Polimorfismo:** verifiqué que las llamadas a update() y draw() se resolvieran correctamente en tiempo de ejecución según el tipo de objeto, garantizando flexibilidad para añadir nuevas variantes de estrellas sin modificar la estructura existente.
+
+**Reflexión personal:**
+
+El entendimiento de los mecanismos internos de la POO influyó directamente en la claridad del diseño. Comprender cómo funciona el polimorfismo me permitió organizar el código de forma más extensible, y al mismo tiempo pude medir que su impacto en el rendimiento era mínimo en comparación con los beneficios de mantenibilidad.
+
+Los desafíos más grandes estuvieron en equilibrar la eficiencia con un diseño limpio. En pruebas iniciales intenté simplificar quitando virtual, pero comprobé que la pérdida de extensibilidad no justificaba la ganancia en FPS. Aprendí que en proyectos de arte generativo es más importante mantener un diseño robusto y flexible que obsesionarse con micro-optimizaciones.
+
+### Evidencias de los resultados de aprendizaje
+
+**RAE1 – Construcción de aplicaciones interactivas**
+
+- La aplicación cumple con los requisitos funcionales del reto: cada estrella responde a un patrón diferente (parpadeo, movimiento lineal, supernova).
+- Realicé pruebas visuales y capturas de pantalla que muestran las distintas fases del sistema en funcionamiento:
+	- Escena con estrellas parpadeando en diferentes posiciones.
+	- Trayectorias de estrellas fugaces cruzando la pantalla.
+	- Animación de supernova expandiéndose y desapareciendo.
+- Estas capturas demuestran que la obra de arte generativo se comporta como fue planeado y satisface los requisitos establecidos.
+
+**RAE2 – Pruebas de partes y del todo**
+
+- **Pruebas unitarias (partes):** validé cada clase hija de manera aislada para comprobar que los métodos update() y draw() generaran el comportamiento esperado. Ejemplo: en ShootingStar, verifiqué que al llegar al borde de la pantalla la estrella se reposicionara correctamente.
+- **Pruebas de integración (el todo):** ejecuté la aplicación con todas las clases activas simultáneamente para asegurar que no hubiera conflictos y que la interacción entre los diferentes tipos de estrellas mantuviera la coherencia visual.
+- **Pruebas de robustez:** aumenté intencionalmente el número de instancias hasta el límite de rendimiento aceptable para comprobar que el sistema se mantenía estable.
+
+Con estas pruebas, evidencio que logré un nivel resolutivo en la construcción de la aplicación (RAE1) y un nivel autónomo en la aplicación de pruebas siguiendo metodologías básicas de validación (RAE2).
