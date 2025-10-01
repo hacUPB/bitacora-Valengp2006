@@ -78,7 +78,7 @@ Está representado en las clases `State` y sus derivados (`NormalState`, `Attrac
 - **Observer:**
 
   - `ofApp` (Subject) → manda notificaciones (`notify()`) cuando presionas una tecla.
-  -Todas las `Particle` (Observers) → escuchan el evento en `onNotify()` y cambian de estado.
+  - Todas las `Particle` (Observers) → escuchan el evento en `onNotify()` y cambian de estado.
 
 - **State:**
 
