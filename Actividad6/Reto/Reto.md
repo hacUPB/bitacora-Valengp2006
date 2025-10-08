@@ -1,3 +1,5 @@
+
+https://github.com/user-attachments/assets/5c08370b-2aff-4f30-9998-9d1ceee8434e
 ## Proyecto: Cielo Generativo Interactivo - 06/10/2025
 
 ### Descripción del Proyecto
@@ -468,3 +470,57 @@ void ofApp::mousePressed(int x, int y, int button) {
     if (currentState) currentState->mousePressed(x, y, button);
 }
 ```
+**En Calmado:**
+
+- Al hacer clic, se generan destellos brillantes.
+
+<img width="1027" height="769" alt="Captura de pantalla 2025-10-08 164221" src="https://github.com/user-attachments/assets/b7b5c863-0dc1-4cc0-b419-0dfc2955ab8b" />
+
+- Con “+” aparecen más estrellas.
+- 
+<img width="1021" height="762" alt="Captura de pantalla 2025-10-08 164320" src="https://github.com/user-attachments/assets/3c1aefd0-e1e8-4edc-ba48-3b02a03ddaf7" />
+
+- Con “–” desaparecen algunas estrellas.
+
+**En Tormenta:**
+
+<img width="1021" height="764" alt="Captura de pantalla 2025-10-08 164340" src="https://github.com/user-attachments/assets/b43622ab-ad3b-4298-973d-ba4549b8050a" />
+
+- Con clic se lanza un rayo en la posición del cursor.
+
+![Funcionamiento clic mouse](https://github.com/user-attachments/assets/f0527689-b521-43bc-83e9-a3a49b73b084)
+
+- Con “↑” aumenta la intensidad de lluvia (más gotas).
+  
+![Grabación de pantalla 2025-10-08 165725](https://github.com/user-attachments/assets/95e66592-3181-4e4e-bcbd-753bdb35aa3e)
+
+- Con “↓” disminuye la intensidad.
+
+![Funcionamiento tecla abajo](https://github.com/user-attachments/assets/d7bd9002-0f04-44be-904f-8d21d184b255)
+
+- Con “r” aparece un rayo en el centro.
+
+![Funcionamiento tecla r](https://github.com/user-attachments/assets/1f84566f-0e4c-4491-8417-2b343cec7646)
+
+**En Nublado, verifica que:**
+
+- Clic abre un hueco en las nubes.
+- 
+<img width="1022" height="764" alt="Captura de pantalla 2025-10-08 164724" src="https://github.com/user-attachments/assets/6bbf7cca-fd5f-4518-98df-459ede885894" />
+
+- Con “↑” aumentas densidad.
+- 
+<img width="1025" height="765" alt="Captura de pantalla 2025-10-08 164750" src="https://github.com/user-attachments/assets/bf63ca3e-8e1b-4aa8-9b2b-24d987076b49" />
+
+- Con “↓” la reduces.
+  
+<img width="1022" height="768" alt="Captura de pantalla 2025-10-08 164807" src="https://github.com/user-attachments/assets/ad66ee45-4069-4860-9526-e9b389956180" />
+
+- Con “c” regeneras las nubes.
+
+<img width="1024" height="769" alt="Captura de pantalla 2025-10-08 164816" src="https://github.com/user-attachments/assets/a1cee621-19cb-44be-a42e-416f3ee8a558" />
+
+**Mensaje en consola de cambio de estados:**
+
+<img width="384" height="89" alt="Captura de pantalla 2025-10-08 164047" src="https://github.com/user-attachments/assets/5e936f95-f814-4ee4-855c-39bc6a0af10f" />
+
