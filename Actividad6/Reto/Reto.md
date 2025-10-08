@@ -61,3 +61,410 @@ El proyecto combina arte generativo con patrones de diseño de software, logrand
 
 Gracias a la arquitectura basada en State, Factory y Observer, el sistema resulta flexible, organizado y preparado para escalar con nuevos estados e interacciones.
 
+## Evidencias de los resultados de aprendizaje
+
+### RAE1 — Construcción e implementación
+
+Para evidenciar el **RAE1**, desarrollé una aplicación interactiva basada en el **Patrón State** y el **Patrón Observer**, donde cada estado (Calmado, Tormenta y Nublado) define su propio comportamiento frente a eventos de teclado y mouse.
+
+El código fuente demuestra la aplicación de los principios de encapsulamiento y comunicación desacoplada entre estados, cumpliendo los requisitos funcionales del reto.
+Además, se adjunta un video mostrando la ejecución y transición entre los estados.
+
+### RAE2 — Pruebas de las partes y del todo
+
+Para evidenciar el **RAE2**, realicé pruebas individuales y globales del software.
+
+**Pruebas por patrón:**
+
+- **Patrón State:** se verificó que cada estado responde correctamente a los eventos asignados:
+
+	-*Calmado*: clic → destellos, “+” y “–” → manejo de estrellas.
+	- *Tormenta*: clic → rayo, “↑” y “↓” → intensidad de lluvia, “r” → rayo central.
+	- *Nublado*: clic → hueco solar, “↑” y “↓” → densidad de nubes, “c” → regenerar.
+- **Patrón Observer:** se comprobó que al cambiar de estado, los observadores actualizan correctamente la visualización sin conflictos entre comportamientos anteriores.
+
+**Prueba de integración:**
+
+Se realizaron ciclos completos de ejecución pasando por todos los estados, comprobando que las transiciones son fluidas, los efectos visuales permanecen coherentes y no se generan errores en consola ni bloqueos durante la ejecución.
+
+### Evidencias adjuntas:
+
+#### Código:
+`ofApp.h:`
+```cpp
+#pragma once
+#include "ofMain.h"
+#include <memory>
+#include <vector>
+#include <string>
+#include <algorithm>
+
+// =======================================================
+// Patrón OBSERVER
+// =======================================================
+class IObserver {
+public:
+    virtual void onStateChange(const std::string& newState) = 0;
+    virtual ~IObserver() = default;
+};
+
+class Subject {
+    std::vector<IObserver*> observers;
+public:
+    void addObserver(IObserver* obs) { observers.push_back(obs); }
+    void removeObserver(IObserver* obs) {
+        observers.erase(std::remove(observers.begin(), observers.end(), obs), observers.end());
+    }
+    void notify(const std::string& newState) {
+        for (auto* obs : observers) obs->onStateChange(newState);
+    }
+};
+
+// =======================================================
+// Patrón STATE
+// =======================================================
+class State {
+protected:
+    Subject* subject = nullptr;
+public:
+    explicit State(Subject* s);
+    virtual ~State() = default;
+    virtual void enter() = 0;
+    virtual void update() = 0;
+    virtual void draw() = 0;
+    virtual void exit() = 0;
+
+    // NUEVO → eventos de entrada
+    virtual void keyPressed(int key) {}
+    virtual void mousePressed(int x, int y, int button) {}
+};
+
+// Calmado
+class CalmState : public State {
+    ofVec2f screen;
+    std::vector<ofVec2f> stars;
+    std::vector<ofVec2f> flashes;
+    int targetStars = 80;
+    void spawnStar();
+public:
+    CalmState(Subject* s, ofVec2f screenSize);
+    void enter() override;
+    void update() override;
+    void draw() override;
+    void exit() override;
+    void keyPressed(int key) override;       // +
+    void mousePressed(int x, int y, int b) override; // clic
+};
+
+// Tormenta
+class StormState : public State {
+    std::vector<ofVec2f> raindrops;
+    std::vector<ofVec2f> lightning;
+    int rainIntensity = 300;
+    int timer = 0;
+    ofVec2f screen;
+public:
+    StormState(Subject* s, ofVec2f screenSize);
+    void enter() override;
+    void update() override;
+    void draw() override;
+    void exit() override;
+    void keyPressed(int key) override;
+    void mousePressed(int x, int y, int b) override;
+};
+
+// Nublado
+class CloudyState : public State {
+    std::vector<ofVec2f> clouds;
+    std::vector<ofVec2f> holes;
+    ofVec2f screen;
+    int density = 5;
+public:
+    CloudyState(Subject* s, ofVec2f screenSize);
+    void enter() override;
+    void update() override;
+    void draw() override;
+    void exit() override;
+    void keyPressed(int key) override;
+    void mousePressed(int x, int y, int b) override;
+};
+
+// =======================================================
+// Patrón FACTORY
+// =======================================================
+class StateFactory {
+public:
+    static std::unique_ptr<State> createState(int key, Subject* s, ofVec2f screenSize);
+};
+
+// =======================================================
+// OBSERVER visual
+// =======================================================
+class SkyObserver : public IObserver {
+    std::string current;
+public:
+    void onStateChange(const std::string& newState) override {
+        current = newState;
+        ofLogNotice("Estado") << "Cambio de estado a: " << newState;
+    }
+    std::string getCurrentState() const { return current; }
+};
+
+// =======================================================
+// ofApp principal
+// =======================================================
+class ofApp : public ofBaseApp, public Subject {
+    std::unique_ptr<State> currentState;
+    SkyObserver observer;
+    ofVec2f screenSize;
+public:
+    void setup() override;
+    void update() override;
+    void draw() override;
+    void keyPressed(int key) override;
+    void mousePressed(int x, int y, int button) override;
+};
+```
+
+`ofApp.cpp`
+```cpp
+#include "ofApp.h"
+
+// =======================================================
+// Base del patrón STATE
+// =======================================================
+State::State(Subject* s) { subject = s; }
+
+// =======================================================
+// CalmState
+// =======================================================
+CalmState::CalmState(Subject* s, ofVec2f screenSize)
+    : State(s), screen(screenSize) {
+}
+
+void CalmState::spawnStar() {
+    stars.push_back(ofVec2f(ofRandom(screen.x), ofRandom(screen.y)));
+}
+
+void CalmState::enter() {
+    stars.clear();
+    flashes.clear();
+    for (int i = 0; i < targetStars; i++) spawnStar();
+    subject->notify("Cielo Calmado");
+}
+
+void CalmState::update() {
+    // Destellos se desvanecen gradualmente
+    if (!flashes.empty()) {
+        flashes.erase(flashes.begin());
+    }
+}
+
+void CalmState::draw() {
+    ofBackgroundGradient(ofColor(10, 10, 40), ofColor(0, 0, 0));
+    ofSetColor(255);
+    for (auto& s : stars) ofDrawCircle(s, 1.5);
+
+    // Dibujar destellos
+    ofSetColor(255, 255, 150);
+    for (auto& f : flashes) ofDrawCircle(f, 6);
+}
+
+void CalmState::exit() {
+    stars.clear();
+    flashes.clear();
+}
+
+void CalmState::keyPressed(int key) {
+    if (key == '+') {
+        stars.push_back(ofVec2f(ofRandom(screen.x), ofRandom(screen.y)));
+    }
+    else if (key == '-') {
+        if (!stars.empty()) stars.pop_back();
+    }
+}
+
+void CalmState::mousePressed(int x, int y, int button) {
+    flashes.push_back(ofVec2f(x, y));
+}
+
+// =======================================================
+// StormState
+// =======================================================
+StormState::StormState(Subject* s, ofVec2f screenSize)
+    : State(s), screen(screenSize) {
+}
+
+void StormState::enter() {
+    raindrops.clear();
+    lightning.clear();
+    for (int i = 0; i < rainIntensity; i++)
+        raindrops.push_back(ofVec2f(ofRandom(screen.x), ofRandom(-screen.y, screen.y)));
+    subject->notify("Tormenta");
+}
+
+void StormState::update() {
+    timer++;
+    // Movimiento vertical de la lluvia
+    for (auto& r : raindrops) {
+        r.y += 8;
+        if (r.y > screen.y) {
+            r.x = ofRandom(screen.x);
+            r.y = ofRandom(-screen.y, 0);
+        }
+    }
+    // Desvanecer rayos con el tiempo
+    if (!lightning.empty() && timer % 10 == 0)
+        lightning.erase(lightning.begin());
+}
+
+void StormState::draw() {
+    ofBackground(15, 15, 40);
+    ofSetColor(100, 150, 255);
+    for (auto& r : raindrops)
+        ofDrawLine(r.x, r.y, r.x, r.y + 10);
+
+    // Dibujar rayos
+    ofSetColor(255, 255, 180);
+    for (auto& l : lightning)
+        ofDrawLine(l.x, 0, l.x + ofRandom(-20, 20), l.y);
+}
+
+void StormState::exit() {
+    raindrops.clear();
+    lightning.clear();
+}
+
+void StormState::keyPressed(int key) {
+    if (key == OF_KEY_UP) {
+        rainIntensity += 50;
+        for (int i = 0; i < 50; i++)
+            raindrops.push_back(ofVec2f(ofRandom(screen.x), ofRandom(-screen.y, 0)));
+    }
+    else if (key == OF_KEY_DOWN) {
+        rainIntensity = std::max(50, rainIntensity - 50);
+        if (raindrops.size() > rainIntensity)
+            raindrops.resize(rainIntensity);
+    }
+    else if (key == 'r') {
+        lightning.push_back(ofVec2f(screen.x / 2, screen.y / 2));
+    }
+}
+
+void StormState::mousePressed(int x, int y, int button) {
+    lightning.push_back(ofVec2f(x, y));
+}
+
+// =======================================================
+// CloudyState
+// =======================================================
+CloudyState::CloudyState(Subject* s, ofVec2f screenSize)
+    : State(s), screen(screenSize) {
+}
+
+void CloudyState::enter() {
+    clouds.clear();
+    holes.clear();
+    for (int i = 0; i < density; i++)
+        clouds.push_back(ofVec2f(ofRandom(screen.x), ofRandom(screen.y / 2)));
+    subject->notify("Cielo Nublado");
+}
+
+void CloudyState::update() {
+    for (auto& c : clouds) {
+        c.x += 0.5;
+        if (c.x > screen.x + 100) c.x = -100;
+    }
+}
+
+void CloudyState::draw() {
+    ofBackground(100, 120, 150);
+    ofSetColor(255, 255, 255, 220);
+    for (auto& c : clouds) {
+        ofDrawCircle(c, 60);
+        ofDrawCircle(c + ofVec2f(40, 10), 50);
+        ofDrawCircle(c + ofVec2f(-40, 10), 50);
+    }
+
+    // Dibujar huecos (rayos de sol)
+    ofSetColor(255, 230, 100, 180);
+    for (auto& h : holes)
+        ofDrawCircle(h, 40);
+}
+
+void CloudyState::exit() {
+    clouds.clear();
+    holes.clear();
+}
+
+void CloudyState::keyPressed(int key) {
+    if (key == OF_KEY_UP) {
+        density++;
+        clouds.push_back(ofVec2f(ofRandom(screen.x), ofRandom(screen.y / 2)));
+    }
+    else if (key == OF_KEY_DOWN) {
+        if (density > 1) density--;
+        if (!clouds.empty()) clouds.pop_back();
+    }
+    else if (key == 'c') {
+        holes.clear();
+        clouds.clear();
+        for (int i = 0; i < density; i++)
+            clouds.push_back(ofVec2f(ofRandom(screen.x), ofRandom(screen.y / 2)));
+    }
+}
+
+void CloudyState::mousePressed(int x, int y, int button) {
+    holes.push_back(ofVec2f(x, y));
+}
+
+// =======================================================
+// Factory
+// =======================================================
+std::unique_ptr<State> StateFactory::createState(int key, Subject* s, ofVec2f screenSize) {
+    switch (key) {
+    case '1': return std::make_unique<CalmState>(s, screenSize);
+    case '2': return std::make_unique<StormState>(s, screenSize);
+    case '3': return std::make_unique<CloudyState>(s, screenSize);
+    default:  return std::make_unique<CalmState>(s, screenSize);
+    }
+}
+
+// =======================================================
+// ofApp
+// =======================================================
+void ofApp::setup() {
+    ofSetFrameRate(60);
+    screenSize = ofVec2f{ static_cast<float>(ofGetWidth()), static_cast<float>(ofGetHeight()) };
+    addObserver(&observer);
+    currentState = std::make_unique<CalmState>(this, screenSize);
+    currentState->enter();
+}
+
+void ofApp::update() {
+    if (currentState) currentState->update();
+}
+
+void ofApp::draw() {
+    if (currentState) currentState->draw();
+
+    ofSetColor(255);
+    ofDrawBitmapStringHighlight("1 = Calmado | 2 = Tormenta | 3 = Nublado", 20, 20);
+    ofDrawBitmapStringHighlight("Estado actual: " + observer.getCurrentState(), 20, 40);
+}
+
+void ofApp::keyPressed(int key) {
+    if (key == '1' || key == '2' || key == '3') {
+        currentState->exit();
+        currentState = StateFactory::createState(key, this, screenSize);
+        currentState->enter();
+    }
+    else {
+        if (currentState) currentState->keyPressed(key);
+    }
+}
+
+void ofApp::mousePressed(int x, int y, int button) {
+    if (currentState) currentState->mousePressed(x, y, button);
+}
+```
