@@ -23,20 +23,17 @@ El usuario puede cambiar de estado con las teclas:
 Además, cada estado posee interacciones específicas:
 
 - **Estado Calmado**
-	- Mouse arrastrar: atrae partículas hacia el cursor.
 	- Mouse clic: genera destellos brillantes.
 	- Tecla +: agrega estrellas al cielo.
 	- Tecla -: elimina estrellas.
 
 - **Estado Tormenta**
-	- Mouse arrastrar: ajusta la densidad de la lluvia.
 	- Mouse clic: lanza un rayo en la posición del cursor.
 	- Tecla ↑: aumenta la intensidad de la lluvia.
 	- Tecla ↓: disminuye la intensidad de la lluvia.
 	- Tecla r: genera un rayo en el centro de la pantalla.
 
 - **Estado Nublado**
-	- Mouse arrastrar: aumenta la densidad de nubes en la trayectoria del cursor.
 	- Mouse clic: abre un “hueco” en las nubes, como un rayo de sol.
 	- Tecla ↑: incrementa la densidad general de nubes.
 	- Tecla ↓: reduce la densidad de nubes.
