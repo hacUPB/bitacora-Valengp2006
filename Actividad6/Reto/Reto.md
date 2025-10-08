@@ -475,7 +475,7 @@ void ofApp::mousePressed(int x, int y, int button) {
 <img width="1027" height="769" alt="Captura de pantalla 2025-10-08 164221" src="https://github.com/user-attachments/assets/b7b5c863-0dc1-4cc0-b419-0dfc2955ab8b" />
 
 - Con “+” aparecen más estrellas.
-- 
+  
 <img width="1021" height="762" alt="Captura de pantalla 2025-10-08 164320" src="https://github.com/user-attachments/assets/3c1aefd0-e1e8-4edc-ba48-3b02a03ddaf7" />
 
 - Con “–” desaparecen algunas estrellas.
@@ -503,11 +503,11 @@ void ofApp::mousePressed(int x, int y, int button) {
 **En Nublado, verifica que:**
 
 - Clic abre un hueco en las nubes.
-- 
+  
 <img width="1022" height="764" alt="Captura de pantalla 2025-10-08 164724" src="https://github.com/user-attachments/assets/6bbf7cca-fd5f-4518-98df-459ede885894" />
 
 - Con “↑” aumentas densidad.
-- 
+  
 <img width="1025" height="765" alt="Captura de pantalla 2025-10-08 164750" src="https://github.com/user-attachments/assets/bf63ca3e-8e1b-4aa8-9b2b-24d987076b49" />
 
 - Con “↓” la reduces.
