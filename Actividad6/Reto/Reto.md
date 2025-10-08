@@ -1,5 +1,3 @@
-
-https://github.com/user-attachments/assets/5c08370b-2aff-4f30-9998-9d1ceee8434e
 ## Proyecto: Cielo Generativo Interactivo - 06/10/2025
 
 ### Descripción del Proyecto
