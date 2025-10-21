@@ -120,11 +120,11 @@ ofDrawRectangle(0, 0, ofGetWidth(), ofGetHeight());
 ```
 **Resultado de ejecutar la aplicación sin modificar el código:**
 
-
+<img width="1027" height="789" alt="Captura de pantalla 2025-10-21 a la(s) 5 21 37 p m" src="https://github.com/user-attachments/assets/34ddff09-4b8d-4ade-af97-974f2bd32b39" />
 
 **Resultado de ejecutar la aplicación luego de modificar el código:**
 
-
+<img width="1025" height="791" alt="Captura de pantalla 2025-10-21 a la(s) 5 32 14 p m" src="https://github.com/user-attachments/assets/6890f107-b73d-4f98-b1d8-f5b7e796c116" />
 
 ### Ejemplo 2 — Texture Shader
 
