@@ -84,7 +84,6 @@ Sí. El `fragment shader` controla el color de cada píxel según su posición.
 
 ## Siguiendo el tutorial:
 
-
 **Concepto base:**
 
 En openFrameworks, un shader es un pequeño programa que corre en la GPU:
@@ -98,100 +97,4 @@ El flujo normal es:
 2.	Comenzar el shader (`shader.begin()`).
 3.	Dibujar una figura.
 4.	Terminar el shader (`shader.end()`).
-
-### Ejemplo 1 — Simple Shader
-
-**Descripción:**
-
-Este ejemplo genera un degradado de color que depende de la posición de cada píxel (`gl_FragCoord`).
-El `vertex shader` solo pasa las coordenadas al `fragment shader`, donde se calcula el color final.
-
-**Pasos:**
-
-1. Abrir el proyecto en el *Project Generator* de openFrameworks.
-2. Ejecutar el programa.
-3. En pantalla se observa una transición de colores que cambia según las coordenadas en X y Y.
-
-**Código de prueba (en `ofApp::draw()`):**
-
-```cpp
-// Prueba sin shader
-//shader.begin();
-ofDrawRectangle(0, 0, ofGetWidth(), ofGetHeight());
-//shader.end();
-```
-
-Esto permite comparar la salida con y sin el uso del shader.
-
-
-### Ejemplo 2 — Texture Shader
-
-**Descripción:**
-
-En este caso, el shader aplica una **textura (imagen)** a un plano.
-Se utiliza la variable `sampler2DRect tex0` para acceder a los píxeles de la textura y combinar sus colores mediante código GLSL.
-
-**Pasos:**
-
-1. Verificar que en la carpeta `/bin/data/` exista la imagen `tex0.jpg`.
-2. Ejecutar el proyecto.
-3. Se visualizará la imagen renderizada como textura sobre una figura, pudiendo modificar su color o efecto desde el shader.
-
-**Fragment Shader base:**
-
-```glsl
-outputColor = texture(tex0, texCoordVarying) * vec4(1.0, 0.5, 0.5, 1.0);
-```
-
-*Nota:* Si el color no parece modificarse, puede deberse a que la textura ya domina la salida de color. Cambiar los valores o multiplicar solo algunos canales (por ejemplo, `vec4(1.0, 0.2, 0.2, 1.0)`) puede evidenciar mejor el efecto.
-
-**Explicación técnica:**
-
-- `texture(tex0, texCoordVarying)` obtiene el color original del píxel de la textura.
-- Multiplicarlo por un `vec4` cambia la intensidad de cada canal RGB antes de dibujarlo.
-- Este ejemplo introduce la manipulación directa de texturas en la GPU.
-
-### **Ejemplo 3 — Texture Displacement**
-
-**Descripción:**
-
-Este ejemplo desplaza los vértices de una malla usando una textura como mapa de desplazamiento.
-El brillo de cada píxel en la textura afecta la posición Y de cada vértice, generando una apariencia de relieve o movimiento.
-
-**Pasos:**
-
-1. Abrir y ejecutar el proyecto.
-2. Mover el mouse para observar cómo la superficie se deforma.
-3. Analizar el `vertex shader`: allí se usa el valor del canal rojo de la textura para modificar la geometría.
-
-**Explicación técnica:**
-
-```glsl
-float displacement = texture(tex0, texcoord).r;
-vec4 newPosition = vec4(position.x, position.y + displacement * 100.0, position.z, 1.0);
-```
-
-- `texture(tex0, texcoord).r` obtiene la intensidad (0–1) del canal rojo del píxel.
-- Esa intensidad se multiplica por un factor (`100.0`) para desplazar la coordenada Y.
-
-Esto demuestra cómo los shaders pueden usar texturas como **datos**, no solo como imágenes.
-
-### Ejemplo 4 — Multiple Shaders
-
-**Descripción:**
-
-Se utilizan **dos shaders distintos** en una misma escena.
-Cada uno se aplica a diferentes objetos o secciones de la pantalla, introduciendo el concepto de *multi-pass shading*.
-
-**Pasos:**
-
-1. Abrir el proyecto.
-2. Ejecutar el programa.
-3. Observar cómo cada región o figura tiene un efecto diferente (por ejemplo, un desplazamiento y una variación de color).
-
-**Explicación técnica:**
-
-- Se crean dos objetos `ofShader`.
-- Cada uno se activa y desactiva para aplicarse de forma independiente.
-- Este enfoque es común en pipelines avanzados de renderizado (por ejemplo, iluminación, postprocesado o efectos combinados).
 
