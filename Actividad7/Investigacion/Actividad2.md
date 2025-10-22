@@ -159,8 +159,8 @@ shader.setUniform2f("mouse", mouseX, mouseY);
 - **Concepto:** Introduce cómo aplicar una textura a una superficie usando un sampler2DRect.
 - **Explicación:**
 	- Se carga una imagen como textura (ofImage).
- - El shader lee el color de la textura mediante coordenadas UV.
- - Puede alterarse el color multiplicándolo o mezclándolo con otros valores.
+ 	- El shader lee el color de la textura mediante coordenadas UV.
+ 	- Puede alterarse el color multiplicándolo o mezclándolo con otros valores.
 - **Código clave:**
 
 outputColor = texture(tex0, texCoordVarying) * vec4(1.0, 0.5, 0.5, 1.0);
@@ -172,7 +172,7 @@ outputColor = texture(tex0, texCoordVarying) * vec4(1.0, 0.5, 0.5, 1.0);
 - **Concepto:** Combina una imagen base con una máscara que define la transparencia.
 - **Explicación:**
 	- Se utilizan dos texturas: una imagen (tex0) y una máscara (maskTex).
- - El fragment shader compara el valor de la máscara para definir qué partes se ven.
+	 - El fragment shader compara el valor de la máscara para definir qué partes se ven.
 - **Código clave:**
 
 vec4 color = texture(tex0, texCoordVarying);
@@ -186,7 +186,7 @@ outputColor = vec4(color.rgb, maskValue);
 - Concepto: Mezcla varias texturas dentro de un mismo shader.
 - Explicación:
 	- Se usan dos texturas (tex0 y tex1) para crear un efecto combinado.
- - La mezcla depende del valor de un uniform o de la posición del mouse.
+ 	- La mezcla depende del valor de un uniform o de la posición del mouse.
 
 - Código clave:
 
