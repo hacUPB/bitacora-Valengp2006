@@ -101,16 +101,18 @@ El flujo normal es:
 
 ### Ejemplo 1 — Simple Shader
 
-- **Ruta:** `openFrameworks/examples/shader/01_simpleShader`
-- **Qué hace:** Pinta un degradado de color en pantalla usando las coordenadas de cada píxel.
-- **Pasos:**
-	1.	Abrir el proyecto con el *Project Generator*.
-	2.	Ejecutar el programa.
-	3.	Se verá una pantalla que cambia de color según `gl_FragCoord.x` y `gl_FragCoord.y`.
-- **Explicación:**
-	- El `vertex shader` solo pasa las coordenadas.
-	- El `fragment shader` usa `gl_FragCoord` (posición del pixel) para definir el color RGB.
-- **Modificación en `ofApp::draw()`:**
+**Descripción:**
+
+Este ejemplo genera un degradado de color que depende de la posición de cada píxel (`gl_FragCoord`).
+El `vertex shader` solo pasa las coordenadas al `fragment shader`, donde se calcula el color final.
+
+**Pasos:**
+
+1. Abrir el proyecto en el *Project Generator* de openFrameworks.
+2. Ejecutar el programa.
+3. En pantalla se observa una transición de colores que cambia según las coordenadas en X y Y.
+
+**Código de prueba (en `ofApp::draw()`):**
 
 ```cpp
 // Prueba sin shader
@@ -118,66 +120,78 @@ El flujo normal es:
 ofDrawRectangle(0, 0, ofGetWidth(), ofGetHeight());
 //shader.end();
 ```
-**Resultado de ejecutar la aplicación sin modificar el código:**
 
-<img width="1027" height="789" alt="Captura de pantalla 2025-10-21 a la(s) 5 21 37 p m" src="https://github.com/user-attachments/assets/34ddff09-4b8d-4ade-af97-974f2bd32b39" />
+Esto permite comparar la salida con y sin el uso del shader.
 
-**Resultado de ejecutar la aplicación luego de modificar el código:**
-
-<img width="1025" height="791" alt="Captura de pantalla 2025-10-21 a la(s) 5 32 14 p m" src="https://github.com/user-attachments/assets/6890f107-b73d-4f98-b1d8-f5b7e796c116" />
 
 ### Ejemplo 2 — Texture Shader
 
-- **Ruta:** `openFrameworks/examples/shader/02_textureShader`
+**Descripción:**
 
-- **Qué hace:** Usa una imagen como textura dentro del shader.
-- **Pasos:**
-	1.	Asegurarse de que en `/bin/data`/ haya una imagen (tex0.jpg).
-	2.	Ejecutar el proyecto.
-	3.	Se verá la imagen texturizada, posiblemente con efectos de color controlados por el shader.
-- **Explicación:**
-	- El shader usa `sampler2DRect tex0;` para leer los colores de la imagen.
-	- Se puede modificar el `fragment shader` para cambiar cómo se combinan los colores. Por ejemplo: `outputColor = texture(tex0, texCoordVarying) * vec4(1.0, 0.5, 0.5, 1.0);`
+En este caso, el shader aplica una **textura (imagen)** a un plano.
+Se utiliza la variable `sampler2DRect tex0` para acceder a los píxeles de la textura y combinar sus colores mediante código GLSL.
 
-**Resultado de ejecutar la aplicación sin modificar el código:**
+**Pasos:**
 
+1. Verificar que en la carpeta `/bin/data/` exista la imagen `tex0.jpg`.
+2. Ejecutar el proyecto.
+3. Se visualizará la imagen renderizada como textura sobre una figura, pudiendo modificar su color o efecto desde el shader.
 
+**Fragment Shader base:**
 
-**Resultado de ejecutar la aplicación luego de modificar el código:**
+```glsl
+outputColor = texture(tex0, texCoordVarying) * vec4(1.0, 0.5, 0.5, 1.0);
+```
 
+*Nota:* Si el color no parece modificarse, puede deberse a que la textura ya domina la salida de color. Cambiar los valores o multiplicar solo algunos canales (por ejemplo, `vec4(1.0, 0.2, 0.2, 1.0)`) puede evidenciar mejor el efecto.
 
+**Explicación técnica:**
 
-### Ejemplo 3 — Texture Displacement
+- `texture(tex0, texCoordVarying)` obtiene el color original del píxel de la textura.
+- Multiplicarlo por un `vec4` cambia la intensidad de cada canal RGB antes de dibujarlo.
+- Este ejemplo introduce la manipulación directa de texturas en la GPU.
 
-- **Ruta:** `openFrameworks/examples/shader/03_textureDisplacement`
-- **Qué hace:** Desplaza la geometría (los vértices) de un plano usando una textura como mapa de desplazamiento.
-- **Pasos:**
-	1.	Abrir el proyecto.
-	2.	Ejecutar y mover el mouse: se verá cómo la superficie parece moverse o deformarse.
-	3.	En el `vertex shader`, la posición Y de los vértices se altera usando el valor de una textura (tex0).
-- **Explicación:**
-	- `texture(tex0, texcoord).r` obtiene la intensidad (canal rojo) del píxel.
-	- Ese valor se usa para mover el vértice en el eje Y.
+### **Ejemplo 3 — Texture Displacement**
 
-Esto introduce el concepto de usar texturas como datos, no solo como imágenes.
+**Descripción:**
 
-**Resultado de ejecutar la aplicación sin modificar el código:**
+Este ejemplo desplaza los vértices de una malla usando una textura como mapa de desplazamiento.
+El brillo de cada píxel en la textura afecta la posición Y de cada vértice, generando una apariencia de relieve o movimiento.
 
+**Pasos:**
 
+1. Abrir y ejecutar el proyecto.
+2. Mover el mouse para observar cómo la superficie se deforma.
+3. Analizar el `vertex shader`: allí se usa el valor del canal rojo de la textura para modificar la geometría.
 
-**Resultado de ejecutar la aplicación luego de modificar el código:**
+**Explicación técnica:**
 
+```glsl
+float displacement = texture(tex0, texcoord).r;
+vec4 newPosition = vec4(position.x, position.y + displacement * 100.0, position.z, 1.0);
+```
 
+- `texture(tex0, texcoord).r` obtiene la intensidad (0–1) del canal rojo del píxel.
+- Esa intensidad se multiplica por un factor (`100.0`) para desplazar la coordenada Y.
+
+Esto demuestra cómo los shaders pueden usar texturas como **datos**, no solo como imágenes.
 
 ### Ejemplo 4 — Multiple Shaders
 
-- **Ruta:** `openFrameworks/examples/shader/04_multipleShaders`
-- **Qué hace:** Aplica dos shaders diferentes a distintas partes de la escena (`multi-pass shading`).
-- **Pasos:**
-	1.	Abrir el proyecto.
-	2.	Ejecutarlo.
-	3.	Se verán dos secciones en pantalla con efectos distintos (por ejemplo, una con desplazamiento y otra con color).
-- **Explicación:**
-	- Se crean dos objetos ofShader.
-	- Cada uno se aplica a un conjunto diferente de objetos o texturas.
-	- Se introducen conceptos de render pass (primero aplicar un shader, luego otro encima).
+**Descripción:**
+
+Se utilizan **dos shaders distintos** en una misma escena.
+Cada uno se aplica a diferentes objetos o secciones de la pantalla, introduciendo el concepto de *multi-pass shading*.
+
+**Pasos:**
+
+1. Abrir el proyecto.
+2. Ejecutar el programa.
+3. Observar cómo cada región o figura tiene un efecto diferente (por ejemplo, un desplazamiento y una variación de color).
+
+**Explicación técnica:**
+
+- Se crean dos objetos `ofShader`.
+- Cada uno se activa y desactiva para aplicarse de forma independiente.
+- Este enfoque es común en pipelines avanzados de renderizado (por ejemplo, iluminación, postprocesado o efectos combinados).
+
