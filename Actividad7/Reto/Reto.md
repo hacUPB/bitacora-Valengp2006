@@ -34,7 +34,7 @@ Para cumplir con el “interactivo” del reto, puedes incluir una o varias de e
 
 ### Estructura de la malla
 
-En `ofApp.cpp` se creará una **malla de puntos** (por ejemplo, 100x100 vértices) con `ofMesh`.
+En `ofApp.cpp` se creará una **malla de puntos** (de aproximadamente, 100x100 vértices) con `ofMesh`.
 
 Cada cuadro (`update`) enviará uniformes al shader:
 
@@ -68,3 +68,4 @@ Visualmente se parecerá a esto:
   - El vertex shader (probando distintas deformaciones).
   - El fragment shader (probando gradientes y animación).
   - Todo junto (la app final con interacción).
+
