@@ -21,12 +21,12 @@ Para cumplir con el “interactivo” del reto, puedes incluir una o varias de e
 
 1. **Interacción con el mouse:**
 
-   - Mueve el mouse en X/Y → cambia la frecuencia o velocidad de la onda.
+   - Mueve el mouse en X/Y → cambia gradualmente el color de la malla con colores que van del azul al morado.
  
 2. **Teclado:**
 
    - Tecla ↑/↓ → aumenta o disminuye amplitud.
-   - Tecla “C” → cambia el modo de color (azul, morado, verde...).
+   - Tecla “C” → cambia la frecuencia de la onda.
      
 3. **Animación automática:**
 
@@ -48,7 +48,8 @@ Visualmente se parecerá a esto:
 
 - Ondas suaves que se desplazan horizontalmente.
 - Colores que van del **azul al púrpura** según altura.
-- Interacción que cambia la frecuencia o color con el mouse.
+- Interacción que cambia la frecuencia.
+- Interacción que cambia color con el mouse.
 
 <img width="766" height="425" alt="Captura de pantalla 2025-10-29 164205" src="https://github.com/user-attachments/assets/3610c0d8-4ec2-4edd-b930-ff7491eea9b4" />
 
@@ -68,4 +69,5 @@ Visualmente se parecerá a esto:
   - El vertex shader (probando distintas deformaciones).
   - El fragment shader (probando gradientes y animación).
   - Todo junto (la app final con interacción).
+
 
