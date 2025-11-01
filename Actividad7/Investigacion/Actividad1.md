@@ -19,7 +19,7 @@ Se utilizaron los ejemplos de shaders incluidos en openFrameworks (carpeta examp
 Cada uno se abrió y ejecutó correctamente, verificando su compilación y comportamiento visual.
 
 Ejemplo probados:
-- 01_simple
+	- 01_simple
 
 ## Preguntas y respuestas
 
