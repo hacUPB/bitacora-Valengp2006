@@ -277,7 +277,7 @@ void main() {
 	3.	La GPU usa esas variables para deformar y colorear la superficie.
 	4.	El resultado es una animación fluida, continua e interactiva.
 
-- **Video de demostración:** [Enlace]()
+- **Video de demostración:** [Enlace](https://youtu.be/kto9DBki4nU)
 
 ### RAE2 – Pruebas de la aplicación
 
